@@ -1,0 +1,58 @@
+============================================================
+  JobTrek: SMART JOB APPLICATION TRACKER — FEATURES
+============================================================
+
+------------------------------------------------------------
+CORE (Must have before showing to anyone)
+------------------------------------------------------------
+
+AUTH
+- Register / Login with email & password
+- JWT-based auth with protected routes
+- Google OAuth login
+
+APPLICATIONS
+- Add a job application (company, role, location, salary range, job URL, date applied)
+- Application status: Wishlist → Applied → OA → Interview → Offer → Rejected
+- Edit and delete applications
+- Notes field per application (interview feedback, contact name, etc.)
+
+DASHBOARD
+- Total applications count
+- Breakdown by status (how many in each stage)
+- Applications added this week vs last week
+- Bar or funnel chart showing pipeline stages
+- Recent activity feed
+
+FILTERS & SEARCH
+- Filter by status, date range, location
+- Search by company name or role
+
+------------------------------------------------------------
+AI FEATURES (This is what makes it stand out)
+------------------------------------------------------------
+
+- Paste a job description → AI extracts role, skills required, and key responsibilities automatically
+- Resume bullet point generator: paste your experience → AI rewrites it tailored to the job description
+- Cold email / cover letter draft: one click generates a draft based on the JD and your profile
+- Interview prep: based on the role and JD, AI generates 5 likely interview questions
+
+------------------------------------------------------------
+SECONDARY (Add these if time permits)
+------------------------------------------------------------
+
+- Deadline reminders (follow-up date field with a visual indicator when overdue)
+- Export applications to CSV
+- Dark mode
+- Profile page (name, current skills, target role — used as context for AI features)
+- Application timeline view (visual timeline per company showing all stage changes)
+
+------------------------------------------------------------
+OUT OF SCOPE (Do not build these)
+------------------------------------------------------------
+
+- Email integration (reading inbox to auto-add applications) — too complex, not worth it
+- Browser extension — out of scope for v1
+- Team / collaboration features — this is a solo tool
+
+============================================================
