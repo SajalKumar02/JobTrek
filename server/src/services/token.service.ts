@@ -3,7 +3,7 @@
 // deleteRefreshToken()
 // cleanupExpiredTokens()
 
-// token.service.js - Refresh token database operations
+// token.service.ts - Refresh token database operations
 
 // Save/find/delete refresh tokens in DB
 // Hash tokens before storing

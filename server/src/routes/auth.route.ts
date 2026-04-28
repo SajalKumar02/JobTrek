@@ -9,7 +9,7 @@ import {
     logout,
     dispatchAccessToken,
     deleteAllData,
-} from "../controllers/auth.controller.js";
+} from "../controllers/auth.controller.ts";
 
 // prettier-ignore
 AuthRoute

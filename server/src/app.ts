@@ -1,8 +1,8 @@
 import express from "express";
-import IndexRoute from "./routes/index.route.js";
-
 import cookieParser from "cookie-parser";
 import cors from "cors";
+
+import IndexRoute from "./routes/index.route.ts";
 
 const app = express();
 

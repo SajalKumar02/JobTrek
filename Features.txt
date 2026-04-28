@@ -13,7 +13,7 @@ AUTH
 
 APPLICATIONS
 - Add a job application (company, role, location, salary range, job URL, date applied)
-- Application status: Wishlist → Applied → OA → Interview → Offer → Rejected
+- Application status: Wishlist → Applied → Online Assessment → Interview → Offer → Rejected
 - Edit and delete applications
 - Notes field per application (interview feedback, contact name, etc.)
 

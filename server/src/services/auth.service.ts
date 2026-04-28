@@ -4,7 +4,7 @@
 // logoutUser()
 // Database operations
 
-// auth.service.js - Business logic + database operations
+// auth.service.ts - Business logic + database operations
 
 // Orchestrates multiple operations
 // Calls database models
@@ -13,11 +13,15 @@
 
 import bcrypt from "bcryptjs";
 
-import UserModel from "../model/user.model.js";
-import TokenModel from "../model/token.model.js";
+import UserModel from "../model/user.model.ts";
+import TokenModel from "../model/token.model.ts";
 
 import { generateUsernameForUser } from "../utils/username.util.js";
-import { generateAccessToken, generateRefreshToken, verifyAccessToken } from "../utils/token.util.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+} from "../utils/token.util.js";
 import { passwordHash } from "../utils/password.util.js";
 
 export const authService = {
@@ -36,7 +40,10 @@ export const authService = {
     }
 
     // Check Password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.password,
+    );
     if (!isPasswordValid) {
       throw new Error("Invalid email or password");
     }
@@ -107,7 +114,12 @@ export const authService = {
   // - revokes refresh token in DB if provided
   logoutUser: async (req, res) => {
     // extract token from cookies, body or Authorization header
-    const refreshToken = req?.cookies?.refreshToken || req?.body?.refreshToken || (req?.headers?.authorization ? req.headers.authorization.split(" ")[1] : undefined);
+    const refreshToken =
+      req?.cookies?.refreshToken ||
+      req?.body?.refreshToken ||
+      (req?.headers?.authorization
+        ? req.headers.authorization.split(" ")[1]
+        : undefined);
 
     // Clear auth cookies
     try {
@@ -132,7 +144,12 @@ export const authService = {
   // accepts req,res
   // return newAccess, newRefresh, user
   dispatchAccessToken: async (req, res) => {
-    const refreshToken = req?.cookies?.refreshToken || req?.body?.refreshToken || (req?.headers?.authorization ? req.headers.authorization.split(" ")[1] : undefined);
+    const refreshToken =
+      req?.cookies?.refreshToken ||
+      req?.body?.refreshToken ||
+      (req?.headers?.authorization
+        ? req.headers.authorization.split(" ")[1]
+        : undefined);
 
     if (!refreshToken) {
       throw new Error("Refresh token is required");
@@ -157,7 +174,9 @@ export const authService = {
     }
 
     const accessToken = generateAccessToken({ email: user.email });
-    const newRefreshToken = generateRefreshToken({ email: user.email });
+    const newRefreshToken = generateRefreshToken({
+      email: user.email,
+    });
 
     // delete old refresh token
     await TokenModel.deleteOne({ refreshToken });

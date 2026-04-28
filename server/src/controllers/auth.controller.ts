@@ -1,5 +1,5 @@
-import { authService } from "../services/auth.service.js";
-import { mountTokenToResponse } from "../utils/token.util.js";
+import { authService } from "../services/auth.service.ts";
+import { mountTokenToResponse } from "../utils/token.util.ts";
 
 export const login = async (req, res) => {
   try {
@@ -12,12 +12,12 @@ export const login = async (req, res) => {
     // passing tokens and response object(res)
     mountTokenToResponse(res, result.accessToken, result.refreshToken);
 
-    res.status(200).json({
+    res.status(200).tson({
       success: true,
       data: { user: result.user },
     });
   } catch (error) {
-    res.status(401).json({
+    res.status(401).tson({
       success: false,
       message: error.message,
     });
@@ -32,12 +32,12 @@ export const register = async (req, res) => {
 
     mountTokenToResponse(res, result.accessToken, result.refreshToken);
 
-    res.status(200).json({
+    res.status(200).tson({
       success: true,
       data: { user: result.user },
     });
   } catch (error) {
-    res.status(401).json({
+    res.status(401).tson({
       success: false,
       message: error.message,
     });
@@ -49,9 +49,9 @@ export const logout = async (req, res) => {
     // Delegate logout to service which will clear cookies and revoke token if present
     await authService.logoutUser(req, res);
 
-    return res.status(200).json({ success: true, message: "Logged out" });
+    return res.status(200).tson({ success: true, message: "Logged out" });
   } catch (error) {
-    res.status(401).json({
+    res.status(401).tson({
       success: false,
       message: error.message,
     });
@@ -62,11 +62,11 @@ export const deleteAllData = async (req, res) => {
   try {
     await authService.deleteAll();
 
-    res.status(200).json({
+    res.status(200).tson({
       success: true,
     });
   } catch (error) {
-    res.status(401).json({
+    res.status(401).tson({
       success: false,
       message: error.message,
     });
@@ -82,13 +82,13 @@ export const dispatchAccessToken = async (req, res) => {
     const { accessToken, refreshToken, user } = await authService.dispatchAccessToken(req, res);
 
     mountTokenToResponse(res, accessToken, refreshToken);
-    res.json({
+    res.tson({
       success: true,
       message: "new access token dispatched",
       data: { user },
     });
   } catch (error) {
-    res.status(401).json({
+    res.status(401).tson({
       success: false,
       message: error.message,
     });
