@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* Theme variables from Home.tsx (328-337) */
+:root {
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-border: #1f1f1f;
+  --color-border-hover: #2e2e2e;
+  --color-text: #f0ede8;
+  --color-muted: #6b6b6b;
+  --color-accent: #e8ff47;
+  --color-accent-dim: #e8ff4722;
+}
+
 * {
   margin: 0;
   padding: 0;
