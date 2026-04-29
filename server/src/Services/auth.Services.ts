@@ -126,7 +126,11 @@ export const authService = {
         }
 
         // check by email or _id
-        const decoded = verifyAccessToken(refreshToken);
+        const decoded = verifyRefreshToken(refreshToken);
+
+        if (!decoded) {
+            throw new Error("Invalid Refresh Token");
+        }
 
         // find token in DB
         const storedToken = await TokenModel.findOne({ refreshToken });
