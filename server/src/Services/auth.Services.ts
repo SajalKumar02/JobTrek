@@ -1,11 +1,16 @@
 import bcrypt from "bcryptjs";
 
 import UserModel, { IUser } from "../Model/user.Model";
-import TokenModel from "../Model/token.Model";
+import TokenModel, { IToken } from "../Model/token.Model";
 
 import { passwordHash } from "../Utils/password.Util";
 import { generateUsernameFromEmail } from "../Utils/username.Util";
-import { generateAccessToken, generateRefreshToken, verifyAccessToken } from "../Utils/token.Util";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+    verifyAccessToken,
+    verifyRefreshToken
+} from "../Utils/token.Util";
 
 import { Request, Response } from "express";
 
@@ -13,6 +18,10 @@ interface UserResult {
     accessToken: string;
     refreshToken: string;
     user: IUser
+}
+
+interface TokenPayload {
+    email: string;
 }
 
 export const authService = {
@@ -53,6 +62,41 @@ export const authService = {
             refreshToken,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
+
+        return { accessToken, refreshToken, user };
+    },
+    // refreshTokenForUser: 
+    // Access token is expired, so now we will check shared refresh token in DB
+    // If found, then accessToken will be shared, else re-login
+    refreshTokenForUser: async (refreshToken: string) => {
+        // Validate refreshToken
+        let decoded: TokenPayload;
+        try {
+            decoded = verifyRefreshToken(refreshToken);
+        } catch (error) {
+            throw new Error("Invalid or RefreshTokenExpired");
+        }
+
+        // Verify Refresh Token in DB
+        const TokenDoc: IToken = await TokenModel.findOne({
+            refreshToken,
+            expiresAt: { $gt: new Date() }
+        })
+
+        if (!TokenDoc) {
+            throw new Error("Refresh Token Expired");
+        }
+
+        const user: IUser = await UserModel.findOne({
+            email: decoded.email
+        });
+
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+
+        // Generate Access Token
+        const accessToken = generateAccessToken(user.email);
 
         return { accessToken, refreshToken, user };
     },

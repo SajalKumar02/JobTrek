@@ -3,6 +3,12 @@
 // token cleanup
 import mongoose from "mongoose";
 
+export interface IToken extends Document {
+    userId: mongoose.Schema.Types.ObjectId;
+    refreshToken: string;
+    expiresAt: Date;
+}
+
 const tokenSchema = new mongoose.Schema(
     {
         userId: {
@@ -12,8 +18,7 @@ const tokenSchema = new mongoose.Schema(
         },
         refreshToken: { type: String, required: true, unique: true },
         expiresAt: { type: Date, required: true },
-    },
-    { timestamps: true }
+    }
 );
 
 const TokenModel = mongoose.model("Token", tokenSchema);

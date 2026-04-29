@@ -28,6 +28,37 @@ export const registerOrLogin = async (req: Request, res: Response) => {
     }
 };
 
+export const refreshAccessToken = async (req: Request, res: Response) => {
+    try {
+        const { refreshToken } = req.cookies;
+
+        if (!refreshToken) {
+            return res.status(401).send({
+                message: "Refresh token not found",
+                success: false
+            })
+        }
+
+        const result = await authService.refreshTokenForUser(refreshToken);
+
+        mountTokenToResponse(res, result.accessToken, refreshToken);
+
+        res.status(200).json({
+            success: true,
+            data: { user: result.user }
+        });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown Error";
+        const statusCode = error instanceof Error && 'statusCode' in error ?
+            (error as any).statusCode
+            : 500
+        res.status(statusCode).json({
+            success: false,
+            message: message,
+        });
+    }
+}
+
 export const logout = async (req: Request, res: Response) => {
     try {
         // Delegate logout to service which will clear cookies and revoke token if present

@@ -21,9 +21,6 @@ export const generateAccessToken = (email: string): string => {
     });
     return accessToken;
 };
-
-// accepting email
-// return refresh token
 export const generateRefreshToken = (email: string): string => {
     const payload: TokenPayload = { email };
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
@@ -34,9 +31,17 @@ export const generateRefreshToken = (email: string): string => {
 
 // accepting token
 // return decode payload
-export const verifyAccessToken = (token) => {
+export const verifyAccessToken = (token: string) => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as TokenPayload;
+        return decoded;
+    } catch (error) {
+        return null;
+    }
+};
+export const verifyRefreshToken = (token: string) => {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET) as TokenPayload;
         return decoded;
     } catch (error) {
         return null;
