@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
+import NavBar from "../Components/Home/NavBar";
+import Footer from "../Components/Home/Footer";
+
 const PIPELINE_STAGES = [
   { label: "Wishlist", color: "#8B7CF6", count: 3 },
   { label: "Applied", color: "#60A5FA", count: 8 },
@@ -79,37 +82,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={styles.root}>
+    <div className="root">
       {/* Noise texture overlay */}
-      <div style={styles.noise} />
+      <div className="noise" />
 
       {/* Grid lines background */}
-      <div style={styles.gridBg} />
+      <div className="gridBg" />
 
       {/* NAV */}
-      <nav style={styles.nav}>
-        <span style={styles.navLogo}>JobTrek</span>
-        <div style={styles.navLinks}>
-          <a href="#features" style={styles.navLink}>
-            Features
-          </a>
-          <a href="#pipeline" style={styles.navLink}>
-            Pipeline
-          </a>
-          <button
-            style={styles.navCta}
-            onClick={() => navigate("/login")}
-          >
-            Sign in
-          </button>
-          <button
-            style={styles.navCtaSolid}
-            onClick={() => navigate("/register")}
-          >
-            Get started
-          </button>
-        </div>
-      </nav>
+      <NavBar />
 
       {/* HERO */}
       <section ref={heroRef} style={styles.hero}>
@@ -289,12 +270,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer style={styles.footer}>
-        <span style={styles.footerLogo}>JobTrek</span>
-        <span style={styles.footerNote}>
-          Built for job seekers. Not recruiters.
-        </span>
-      </footer>
+      <Footer />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
@@ -337,87 +313,6 @@ const C = {
 };
 
 const styles: Record<string, React.CSSProperties> = {
-  root: {
-    fontFamily: "'DM Sans', sans-serif",
-    background: C.bg,
-    color: C.text,
-    minHeight: "100vh",
-    overflowX: "hidden",
-    position: "relative",
-  },
-  noise: {
-    position: "fixed",
-    inset: 0,
-    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
-    opacity: 0.025,
-    pointerEvents: "none",
-    zIndex: 0,
-  },
-  gridBg: {
-    position: "fixed",
-    inset: 0,
-    backgroundImage: `linear-gradient(${C.border} 1px, transparent 1px), linear-gradient(90deg, ${C.border} 1px, transparent 1px)`,
-    backgroundSize: "60px 60px",
-    opacity: 0.4,
-    pointerEvents: "none",
-    zIndex: 0,
-  },
-
-  /* NAV */
-  nav: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "0 2.5rem",
-    height: "60px",
-    borderBottom: `1px solid ${C.border}`,
-    backdropFilter: "blur(12px)",
-    background: "rgba(10,10,10,0.85)",
-  },
-  navLogo: {
-    fontFamily: "'Syne', sans-serif",
-    fontSize: "18px",
-    fontWeight: 800,
-    letterSpacing: "-0.02em",
-    color: C.text,
-  },
-  navLinks: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-  },
-  navLink: {
-    color: C.muted,
-    textDecoration: "none",
-    fontSize: "13px",
-    padding: "6px 12px",
-    transition: "color 0.2s",
-  },
-  navCta: {
-    background: "transparent",
-    border: `1px solid ${C.border}`,
-    color: C.text,
-    borderRadius: "6px",
-    padding: "7px 16px",
-    fontSize: "13px",
-    cursor: "pointer",
-  },
-  navCtaSolid: {
-    background: C.accent,
-    border: "none",
-    color: "#0A0A0A",
-    borderRadius: "6px",
-    padding: "7px 16px",
-    fontSize: "13px",
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-
   /* HERO */
   hero: {
     position: "relative",
@@ -757,26 +652,5 @@ const styles: Record<string, React.CSSProperties> = {
     color: C.muted,
     marginBottom: "2.5rem",
     fontWeight: 300,
-  },
-
-  /* FOOTER */
-  footer: {
-    position: "relative",
-    zIndex: 1,
-    borderTop: `1px solid ${C.border}`,
-    padding: "1.5rem 2.5rem",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  footerLogo: {
-    fontFamily: "'Syne', sans-serif",
-    fontSize: "15px",
-    fontWeight: 800,
-    letterSpacing: "-0.02em",
-  },
-  footerNote: {
-    fontSize: "12px",
-    color: C.muted,
   },
 };

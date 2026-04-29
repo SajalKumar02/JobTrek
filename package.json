@@ -3,6 +3,22 @@
     "concurrently": "^9.2.1"
   },
   "scripts": {
-    "start": "concurrently \"cd server && npm run server\" \"cd client && npm run dev\""
-  }
+    "start": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+  },
+  "name": "jobtrek",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SajalKumar02/JobTrek.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SajalKumar02/JobTrek/issues"
+  },
+  "homepage": "https://github.com/SajalKumar02/JobTrek#readme"
 }

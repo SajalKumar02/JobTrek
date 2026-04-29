@@ -8,13 +8,15 @@ import Settings from "./Screens/Settings.tsx";
 import Registration from "./Screens/Registration.tsx";
 import Jobs from "./Screens/Jobs.tsx";
 
+import "./index.css";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
   },
   {
-    path: "/registration",
+    path: "/register",
     element: <Registration />,
   },
   {
