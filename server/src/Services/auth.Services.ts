@@ -24,6 +24,12 @@ interface TokenPayload {
     email: string;
 }
 
+interface UserRequest extends Request {
+    user?: {
+        email: string;
+    }
+}
+
 export const authService = {
     registerOrLoginUser: async (email: string, password: string): Promise<UserResult> => {
         if (!email || !password) {
@@ -40,7 +46,7 @@ export const authService = {
                 throw new Error("Invalid email or password");
             }
             // Remove previous refresh tokens
-            await TokenModel.deleteMany({ userId: user._id });
+            await TokenModel.deleteMany({ userId: user._id }); ``
         } else {
             // REGISTER
             const hashPassword: string = await passwordHash(password);
@@ -103,29 +109,12 @@ export const authService = {
     // logoutUser: accepts (req, res) and performs idempotent logout
     // - clears auth cookies
     // - revokes refresh token in DB if provided
-    logoutUser: async (req: Request, res: Response) => {
-        // extract token from cookies, body or Authorization header
-        const refreshToken = req?.cookies?.refreshToken || req?.body?.refreshToken || (req?.headers?.authorization ? req.headers.authorization.split(" ")[1] : undefined);
+    logoutUser: async (req: UserRequest) => {
+        const email = req.user;
 
-        // Clear auth cookies
-        try {
-            res.clearCookie("accessToken");
-            res.clearCookie("refreshToken");
-        } catch (err) {
-            // ignore cookie clear errors - still proceed
-        }
+        const user: IUser = await UserModel.findOne(email);
 
-        // If there is a refresh token, try to remove it from DB. Do not throw if removal fails.
-        if (refreshToken) {
-            try {
-                await TokenModel.deleteOne({ refreshToken });
-            } catch (err) {
-                // Log or ignore; controller will still return success to client
-                console.warn("Failed to revoke refresh token:", err.message);
-            }
-        }
-
-        return;
+        await TokenModel.deleteMany({ userId: user._id });
     },
     // accepts req,res
     // return newAccess, newRefresh, user

@@ -62,9 +62,10 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
     try {
         // Delegate logout to service which will clear cookies and revoke token if present
-        await authService.logoutUser(req, res);
-
-        return res.status(200).json({ success: true, message: "Logged out" });
+        await authService.logoutUser(req);
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+        res.json({ success: true, message: "Logged out" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown Error";
         const statusCode = error instanceof Error && 'statusCode' in error ?
