@@ -11,19 +11,31 @@ export interface IUser extends Document {
 
 const userSchema = new mongoose.Schema(
     {
-        email: { type: String, required: true, unique: true },
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            lowercase: true,
+            unique: true,
+            trim: true,
+            match: [
+                /^[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
+                'Please enter a valid email address',
+            ],
+        },
         username: {
             type: String,
-            default: function () {
-                if (this.email) {
-                    return this.email.split("@")[0];
-                }
-                return "user" + Date.now();
-            },
-            required: true,
-            // unique: true,
+            required: [true, 'Username is required'],
+            lowercase: true,
+            unique: true,
+            trim: true,
+            index: true,
         },
-        password: { type: String, required: true },
+        password: {
+            type: String,
+            required: false,
+            select: false,
+        },
+
     },
     { timestamps: true }
 );

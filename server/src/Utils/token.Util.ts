@@ -22,6 +22,7 @@ export const generateAccessToken = (id: Types.ObjectId): string => {
   });
   return accessToken;
 };
+
 export const generateRefreshToken = (id: Types.ObjectId): string => {
   const payload: TokenPayload = { id };
   const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {

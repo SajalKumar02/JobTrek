@@ -1,16 +1,13 @@
 import { Router } from 'express';
 
-import { getUser, editUser, changePassword, deleteAccount } from '../Controllers/user.Controller';
+import { getUser, editUser } from '../Controllers/user.Controller';
 
 import { authMiddleware } from '../Middleware/auth.Middleware';
 
 const UserRouter = Router();
 
-UserRouter.use(authMiddleware)
-  .get('/profile', getUser)
-  .patch('/profile', editUser)
-  .put('/password', changePassword)
-  .delete('/account', deleteAccount);
+UserRouter.get('/profile', authMiddleware, getUser);
+UserRouter.patch('/profile', authMiddleware, editUser);
 
 // Resume/Application Related
 // POST   /api/user/resume            // Upload resume

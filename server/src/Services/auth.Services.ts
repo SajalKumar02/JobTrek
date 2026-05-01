@@ -1,21 +1,19 @@
-import bcrypt from 'bcryptjs';
-
 import UserModel, { IUser } from '../Model/user.Model';
 import TokenModel, { IToken } from '../Model/token.Model';
 
 import { ApiError } from '../Utils/api-error';
 import { NODE_ENV } from '../Config/utils';
 
-import { passwordHash } from '../Utils/password.Util';
+import { comparePassword, passwordHash } from '../Utils/password.Util';
 import { generateUsernameFromEmail } from '../Utils/username.Util';
 import {
   generateAccessToken,
   generateRefreshToken,
-  verifyAccessToken,
   verifyRefreshToken,
 } from '../Utils/token.Util';
 
-import { Request, Response } from 'express';
+import { Request } from 'express';
+import { Types } from 'mongoose';
 
 interface UserResult {
   accessToken: string;
@@ -24,12 +22,12 @@ interface UserResult {
 }
 
 interface TokenPayload {
-  email: string;
+  id: Types.ObjectId;
 }
 
 interface UserRequest extends Request {
   user?: {
-    email: string;
+    userId: Types.ObjectId;
   };
 }
 
@@ -43,11 +41,11 @@ export const authService = {
     }
 
     // Check if user already exists
-    let user: IUser | null = await UserModel.findOne({ email });
+    let user: IUser | null = await UserModel.findOne({ email }).select('+password');
 
     if (user) {
       // LOGIN
-      const isPasswordValid: boolean = await bcrypt.compare(password, user.password);
+      const isPasswordValid: boolean = await comparePassword(user.password, password);
       if (!isPasswordValid) {
         throw new ApiError({
           status: 401,
@@ -56,11 +54,13 @@ export const authService = {
       }
       // Remove previous refresh tokens
       await TokenModel.deleteMany({ userId: user._id });
-      ``;
+
     } else {
       // REGISTER
       const hashPassword: string = await passwordHash(password);
+
       const newUsername: string = await generateUsernameFromEmail(email);
+
       user = await UserModel.create({
         email,
         password: hashPassword,
@@ -79,7 +79,27 @@ export const authService = {
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
+    user.password = undefined;
+
     return { accessToken, refreshToken, user };
+  },
+
+  // change Password
+  changeUserPassword: async (userId: Types.ObjectId, oldPassword: string, newPassword: string) => {
+    let user: IUser | null = await UserModel.findById(userId).select('+password');
+    if (!await comparePassword(user.password, oldPassword)) {
+      throw new ApiError({
+        status: 401,
+        message: "Incorrect old Password"
+      });
+    }
+
+    const newHashPassword = await passwordHash(newPassword);
+
+    user.password = newHashPassword;
+    await user.save();
+
+    return { user };
   },
 
   // refreshTokenForUser:
@@ -104,16 +124,14 @@ export const authService = {
       throw new ApiError({ status: 400, message: 'Refresh Token Expired' });
     }
 
-    const user: IUser = await UserModel.findOne({
-      email: decoded.email,
-    });
+    const user: IUser = await UserModel.findById(decoded.id);
 
     if (!user) {
       throw new ApiError({ status: 400, message: 'User Not Found' });
     }
 
     // Generate Access Token
-    const accessToken = generateAccessToken(user.email);
+    const accessToken = generateAccessToken(user._id);
 
     return { accessToken, refreshToken, user };
   },
@@ -122,10 +140,7 @@ export const authService = {
   // - clears auth cookies
   // - revokes refresh token in DB if provided
   logoutUser: async (req: UserRequest) => {
-    const email = req.user;
-
-    const user: IUser = await UserModel.findOne(email);
-
+    const user: IUser = await UserModel.findById(req.user.userId);
     await TokenModel.deleteMany({ userId: user._id });
   },
 

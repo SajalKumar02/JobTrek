@@ -4,6 +4,7 @@ import { authService } from '../Services/auth.Services';
 
 import { mountTokenToResponse } from '../Utils/token.Util';
 import { asyncHandler } from '../Utils/async-handler';
+import { Types } from 'mongoose';
 
 export const registerOrLogin = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -11,6 +12,24 @@ export const registerOrLogin = asyncHandler(async (req: Request, res: Response) 
   const result = await authService.registerOrLoginUser(email, password);
 
   mountTokenToResponse(res, result.accessToken, result.refreshToken);
+
+  res.status(200).json({
+    success: true,
+    user: result.user,
+  });
+});
+
+interface AuthRequest extends Request {
+  user?: {
+    userId: Types.ObjectId;
+  };
+}
+
+export const changePassword = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { userId } = req.user;
+  const { oldPassword, newPassword } = req.body;
+
+  const result = await authService.changeUserPassword(userId, oldPassword, newPassword);
 
   res.status(200).json({
     success: true,

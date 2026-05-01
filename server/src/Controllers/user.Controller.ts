@@ -21,8 +21,15 @@ export const getUser = asyncHandler(async (req: AuthRequest, res: Response) => {
   });
 });
 
-export const editUser = asyncHandler(async (req: AuthRequest, res: Response) => {});
+export const editUser = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { userId } = req.user;
+  const reqBody = req.body;
 
-export const changePassword = asyncHandler(async (req: AuthRequest, res: Response) => {});
+  const result = await userService.editUserViaId(userId, reqBody);
 
-export const deleteAccount = asyncHandler(async (req: AuthRequest, res: Response) => {});
+  res.status(200).json({
+    success: true,
+    user: result
+  })
+});
+
