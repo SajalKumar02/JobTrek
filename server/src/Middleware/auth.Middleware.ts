@@ -4,28 +4,29 @@
 // Attaches decoded user data to req.user
 // Called before protected route handlers
 
-import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../Utils/token.Util";
+import { Request, Response, NextFunction } from 'express';
+import { verifyAccessToken } from '../Utils/token.Util';
+import { Types } from 'mongoose';
 
 interface AuthRequest extends Request {
-    user?: {
-        email: string;
-    };
+  user?: {
+    userId: Types.ObjectId;
+  };
 }
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const { accessToken } = req.cookies;
+  const { accessToken } = req.cookies;
 
-    if (!accessToken) {
-        return res.status(401).send({
-            message: "Access token required",
-            success: false
-        })
-    }
+  if (!accessToken) {
+    return res.status(401).send({
+      message: 'Access token required',
+      success: false,
+    });
+  }
 
-    const decoded = verifyAccessToken(accessToken);
+  const decoded = verifyAccessToken(accessToken);
 
-    req.user = { email: decoded.email };
+  req.user = { userId: decoded.id };
 
-    next();
-}
+  next();
+};

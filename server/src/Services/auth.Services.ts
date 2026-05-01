@@ -69,8 +69,8 @@ export const authService = {
     }
 
     // Generate tokens
-    const accessToken = generateAccessToken(email);
-    const refreshToken = generateRefreshToken(email);
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
 
     // Store new refresh token
     await TokenModel.create({
@@ -81,6 +81,7 @@ export const authService = {
 
     return { accessToken, refreshToken, user };
   },
+
   // refreshTokenForUser:
   // Access token is expired, so now we will check shared refresh token in DB
   // If found, then accessToken will be shared, else re-login
@@ -116,6 +117,7 @@ export const authService = {
 
     return { accessToken, refreshToken, user };
   },
+
   // logoutUser: accepts (req, res) and performs idempotent logout
   // - clears auth cookies
   // - revokes refresh token in DB if provided
@@ -126,56 +128,7 @@ export const authService = {
 
     await TokenModel.deleteMany({ userId: user._id });
   },
-  // accepts req,res
-  // return newAccess, newRefresh, user
-  dispatchAccessToken: async (req: Request, res: Response) => {
-    const refreshToken =
-      req?.cookies?.refreshToken ||
-      req?.body?.refreshToken ||
-      (req?.headers?.authorization ? req.headers.authorization.split(' ')[1] : undefined);
 
-    if (!refreshToken) {
-      throw new ApiError('Refresh token is required');
-    }
-
-    // check by email or _id
-    const decoded = verifyRefreshToken(refreshToken);
-
-    if (!decoded) {
-      throw new ApiError('Invalid Refresh Token');
-    }
-
-    // find token in DB
-    const storedToken = await TokenModel.findOne({ refreshToken });
-
-    if (!storedToken) {
-      throw new ApiError('Refresh Token not found');
-    }
-
-    res.clearCookie('refreshToken');
-
-    // find User by ID
-    const user = await UserModel.findById(storedToken.userId);
-    if (!user) {
-      throw new ApiError('User not found for the provided token');
-    }
-
-    const accessToken = generateAccessToken(user.email);
-    const newRefreshToken = generateRefreshToken(user.email);
-
-    // delete old refresh token
-    await TokenModel.deleteOne({ refreshToken });
-
-    // store new refresh token (use correct field name 'refreshToken')
-    await TokenModel.create({
-      userId: user._id,
-      refreshToken: newRefreshToken,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    });
-
-    // return tokens with consistent property names
-    return { accessToken, refreshToken: newRefreshToken, user };
-  },
   // accepting no parameter
   // passing nothing
   deleteAll: async () => {

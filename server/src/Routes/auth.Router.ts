@@ -12,7 +12,7 @@ import { authMiddleware } from '../Middleware/auth.Middleware';
 const AuthRouter = Router();
 
 AuthRouter.post('/', registerOrLogin)
-  .get('/', authMiddleware, (req, res) => res.send('Protected Data'))
+  .get('/protected-route-check', authMiddleware, (req, res) => res.send('Protected Data'))
   .post('/refresh-token', refreshAccessToken) // AccessToken is expired, so we will send a new one
   .post('/logout', authMiddleware, logout)
   .delete('/', deleteAllData);

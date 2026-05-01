@@ -45,21 +45,6 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
   res.json({ success: true, message: 'Logged out' });
 });
 
-export const dispatchAccessToken = asyncHandler(async (req: Request, res: Response) => {
-  // get refresh token from cookies
-  // check from db - authenticate User
-  // initiate generation of new access token
-  // add new token to response
-  const { accessToken, refreshToken, user } = await authService.dispatchAccessToken(req, res);
-
-  mountTokenToResponse(res, accessToken, refreshToken);
-  res.json({
-    success: true,
-    message: 'new access token dispatched',
-    data: { user },
-  });
-});
-
 // Developer Mode
 export const deleteAllData = asyncHandler(async (req: Request, res: Response) => {
   await authService.deleteAll();

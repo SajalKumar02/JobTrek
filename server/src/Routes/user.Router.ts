@@ -1,5 +1,20 @@
-import { Router } from "express";
+import { Router } from 'express';
+
+import { getUser, editUser, changePassword, deleteAccount } from '../Controllers/user.Controller';
+
+import { authMiddleware } from '../Middleware/auth.Middleware';
 
 const UserRouter = Router();
+
+UserRouter.use(authMiddleware)
+  .get('/profile', getUser)
+  .patch('/profile', editUser)
+  .put('/password', changePassword)
+  .delete('/account', deleteAccount);
+
+// Resume/Application Related
+// POST   /api/user/resume            // Upload resume
+// GET    /api/user/resume            // Get resume details
+// DELETE /api/user/resume            // Delete resume
 
 export default UserRouter;
