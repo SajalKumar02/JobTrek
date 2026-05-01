@@ -9,16 +9,14 @@ interface CustomRequest extends mongoose.Document {
 
 export const userService = {
   getUserByID: async (userId: Types.ObjectId) => {
-    let user: IUser | null = await UserModel.findById(userId);
+    const user: IUser | null = await UserModel.findById(userId);
 
     return user;
   },
 
   editUserViaId: async (userId: Types.ObjectId, reqBody: CustomRequest) => {
+    const user = await UserModel.findByIdAndUpdate(userId, reqBody, { returnDocument: 'after' });
 
+    return user;
   },
-
-  changeUserPassword: async () => { },
-
-  deleteUserAccount: async () => { },
 };

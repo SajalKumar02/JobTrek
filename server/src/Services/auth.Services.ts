@@ -14,6 +14,7 @@ import {
 
 import { Request } from 'express';
 import { Types } from 'mongoose';
+import JobModel from '../Model/job.Model';
 
 interface UserResult {
   accessToken: string;
@@ -150,6 +151,7 @@ export const authService = {
     if (NODE_ENV === 'Development') {
       await UserModel.deleteMany({});
       await TokenModel.deleteMany({});
+      await JobModel.deleteMany({})
       return;
     } else {
       throw new ApiError({ status: 403, message: 'Only For Development Usage' });

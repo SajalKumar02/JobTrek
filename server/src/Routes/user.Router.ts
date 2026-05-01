@@ -6,8 +6,9 @@ import { authMiddleware } from '../Middleware/auth.Middleware';
 
 const UserRouter = Router();
 
-UserRouter.get('/profile', authMiddleware, getUser);
-UserRouter.patch('/profile', authMiddleware, editUser);
+UserRouter.use(authMiddleware)
+    .get('/profile', getUser)
+    .patch('/profile', editUser);
 
 // Resume/Application Related
 // POST   /api/user/resume            // Upload resume

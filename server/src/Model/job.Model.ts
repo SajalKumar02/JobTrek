@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 
 export interface IImportantDate {
     label: string,
@@ -24,6 +24,8 @@ export interface IJob extends Document {
     createdAt: Date;
     updatedAt: Date;
     importantDates: IImportantDate[];
+    notes: string,
+    userId: Types.ObjectId
 }
 
 const jobSchema = new mongoose.Schema(
@@ -36,13 +38,15 @@ const jobSchema = new mongoose.Schema(
         description: { type: String },
         jobType: {
             type: String,
-            enum: ["Full Time", "Internship", "Contract", "Freelancing", "Part Time"],
+            enum: ["full time", "internship", "contract", "freelancing", "part time"],
+            lowercase: true,
             required: true
         },
         location: {
             type: String,
             enum: ["remote", "onSite", "hybrid"],
-            default: "onSite"
+            default: "onSite",
+            required: true,
         },
         // Miscellaneous
         ctc: { type: Number, min: 0 },
@@ -54,16 +58,20 @@ const jobSchema = new mongoose.Schema(
         benefitsDetails: { type: [String] },
         isActive: { type: Boolean, default: true },
         importantDates: [{
-            label: { type: String },   // e.g. "OA Deadline", "Interview Round 1"
+            label: { type: String },
             date: { type: Date }
         }],
         // User Setting
-        usedId: { type: mongoose.Schema.Types.ObjectId, require: true, },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
         status: {
             type: String,
-            enum: ["Wishlist", "Applied", "OA", "Interview", "Offer", "Rejected"],
-            default: "Wishlist",
+            enum: ["wishlist", "applied", "oa", "interview", "offer", "rejected"],
+            default: "wishlist",
+            lowercase: true,
             required: true
+        },
+        notes: {
+            type: String
         }
     },
     {
