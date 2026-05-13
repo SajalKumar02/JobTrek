@@ -1,7 +1,7 @@
 // Database connection string
 import mongoose from 'mongoose';
 
-import { MONGO_URI } from './utils';
+import { MONGO_URI } from './constants';
 
 export const connectDb = async () => {
   try {

@@ -1,5 +1,4 @@
 import { Request, Response } from "express"
-import { asyncHandler } from "../Utils/async-handler"
 
 import { jobService } from "../Services/job.Services";
 import { Types } from "mongoose";
@@ -13,47 +12,66 @@ interface AuthRequest extends Request {
     };
 }
 
-export const addAJob = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const result = await jobService.addJob(req);
+export const addAJob = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await jobService.addJob(req);
 
-    res.status(200).json({
-        success: true,
-        job: result.job
-    })
-})
+        res.status(200).json({
+            success: true,
+            job: result.job
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+    }
+};
 
-export const getAJob = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const result = await jobService.getJob(req);
+export const getAJob = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await jobService.getJob(req);
 
-    res.status(200).json({
-        success: true,
-        job: result
-    })
-})
+        res.status(200).json({
+            success: true,
+            job: result
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+    }
+};
 
-export const getAllJob = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const result = await jobService.getAllJob(req);
+export const getAllJob = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await jobService.getAllJob(req);
 
-    res.status(200).json({
-        success: true,
-        job: result
-    })
-})
+        res.status(200).json({
+            success: true,
+            job: result
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+    }
+};
 
+export const editAJob = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await jobService.editJob(req);
 
-export const editAJob = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const result = await jobService.editJob(req);
+        res.status(200).json({
+            success: true,
+            job: result
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+    }
+};
 
-    res.status(200).json({
-        success: true,
-        job: result
-    })
-})
+export const deleteAJob = async (req: AuthRequest, res: Response) => {
+    try {
+        await jobService.deleteJob(req);
 
-export const deleteAJob = asyncHandler(async (req: AuthRequest, res: Response) => {
-    await jobService.deleteJob(req);
-
-    res.status(200).json({
-        success: true
-    })
-})
+        res.status(200).json({
+            success: true
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+    }
+};

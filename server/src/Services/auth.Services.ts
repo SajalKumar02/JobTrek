@@ -1,8 +1,7 @@
 import UserModel, { IUser } from '../Model/user.Model';
 import TokenModel, { IToken } from '../Model/token.Model';
 
-import { ApiError } from '../Utils/api-error';
-import { NODE_ENV } from '../Config/utils';
+import { NODE_ENV } from '../Config/constants';
 
 import { comparePassword, passwordHash } from '../Utils/password.Util';
 import { generateUsernameFromEmail } from '../Utils/username.Util';
@@ -35,25 +34,20 @@ interface UserRequest extends Request {
 export const authService = {
   registerOrLoginUser: async (email: string, password: string): Promise<UserResult> => {
     if (!email || !password) {
-      throw new ApiError({
-        status: 400,
-        message: 'Email and password are required',
-      });
+      const error: any = new Error('Email and password are required');
+      error.status = 400;
+      throw error;
     }
 
-    // Check if user already exists
     let user: IUser | null = await UserModel.findOne({ email }).select('+password');
 
     if (user) {
-      // LOGIN
       const isPasswordValid: boolean = await comparePassword(user.password, password);
       if (!isPasswordValid) {
-        throw new ApiError({
-          status: 401,
-          message: 'Invalid email or password',
-        });
+        const error: any = new Error('Invalid email or password');
+        error.status = 401;
+        throw error;
       }
-      // Remove previous refresh tokens
       await TokenModel.deleteMany({ userId: user._id });
 
     } else {
@@ -89,10 +83,9 @@ export const authService = {
   changeUserPassword: async (userId: Types.ObjectId, oldPassword: string, newPassword: string) => {
     let user: IUser | null = await UserModel.findById(userId).select('+password');
     if (!await comparePassword(user.password, oldPassword)) {
-      throw new ApiError({
-        status: 401,
-        message: "Incorrect old Password"
-      });
+      const error: any = new Error("Incorrect old Password");
+      error.status = 401;
+      throw error;
     }
 
     const newHashPassword = await passwordHash(newPassword);
@@ -112,7 +105,9 @@ export const authService = {
     try {
       decoded = verifyRefreshToken(refreshToken);
     } catch (error) {
-      throw new ApiError({ status: 400, message: 'Invalid or RefreshTokenExpired' });
+      const err: any = new Error('Invalid or RefreshTokenExpired');
+      err.status = 400;
+      throw err;
     }
 
     // Verify Refresh Token in DB
@@ -122,13 +117,17 @@ export const authService = {
     });
 
     if (!TokenDoc) {
-      throw new ApiError({ status: 400, message: 'Refresh Token Expired' });
+      const error: any = new Error('Refresh Token Expired');
+      error.status = 400;
+      throw error;
     }
 
     const user: IUser = await UserModel.findById(decoded.id);
 
     if (!user) {
-      throw new ApiError({ status: 400, message: 'User Not Found' });
+      const error: any = new Error('User Not Found');
+      error.status = 400;
+      throw error;
     }
 
     // Generate Access Token
@@ -151,10 +150,8 @@ export const authService = {
     if (NODE_ENV === 'Development') {
       await UserModel.deleteMany({});
       await TokenModel.deleteMany({});
-      await JobModel.deleteMany({})
+      await JobModel.deleteMany({});
       return;
-    } else {
-      throw new ApiError({ status: 403, message: 'Only For Development Usage' });
     }
   },
 };

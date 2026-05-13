@@ -16,7 +16,6 @@ export const jobService = {
     },
 
     getJob: async (req) => {
-        console.log(req.params.jobId);
         const result = await JobModel.findById(req.params.jobId);
         return { result };
     },

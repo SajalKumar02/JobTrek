@@ -3,21 +3,24 @@ import { Request, Response } from 'express';
 import { authService } from '../Services/auth.Services';
 
 import { mountTokenToResponse } from '../Utils/token.Util';
-import { asyncHandler } from '../Utils/async-handler';
 import { Types } from 'mongoose';
 
-export const registerOrLogin = asyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+export const registerOrLogin = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-  const result = await authService.registerOrLoginUser(email, password);
+    const result = await authService.registerOrLoginUser(email, password);
 
-  mountTokenToResponse(res, result.accessToken, result.refreshToken);
+    mountTokenToResponse(res, result.accessToken, result.refreshToken);
 
-  res.status(200).json({
-    success: true,
-    user: result.user,
-  });
-});
+    res.status(200).json({
+      success: true,
+      user: result.user,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+  }
+};
 
 interface AuthRequest extends Request {
   user?: {
@@ -25,50 +28,66 @@ interface AuthRequest extends Request {
   };
 }
 
-export const changePassword = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const { userId } = req.user;
-  const { oldPassword, newPassword } = req.body;
+export const changePassword = async (req: AuthRequest, res: Response) => {
+  try {
+    const { userId } = req.user;
+    const { oldPassword, newPassword } = req.body;
 
-  const result = await authService.changeUserPassword(userId, oldPassword, newPassword);
+    const result = await authService.changeUserPassword(userId, oldPassword, newPassword);
 
-  res.status(200).json({
-    success: true,
-    user: result.user,
-  });
-});
-
-export const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
-  const { refreshToken } = req.cookies;
-
-  if (!refreshToken) {
-    return res.status(401).send({
-      message: 'Refresh token not found',
-      success: false,
+    res.status(200).json({
+      success: true,
+      user: result.user,
     });
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
   }
+};
 
-  const result = await authService.refreshTokenForUser(refreshToken);
+export const refreshAccessToken = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.cookies;
 
-  mountTokenToResponse(res, result.accessToken, refreshToken);
+    if (!refreshToken) {
+      return res.status(401).send({
+        message: 'Refresh token not found',
+        success: false,
+      });
+    }
 
-  res.status(200).json({
-    success: true,
-    data: { user: result.user },
-  });
-});
+    const result = await authService.refreshTokenForUser(refreshToken);
 
-export const logout = asyncHandler(async (req: Request, res: Response) => {
-  await authService.logoutUser(req);
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken');
-  res.json({ success: true, message: 'Logged out' });
-});
+    mountTokenToResponse(res, result.accessToken, refreshToken);
+
+    res.status(200).json({
+      success: true,
+      data: { user: result.user },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    await authService.logoutUser(req);
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    res.json({ success: true, message: 'Logged out' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+  }
+};
 
 // Developer Mode
-export const deleteAllData = asyncHandler(async (req: Request, res: Response) => {
-  await authService.deleteAll();
+export const deleteAllData = async (req: Request, res: Response) => {
+  try {
+    await authService.deleteAll();
 
-  res.status(200).json({
-    success: true,
-  });
-});
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+  }
+};
