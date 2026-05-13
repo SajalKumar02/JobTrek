@@ -1,44 +1,45 @@
-import ReactDOM from "react-dom/client";
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 
-import Home from "./Screens/Home.tsx";
-import Dashboard from "./Screens/Dashboard.tsx";
-import Settings from "./Screens/Settings.tsx";
-import Registration from "./Screens/Registration.tsx";
-import Jobs from "./Screens/Jobs.tsx";
+import ProtectedRoute from './Layout/ProtectedRoute.tsx';
 
-import "./index.css";
+import Home from './Screens/Home.tsx';
+import Dashboard from './Screens/Dashboard.tsx';
+import Settings from './Screens/Settings.tsx';
+import Registration from './Screens/Registration.tsx';
+import Jobs from './Screens/Jobs.tsx';
+
+import './index.css';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Home />,
   },
   {
-    path: "/register",
+    path: '/register',
     element: <Registration />,
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-  {
-    path: "/settings",
-    element: <Settings />,
-  },
-  {
-    path: "/jobs/",
-    element: <Jobs />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: "job/:jobid",
-        element: <p>This is job child component</p>,
+        path: '/dashboard',
+        element: <Dashboard />,
+      },
+      {
+        path: '/settings',
+        element: <Settings />,
+      },
+      {
+        path: '/jobs',
+        element: <Jobs />,
       },
     ],
   },
 ]);
 
-const root = document.getElementById("root");
+const root = document.getElementById('root');
 
 ReactDOM.createRoot(root).render(<RouterProvider router={router} />);
