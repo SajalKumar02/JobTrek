@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
   const handleAuth = async ({ email, password }) => {
     setLoading(true);
     try {
-      const response = await http.post('/auth', {
+      const response = await http.post('/auth/login', {
         email,
         password,
       });
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
   const refreshToken = async () => {
     setLoading(true);
     try {
-      const response = await http.get('/auth/access-token');
+      const response = await http.post('/auth/token/refresh');
       if (response.data && response.data.success) {
         setAuthenticated(true);
       } else {
@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
   const logOut = async () => {
     setLoading(true);
     try {
-      const response = await http.get('/auth/logout');
+      const response = await http.post('/auth/logout');
       if (response.data && response.data.success) {
         setAuthenticated(false);
       }
@@ -64,10 +64,10 @@ const AuthProvider = ({ children }) => {
     const checkProtected = async () => {
       setLoading(true);
       try {
-        const response = await http.get('/auth/protected-route-check');
+        const response = await http.get('/auth/me');
         if (response.data && response.data.message === 'ACCESS TOKEN EXPIRED') {
           await refreshToken();
-        } else if (response.data) {
+        } else if (response.data.success === true) {
           setAuthenticated(true);
         }
       } catch (error) {

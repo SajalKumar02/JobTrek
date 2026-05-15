@@ -105,8 +105,7 @@ export const authService = {
     try {
       decoded = verifyRefreshToken(refreshToken);
     } catch (error) {
-      const err: any = new Error('Invalid or RefreshTokenExpired');
-      err.status = 400;
+      const err: any = new Error('REFRESH TOKEN EXPIRED');
       throw err;
     }
 

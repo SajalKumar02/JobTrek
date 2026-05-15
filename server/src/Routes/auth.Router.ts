@@ -12,11 +12,11 @@ import { authMiddleware } from '../Middleware/auth.Middleware';
 
 const AuthRouter = Router();
 
-AuthRouter.post('/', registerOrLogin)
-  .get('/protected-route-check', authMiddleware, (req, res) => res.send('Protected Data'))
-  .get('/access-token', refreshAccessToken) // AccessToken is expired, so we will send a new one
-  .put("/change-password", authMiddleware, changePassword)
-  .get('/logout', authMiddleware, logout)
-  .delete('/', deleteAllData);
+AuthRouter.post('/login', registerOrLogin)
+  .get('/me', authMiddleware, (req, res) => res.json({ success: true }))
+  .post('/token/refresh', refreshAccessToken)
+  .put('/password', authMiddleware, changePassword)
+  .post('/logout', authMiddleware, logout)
+  .delete('/all', deleteAllData);
 
 export default AuthRouter;

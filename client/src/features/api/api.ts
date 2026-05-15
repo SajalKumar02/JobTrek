@@ -11,4 +11,19 @@ const config: AxiosRequestConfig = {
 
 const http: AxiosInstance = axios.create(config);
 
+// Add interceptor to handle ACCESS TOKEN EXPIRED response from server (matches auth.Middleware.ts lines 20-25)
+http.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (
+            error.response &&
+            error.response.data &&
+            error.response.data.message === "REFRESH TOKEN EXPIRED"
+        ) {
+            window.location.href = "/register";
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default http;
