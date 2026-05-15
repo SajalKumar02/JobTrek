@@ -18,8 +18,8 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
   const { accessToken } = req.cookies;
 
   if (!accessToken) {
-    return res.status(401).send({
-      message: 'Access token required',
+    return res.send({
+      message: 'ACCESS TOKEN EXPIRED',
       success: false,
     });
   }

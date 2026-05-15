@@ -49,7 +49,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     const { refreshToken } = req.cookies;
 
     if (!refreshToken) {
-      return res.status(401).send({
+      return res.send({
         message: 'Refresh token not found',
         success: false,
       });

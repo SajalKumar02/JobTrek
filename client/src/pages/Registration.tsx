@@ -1,34 +1,28 @@
-import http from '../API/api';
 import { useNavigate } from 'react-router';
+import { AuthContext } from '../app/providers/AuthProvider';
+import { useContext, useEffect } from 'react';
+import Loader from '../shared/components/Loader';
 
 const Registration = () => {
+  const { authenticated, loading, handleAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await http.post('/auth', {
-        email: e.target.email.value,
-        password: e.target.password.value,
-      });
-
-      if (response.data && response.data.success) {
-        navigate('/dashboard');
-      } else {
-        alert(
-          response.data && response.data.message
-            ? response.data.message
-            : 'Registration failed. Please try again.',
-        );
-      }
-    } catch (error) {
-      alert(
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : 'An error occurred. Please try again.',
-      );
-    }
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    handleAuth({ email, password });
   };
+
+  useEffect(() => {
+    if (!loading && authenticated) {
+      navigate('/dashboard');
+    }
+  }, [authenticated, loading, navigate]);
+
+  if (!authenticated && loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
