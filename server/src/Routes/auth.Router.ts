@@ -12,11 +12,16 @@ import { authMiddleware } from '../Middleware/auth.Middleware';
 
 const AuthRouter = Router();
 
-AuthRouter.post('/login', registerOrLogin)
-  .get('/me', authMiddleware, (req, res) => res.json({ success: true }))
+AuthRouter
+  // User login or registration
+  .post('/login', registerOrLogin)
+  // Refreshes access token
   .post('/token/refresh', refreshAccessToken)
+  // Change user's password; protected route
   .put('/password', authMiddleware, changePassword)
+  // Logs out the user; protected route
   .post('/logout', authMiddleware, logout)
+  // Deletes all user data; usually for dev/admin
   .delete('/all', deleteAllData);
 
 export default AuthRouter;

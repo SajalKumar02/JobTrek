@@ -7,7 +7,7 @@ import { authMiddleware } from '../Middleware/auth.Middleware';
 const UserRouter = Router();
 
 UserRouter.use(authMiddleware)
-    .get('/profile', getUser)
+    .get('/me', getUser)
     .patch('/profile', editUser);
 
 // Resume/Application Related
