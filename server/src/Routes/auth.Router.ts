@@ -10,11 +10,19 @@ import {
 
 import { authMiddleware } from '../Middleware/auth.Middleware';
 
+import rateLimit from 'express-rate-limit';
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: 'Too many login attempts, try again in 15 minutes'
+});
+
 const AuthRouter = Router();
 
 AuthRouter
   // User login or registration
-  .post('/login', registerOrLogin)
+  .post('/login', loginLimiter, registerOrLogin)
   // Refreshes access token
   .post('/token/refresh', refreshAccessToken)
   // Change user's password; protected route

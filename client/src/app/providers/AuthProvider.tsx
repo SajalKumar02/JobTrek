@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import http from '../../features/api/api';
 
 const AuthContext = createContext(null);
@@ -48,37 +48,17 @@ const AuthProvider = ({ children }) => {
   const logOut = async () => {
     setLoading(true);
     try {
-      const response = await http.post('/auth/logout');
-      if (response.data && response.data.success) {
-        setAuthenticated(false);
-      }
+      await http.post('/auth/logout');
+      setAuthenticated(false);
+      window.location.href = '/register';
     } catch (error) {
       setAuthenticated(false);
       console.error('Logout error:', error);
+      window.location.href = '/register';
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    const checkProtected = async () => {
-      setLoading(true);
-      try {
-        const response = await http.get('/auth/me');
-        if (response.data && response.data.message === 'ACCESS TOKEN EXPIRED') {
-          await refreshToken();
-        } else if (response.data.success === true) {
-          setAuthenticated(true);
-        }
-      } catch (error) {
-        setAuthenticated(false);
-        console.error('Protected check error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkProtected();
-  }, []);
 
   return (
     <AuthContext.Provider value={{ authenticated, loading, handleAuth, refreshToken, logOut }}>

@@ -42,7 +42,9 @@ export const authService = {
     let user: IUser | null = await UserModel.findOne({ email }).select('+password');
 
     if (user) {
-      const isPasswordValid: boolean = await comparePassword(user.password, password);
+      const hashedPassword = user.password;
+      const comparingPassword = password;
+      const isPasswordValid: boolean = await comparePassword(hashedPassword, comparingPassword);
       if (!isPasswordValid) {
         const error: any = new Error('Invalid email or password');
         error.status = 401;
