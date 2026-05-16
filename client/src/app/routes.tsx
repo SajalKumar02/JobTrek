@@ -8,6 +8,7 @@ import Jobs from '../pages/Jobs';
 
 import ProtectedRoute from '../features/auth/ProtectedRoute';
 import PublicLayout from '../shared/layouts/PublicLayout';
+import AppLayout from '../shared/layouts/AppLayout';
 
 const App = () => {
   return (
@@ -18,9 +19,11 @@ const App = () => {
           <Route path="/register" element={<Registration />} />
         </Route>
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/jobs" element={<Jobs />} />
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/jobs" element={<Jobs />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
