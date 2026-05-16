@@ -12,6 +12,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
   const { accessToken } = req.cookies;
 
   if (!accessToken) {
+    console.log("ACCESS TOKEN EXPIRED");
     return res.send({
       message: 'ACCESS TOKEN EXPIRED',
       success: false,

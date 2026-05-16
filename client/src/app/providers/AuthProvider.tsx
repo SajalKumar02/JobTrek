@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import http from '../../features/api/api';
 
 const AuthContext = createContext(null);
@@ -28,23 +28,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const refreshToken = async () => {
-    setLoading(true);
-    try {
-      const response = await http.post('/auth/token/refresh');
-      if (response.data && response.data.success) {
-        setAuthenticated(true);
-      } else {
-        setAuthenticated(false);
-      }
-    } catch (error) {
-      setAuthenticated(false);
-      console.error('Token refresh error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const logOut = async () => {
     setLoading(true);
     try {
@@ -60,8 +43,26 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    http
+      .post('/auth/token/refresh')
+      .then((response) => {
+        if (response.data.success) {
+          setAuthenticated(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ authenticated, loading, handleAuth, refreshToken, logOut }}>
+    <AuthContext.Provider
+      value={{ authenticated, loading, handleAuth, logOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

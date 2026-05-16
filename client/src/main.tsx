@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import App from './app/app';
+import App from './app/routes';
 import AuthProvider from './app/providers/AuthProvider';
 
 import './index.css';

@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router';
 import { useContext } from 'react';
 import { AuthContext } from '../../app/providers/AuthProvider';
 
-const NavBar = () => {
+const PublicLayout = () => {
   const { logOut, authenticated } = useContext(AuthContext);
 
   const handleLogout = async () => {
@@ -14,27 +14,42 @@ const NavBar = () => {
       <nav className="w-full bg-white shadow py-4 px-8 flex justify-center">
         <ul className="flex space-x-8 items-center">
           <li>
-            <Link to="/" className="text-blue-600 hover:underline font-semibold">
+            <Link
+              to="/"
+              className="text-blue-600 hover:underline font-semibold"
+            >
               Home
             </Link>
           </li>
           <li>
-            <Link to="/register" className="text-green-600 hover:underline font-semibold">
+            <Link
+              to="/register"
+              className="text-green-600 hover:underline font-semibold"
+            >
               Register
             </Link>
           </li>
           <li>
-            <Link to="/dashboard" className="text-purple-600 hover:underline font-semibold">
+            <Link
+              to="/dashboard"
+              className="text-purple-600 hover:underline font-semibold"
+            >
               Dashboard
             </Link>
           </li>
           <li>
-            <Link to="/settings" className="text-yellow-600 hover:underline font-semibold">
+            <Link
+              to="/settings"
+              className="text-yellow-600 hover:underline font-semibold"
+            >
               Settings
             </Link>
           </li>
           <li>
-            <Link to="/jobs" className="text-red-600 hover:underline font-semibold">
+            <Link
+              to="/jobs"
+              className="text-red-600 hover:underline font-semibold"
+            >
               Jobs
             </Link>
           </li>
@@ -55,4 +70,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default PublicLayout;

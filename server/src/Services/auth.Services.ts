@@ -119,6 +119,7 @@ export const authService = {
 
     if (!TokenDoc) {
       const error: any = new Error('Refresh Token Expired');
+      console.log("REFRESH TOKEN EXPIRED");
       error.status = 400;
       throw error;
     }

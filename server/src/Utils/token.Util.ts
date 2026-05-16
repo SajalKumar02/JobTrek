@@ -1,11 +1,5 @@
 import { Response } from 'express';
 
-// generateAccessToken(payload) - creates short-lived JWT
-// generateRefreshToken(payload) - creates long-lived JWT
-// verifyAccessToken(token) - validates and decodes
-// verifyRefreshToken(token) - validates refresh token
-// Uses jsonwebtoken library
-// No database operations here
 import jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
 
@@ -31,8 +25,6 @@ export const generateRefreshToken = (id: Types.ObjectId): string => {
   return refreshToken;
 };
 
-// accepting token
-// return decode payload
 export const verifyAccessToken = (token: string) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as TokenPayload;
@@ -55,8 +47,8 @@ export const mountTokenToResponse = (
   accessToken: string,
   refreshToken: string,
 ): Response => {
-  const accessMaxAge: number = 15 * 60 * 1000; // 15 minutes
-  const refreshMaxAge: number = 7 * 24 * 60 * 60 * 1000; // 7 days
+  const accessMaxAge: number = 15 * 60 * 1000;
+  const refreshMaxAge: number = 7 * 24 * 60 * 60 * 1000;
 
   // Use consistent cookie names
   res.cookie('refreshToken', refreshToken, {
