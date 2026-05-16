@@ -7,7 +7,7 @@ import Settings from '../pages/Settings';
 import Jobs from '../pages/Jobs';
 
 import ProtectedRoute from '../features/auth/ProtectedRoute';
-import PublicLayout from '../shared/components/PublicLayout';
+import PublicLayout from '../shared/layouts/PublicLayout';
 
 const App = () => {
   return (
