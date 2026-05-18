@@ -10,6 +10,7 @@ import {
   Search,
   LineChart,
 } from 'lucide-react';
+import { useJobs } from '../../features/jobs/hooks/useJobs';
 
 const NAV_ITEMS = [
   {
@@ -43,6 +44,8 @@ function useBreadcrumb() {
 export default function AppLayout() {
   const { logOut } = useContext(AuthContext);
   const breadcrumb = useBreadcrumb();
+
+  const { countJobs } = useJobs();
 
   return (
     <div className="flex min-h-screen bg-stone-50">
@@ -94,7 +97,7 @@ export default function AppLayout() {
                               : 'bg-stone-100 text-gray-500',
                           ].join(' ')}
                         >
-                          12
+                          {countJobs()}
                         </span>
                       )}
                     </>

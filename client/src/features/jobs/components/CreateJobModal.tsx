@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import http from '../api/api';
+
+import {
+  jobTypeOptions,
+  locationOptions,
+  statusOptions,
+} from '../types/contants';
+
+import { useJobs } from '../hooks/useJobs';
 
 const initialForm = {
   companyName: '',
@@ -21,31 +28,9 @@ const initialForm = {
   notes: '',
 };
 
-const jobTypeOptions = [
-  { label: 'Full Time', value: 'full time' },
-  { label: 'Internship', value: 'internship' },
-  { label: 'Contract', value: 'contract' },
-  { label: 'Freelancing', value: 'freelancing' },
-  { label: 'Part Time', value: 'part time' },
-];
-
-const locationOptions = [
-  { label: 'Remote', value: 'remote' },
-  { label: 'On Site', value: 'onSite' },
-  { label: 'Hybrid', value: 'hybrid' },
-];
-
-const statusOptions = [
-  { label: 'Wishlist', value: 'wishlist' },
-  { label: 'Applied', value: 'applied' },
-  { label: 'OA', value: 'oa' },
-  { label: 'Interview', value: 'interview' },
-  { label: 'Offer', value: 'offer' },
-  { label: 'Rejected', value: 'rejected' },
-];
-
 const CreateJobModal = () => {
   const [form, setForm] = useState(initialForm);
+  const { createJob } = useJobs();
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -89,7 +74,7 @@ const CreateJobModal = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const jobBody = {
@@ -103,18 +88,7 @@ const CreateJobModal = () => {
       notes: form.notes,
     };
 
-    try {
-      const response = await http.post('/jobs/', jobBody);
-
-      if (response.data && response.data.success) {
-        alert('Successfully Added');
-      } else {
-        alert('Failed to add job');
-      }
-    } catch (error) {
-      alert('An error occurred while adding the job.');
-      console.log(error);
-    }
+    createJob(jobBody);
   };
 
   return (

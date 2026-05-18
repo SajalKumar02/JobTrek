@@ -76,7 +76,9 @@ const JobProvider = ({ children }) => {
     }
   };
 
-  const countJobs = () => (jobs ? jobs.length : 0);
+  const countJobs = () => {
+    return jobs ? jobs.length : 0;
+  };
 
   return (
     <JobContext.Provider

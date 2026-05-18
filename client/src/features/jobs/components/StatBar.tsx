@@ -1,31 +1,3 @@
-const stats = [
-  {
-    label: 'Total',
-    value: 12,
-    sub: 'all time',
-  },
-  {
-    label: 'Active',
-    value: 7,
-    sub: 'in progress',
-  },
-  {
-    label: 'Interviews',
-    value: 2,
-    sub: 'scheduled',
-  },
-  {
-    label: 'Offers',
-    value: 1,
-    sub: 'received',
-  },
-  {
-    label: 'Response rate',
-    value: '42%',
-    sub: 'above avg',
-  },
-];
-
 type Stat = {
   label: string;
   value: string | number;
@@ -42,7 +14,39 @@ const StatPill = ({ label, value, sub }: Stat) => (
   </div>
 );
 
-const StatBar = () => {
+const StatBar = ({ statJobs }) => {
+  // Create stats array from statJobs prop
+  const stats: Stat[] = [
+    {
+      label: 'Total',
+      value: statJobs.total ?? 0,
+      sub: 'all time',
+    },
+    {
+      label: 'Active',
+      value: statJobs.active ?? 0,
+      sub: 'in progress',
+    },
+    {
+      label: 'Interviews',
+      value: statJobs.interview ?? 0,
+      sub: 'scheduled',
+    },
+    {
+      label: 'Offers',
+      value: statJobs.offers ?? 0,
+      sub: 'received',
+    },
+    {
+      label: 'Response rate',
+      value:
+        typeof statJobs.responseRate === 'number'
+          ? `${statJobs.responseRate}%`
+          : '0%',
+      sub: 'above avg',
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 w-full">
       {stats.map((stat, i) => (

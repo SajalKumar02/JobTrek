@@ -1,18 +1,25 @@
-import StatBar from '../features/jobs/StatBar.tsx';
-import Pipeline from '../features/jobs/Pipeline.tsx';
+import StatBar from '../features/jobs/components/StatBar.tsx';
+import Pipeline from '../features/jobs/pipeline/Pipeline.tsx';
 
-import { useJobs } from '../features/jobs/useJobs.ts';
+import {
+  groupJobsByStatus,
+  getStatCountByStatus,
+} from '../features/jobs/utils/pipeline.utils.ts';
+import { useJobs } from '../features/jobs/hooks/useJobs.ts';
 
 const Jobs = () => {
   const { jobs } = useJobs();
 
+  const groupedJobs = groupJobsByStatus(jobs);
+  const statJobs = getStatCountByStatus(jobs);
+
   return (
     <>
       {/* Stat Bar */}
-      <StatBar />
+      <StatBar statJobs={statJobs} />
 
       {/* Pipeline */}
-      <Pipeline jobs={jobs} />
+      <Pipeline groupedJobs={groupedJobs} />
     </>
   );
 };

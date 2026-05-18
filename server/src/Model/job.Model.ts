@@ -20,7 +20,7 @@ export interface IJob extends Document {
     location: "remote" | "onSite" | "hybrid";
     OfficeAddress?: string;
     isActive?: boolean;
-    status: "Wishlist" | "Applied" | "OA" | "Interview" | "Offer" | "Rejected";
+    status: "wishlist" | "applied" | "oa" | "interview" | "offer" | "rejected";
     createdAt: Date;
     updatedAt: Date;
     importantDates: IImportantDate[];

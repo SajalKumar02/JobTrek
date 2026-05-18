@@ -27,18 +27,11 @@ const JobCard: React.FC<JobCardProps> = ({
     importantDates && importantDates.length > 0 ? importantDates[0] : undefined;
 
   return (
-    <div className="bg-gray-100 rounded p-3">
-      <div className="font-semibold text-sm">{companyName}</div>
-      <div className="text-gray-700 mb-1 text-xs">{jobRole}</div>
-      <div className="flex gap-2 text-[10px] text-gray-500">
-        {firstDate && (
-          <span>
-            {firstDate.label ? `${firstDate.label} ` : ''}
-            {firstDate.date
-              ? new Date(firstDate.date).toLocaleDateString()
-              : ''}
-          </span>
-        )}
+    <div className="bg-white rounded-lg shadow flex flex-col gap-2 p-4 border border-gray-200 hover:shadow-lg">
+      <div className="flex items-center justify-between mb-1">
+        <div className="font-bold text-base text-gray-800 truncate">
+          {companyName}
+        </div>
         <span
           className={
             (jobType === 'full time'
@@ -52,11 +45,26 @@ const JobCard: React.FC<JobCardProps> = ({
                     : jobType === 'part time'
                       ? 'bg-blue-100 text-blue-700'
                       : 'bg-gray-100 text-gray-700') +
-            ' px-2 rounded text-[10px]'
+            ' px-2 py-0.5 rounded-full text-[11px] font-semibold ml-2'
           }
         >
           {jobType.replace(/\b\w/g, (l) => l.toUpperCase())}
         </span>
+      </div>
+      <div className="text-gray-600 text-sm font-medium">{jobRole}</div>
+      <div className="flex items-center mt-1 space-x-2 text-xs">
+        {firstDate && (
+          <div className="flex items-center bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+            <span className="font-semibold">
+              {firstDate.label ? `${firstDate.label} ` : ''}
+            </span>
+            <span>
+              {firstDate.date
+                ? new Date(firstDate.date).toLocaleDateString()
+                : ''}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
