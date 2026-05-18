@@ -14,7 +14,7 @@ const JobRouter = Router();
 
 JobRouter.use(authMiddleware)
     .post("/", addAJob)
-    .get("/all-job", getAllJob)
+    .get("/", getAllJob)
     .get("/:jobId", getAJob)
     .patch("/:jobId", editAJob)
     .delete("/:jobId", deleteAJob)

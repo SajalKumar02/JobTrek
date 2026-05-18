@@ -9,6 +9,7 @@ import Jobs from '../pages/Jobs';
 import ProtectedRoute from '../features/auth/ProtectedRoute';
 import PublicLayout from '../shared/layouts/PublicLayout';
 import AppLayout from '../shared/layouts/AppLayout';
+import JobProvider from './providers/JobProvider';
 
 const App = () => {
   return (
@@ -19,7 +20,13 @@ const App = () => {
           <Route path="/register" element={<Registration />} />
         </Route>
         <Route element={<ProtectedRoute />}>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <JobProvider>
+                <AppLayout />
+              </JobProvider>
+            }
+          >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/jobs" element={<Jobs />} />

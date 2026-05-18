@@ -40,11 +40,11 @@ export const getAJob = async (req: AuthRequest, res: Response) => {
 
 export const getAllJob = async (req: AuthRequest, res: Response) => {
     try {
-        const result = await jobService.getAllJob(req);
+        const { result } = await jobService.getAllJob(req);
 
         res.status(200).json({
             success: true,
-            job: result
+            jobs: result
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });

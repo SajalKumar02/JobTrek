@@ -9,6 +9,6 @@ const IndexRouter = Router();
 IndexRouter
     .use('/auth', AuthRouter)
     .use('/user', UserRouter)
-    .use('/job', JobRouter);
+    .use('/jobs', JobRouter);
 
 export default IndexRouter;
