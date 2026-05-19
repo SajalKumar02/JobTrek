@@ -2,7 +2,7 @@ import PipelineColumn from './PipelineColumn';
 
 const Pipeline = ({ groupedJobs }) => {
   return (
-    <div className="flex w-full gap-2 py-2 bg-gray-50">
+    <div className="flex w-full gap-2 py-2 bg-gray-50 overflow-x-auto">
       <PipelineColumn
         title="Wishlist"
         count={groupedJobs.wishlist.length}

@@ -10,6 +10,7 @@ import ProtectedRoute from '../features/auth/ProtectedRoute';
 import PublicLayout from '../shared/layouts/PublicLayout';
 import AppLayout from '../shared/layouts/AppLayout';
 import JobProvider from './providers/JobProvider';
+import CreateJobModal from '../features/jobs/components/CreateJobModal';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             element={
               <JobProvider>
                 <AppLayout />
+                <CreateJobModal />
               </JobProvider>
             }
           >

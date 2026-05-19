@@ -5,6 +5,7 @@ const JobContext = createContext(null);
 
 const JobProvider = ({ children }) => {
   const [jobs, setJobs] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -22,6 +23,9 @@ const JobProvider = ({ children }) => {
     };
     fetchJobs();
   }, []);
+
+  const setShowCreateModal = () => setShowModal(true);
+  const setCloseCreateModal = () => setShowModal(false);
 
   const createJob = async (jobData) => {
     try {
@@ -82,7 +86,16 @@ const JobProvider = ({ children }) => {
 
   return (
     <JobContext.Provider
-      value={{ jobs, countJobs, createJob, updateJob, deleteJob }}
+      value={{
+        jobs,
+        countJobs,
+        createJob,
+        updateJob,
+        deleteJob,
+        showCreateModal: showModal,
+        setShowCreateModal,
+        setCloseCreateModal,
+      }}
     >
       {children}
     </JobContext.Provider>

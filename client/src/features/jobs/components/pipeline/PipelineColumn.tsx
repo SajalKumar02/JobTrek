@@ -1,10 +1,30 @@
-import JobCard from '../components/JobCard';
+import JobCard from './JobCard';
 
 const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
   return (
-    <div className="flex flex-col flex-1 min-w-[200px] max-w-[280px]">
+    <div className="flex flex-col flex-1">
       {/* Table Header */}
-      <div className="sticky top-0 z-10 bg-white border-b-2 border-gray-200 rounded-t-lg">
+      <div
+        className={`sticky top-0 z-10 bg-white border-b-3 rounded-t-l 
+          ${
+            title.toLowerCase() === 'wishlist'
+              ? 'text-gray-400'
+              : title === 'Applied'
+                ? 'border-b-[#226086]'
+                : title === 'OA'
+                  ? 'border-b-[#8B5D29]'
+                  : title === 'Interview'
+                    ? 'border-b-[#5A5C87]'
+                    : title === 'Offer'
+                      ? 'border-b-green-400'
+                      : title === 'Rejected'
+                        ? 'border-red-500'
+                        : title === 'Wishlist'
+                          ? 'border-b-[#444] text-gray-400'
+                          : ''
+          }
+         `}
+      >
         <div className="flex items-center justify-between px-3 py-2">
           <span className="font-semibold text-gray-800">{title}</span>
           <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium ml-2">

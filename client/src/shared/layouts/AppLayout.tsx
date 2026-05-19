@@ -9,6 +9,7 @@ import {
   Bell,
   Search,
   LineChart,
+  Plus,
 } from 'lucide-react';
 import { useJobs } from '../../features/jobs/hooks/useJobs';
 
@@ -45,12 +46,12 @@ export default function AppLayout() {
   const { logOut } = useContext(AuthContext);
   const breadcrumb = useBreadcrumb();
 
-  const { countJobs } = useJobs();
+  const { countJobs, setShowCreateModal } = useJobs();
 
   return (
-    <div className="flex min-h-screen bg-stone-50">
+    <div className="grid min-h-screen bg-stone-50 grid-cols-[220px_1fr]">
       {/* Sidebar */}
-      <aside className="w-[220px] min-w-[220px] bg-white border-r border-black/10 flex flex-col">
+      <aside className="min-w-[220px] bg-white border-r border-black/10 flex flex-col">
         {/* Logo */}
         <div className="flex items-center gap-2.5 px-4.5 py-5 border-b border-black/10">
           <div className="w-[30px] h-[30px] bg-[#1a1a1a] rounded-[7px] flex items-center justify-center shrink-0">
@@ -137,26 +138,38 @@ export default function AppLayout() {
       </aside>
 
       {/* Main */}
-      <div className="flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col min-w-0 h-screen overflow-auto">
         {/* Topbar */}
         <header className="h-[52px] min-h-[52px] bg-white border-b border-black/10 flex items-center justify-between px-5">
-          <div className="flex items-center gap-2 text-[13px] text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
             <breadcrumb.Icon size={14} className="text-gray-400" />
             <span>{breadcrumb.label}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="relative w-8 h-8 rounded-lg border border-black/10 flex items-center justify-center text-gray-500 hover:bg-stone-50 transition-colors">
-              <Bell size={17} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-red-500 border-2 border-white" />
-            </button>
-            <button className="w-8 h-8 rounded-lg border border-black/10 flex items-center justify-center text-gray-500 hover:bg-stone-50 transition-colors">
-              <Search size={17} />
+
+          <div className="flex items-center gap-1.5">
+            <div className="relative">
+              <Search
+                size={16}
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+              />
+              <input
+                type="text"
+                className="h-8 w-3xs pl-8 pr-2.5 rounded-md border border-gray-500/40 bg-white text-xs text-gray-900 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-150"
+                placeholder="Search jobs..."
+              />
+            </div>
+            <button
+              className="flex items-center gap-1.5 h-8 px-3.5 rounded-md border border-gray-500/40 bg-white hover:bg-gray-100 transition-all text-gray-900 text-xs font-semibold focus:ring-2 focus:ring-blue-400"
+              onClick={() => setShowCreateModal()}
+            >
+              <Plus size={17} />
+              <span className="truncate">Add opportunity</span>
             </button>
           </div>
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-6">
           <Outlet />
         </main>
       </div>
