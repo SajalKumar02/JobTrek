@@ -1,12 +1,17 @@
 import { useContext } from 'react';
-import { NavLink, Outlet, useParams, useLocation } from 'react-router';
+import {
+  NavLink,
+  Outlet,
+  useParams,
+  useLocation,
+  useNavigate,
+} from 'react-router';
 import { AuthContext } from '../../app/providers/AuthProvider';
 import {
   LayoutDashboard,
   Briefcase,
   Settings,
   LogOut,
-  Bell,
   Search,
   LineChart,
   Plus,
@@ -43,6 +48,8 @@ function useBreadcrumb() {
 }
 
 export default function AppLayout() {
+  const navigate = useNavigate();
+
   const { logOut } = useContext(AuthContext);
   const breadcrumb = useBreadcrumb();
 
@@ -53,7 +60,10 @@ export default function AppLayout() {
       {/* Sidebar */}
       <aside className="min-w-[220px] bg-white border-r border-black/10 flex flex-col">
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-4.5 py-5 border-b border-black/10">
+        <div
+          className="flex items-center gap-2.5 px-4.5 py-5 border-b border-black/10 cursor-pointer"
+          onClick={() => navigate('/')}
+        >
           <div className="w-[30px] h-[30px] bg-[#1a1a1a] rounded-[7px] flex items-center justify-center shrink-0">
             <LineChart className="text-white" size={16} />
           </div>
@@ -169,7 +179,7 @@ export default function AppLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-3">
           <Outlet />
         </main>
       </div>

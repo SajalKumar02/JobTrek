@@ -21,7 +21,8 @@ export const jobService = {
     },
 
     getAllJob: async (req) => {
-        const result = await JobModel.find({ userId: req.user.userId })
+        const result = await JobModel.find({ userId: req.user.userId }).select("companyName jobType jobRole importantDates status");
+
         return { result };
     },
 
@@ -31,7 +32,8 @@ export const jobService = {
     },
 
     changeJobStatus: async (req) => {
-
+        const result = await JobModel.findByIdAndUpdate(req.params.jobId, req.body, { returnDocument: 'after' });
+        return { result };
     },
 
     deleteJob: async (req) => {

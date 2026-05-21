@@ -1,8 +1,18 @@
 import JobCard from './JobCard';
 
+import { useDroppable } from '@dnd-kit/react';
+
+function Droppable({ title, children }) {
+  const { ref } = useDroppable({
+    id: title.toLowerCase(),
+  });
+
+  return <div ref={ref}>{children}</div>;
+}
+
 const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col">
       {/* Table Header */}
       <div
         className={`sticky top-0 z-10 bg-white border-b-3 rounded-t-l 
@@ -31,25 +41,27 @@ const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
         </div>
       </div>
       {/* Table Body */}
-      <div className="flex-1 flex flex-col divide-y divide-gray-100 bg-white border-b border-x border-gray-200 rounded-b-lg">
-        {jobs.length === 0 ? (
-          <div className="flex-1 flex items-center justify-center py-6 text-gray-400 text-sm">
-            No jobs in this stage.
-          </div>
-        ) : (
-          jobs.map((job) => (
-            <div className="px-3 py-2" key={job._id}>
-              <JobCard
-                companyName={job.companyName}
-                jobRole={job.jobRole}
-                jobType={job.jobType}
-                importantDates={job.importantDates}
-                _id={job._id}
-              />
+      <Droppable title={title}>
+        <div className="flex-1 flex flex-col divide-y divide-gray-100 bg-white border-b border-x border-gray-200 rounded-b-lg">
+          {jobs.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center py-6 text-gray-400 text-sm">
+              No jobs in this stage.
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            jobs.map((job) => (
+              <div className="px-3 py-2" key={job._id}>
+                <JobCard
+                  companyName={job.companyName}
+                  jobRole={job.jobRole}
+                  jobType={job.jobType}
+                  importantDates={job.importantDates}
+                  _id={job._id}
+                />
+              </div>
+            ))
+          )}
+        </div>
+      </Droppable>
     </div>
   );
 };

@@ -9,7 +9,7 @@ export const groupJobsByStatus = (jobs) => {
     };
 
     jobs.forEach(job => {
-        const status = job.status.toLowerCase();
+        const status = job?.status?.toLowerCase();
         if (groupedJobs[status]) {
             groupedJobs[status].push(job);
         }
@@ -18,45 +18,84 @@ export const groupJobsByStatus = (jobs) => {
     return groupedJobs;
 };
 
+// export const getStatCountByStatus = (jobs) => {
+//     let total = 0;
+//     let active = 0;
+//     let interview = 0;
+//     let offers = 0;
+
+//     let appliedCount = 0; // jobs not in wishlist
+//     let respondedCount = 0;  // jobs not rejected
+
+//     if (Array.isArray(jobs) && jobs.length > 0) {
+//         for (const job of jobs) {
+//             total++;
+//             const status = String(job?.status || '').toLowerCase();
+
+//             // 'Active' means not rejected
+//             if (status !== 'rejected') {
+//                 active++;
+//             }
+//             if (status === 'interview') {
+//                 interview++;
+//             }
+//             if (status === 'offer') {
+//                 offers++;
+//             }
+//             if (status !== 'wishlist') {
+//                 appliedCount++;
+//             }
+//             if (status !== 'rejected') {
+//                 respondedCount++;
+//             }
+//         }
+//     }
+
+//     // console.log(respondedCount)
+//     // console.log(appliedCount)
+
+//     const responseRate =
+//         appliedCount > 0 ? Math.round((respondedCount / appliedCount) * 100) : 0;
+
+//     // console.log(responseRate)
+
+
+//     return {
+//         total,
+//         active,
+//         interview,
+//         offers,
+//         responseRate
+//     };
+// };
 export const getStatCountByStatus = (jobs) => {
-    const statJobs = {
-        total: 0, // all
-        active: 0, // all that are not rejected
-        interview: 0, // status = interview
-        offers: 0, // status = offer
-        responseRate: 0 // percentage of jobs not rejected
-    };
+    let total = 0;
+    let active = 0;
+    let interview = 0;
+    let offers = 0;
 
-    let respondedCount = 0; // total - wishlist
-    let positiveCount = 0; // total - rejected
+    let appliedCount = 0;   // jobs not in wishlist
+    let respondedCount = 0; // interviews + offers
 
-    jobs.forEach(job => {
-        statJobs.total += 1;
-        const status = job.status?.toLowerCase?.() || job.status;
+    if (Array.isArray(jobs) && jobs.length > 0) {
+        for (const job of jobs) {
+            total++;
+            const status = String(job?.status || '').toLowerCase();
 
-        // 'Active' means not rejected
-        if (status !== 'rejected') {
-            statJobs.active += 1;
+            if (status !== 'rejected') active++;
+            if (status === 'interview') interview++;
+            if (status === 'offer') offers++;
+
+            // Applied = anything except wishlist
+            if (status !== 'wishlist') appliedCount++;
+
+            // Responded = interview or offer
+            if (status === 'interview' || status === 'offer') respondedCount++;
         }
-        // 'Interview' status only
-        if (status === 'interview') {
-            statJobs.interview += 1;
-        }
-        // 'Offer' status only
-        if (status === 'offer') {
-            statJobs.offers += 1;
-        }
+    }
 
-        // For response rate: respondedCount = jobs not in wishlist, positiveCount = jobs not rejected
-        if (status !== 'wishlist') {
-            respondedCount += 1;
-        }
-        if (status !== 'rejected') {
-            positiveCount += 1;
-        }
-    });
+    const responseRate =
+        appliedCount > 0 ? Math.round((respondedCount / appliedCount) * 100) : 0;
 
-    statJobs.responseRate = respondedCount > 0 ? Math.round((positiveCount / respondedCount) * 100) : 0;
-
-    return statJobs;
+    return { total, active, interview, offers, responseRate };
 };

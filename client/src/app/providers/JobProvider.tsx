@@ -63,14 +63,39 @@ const JobProvider = ({ children }) => {
     }
   };
 
+  const switchJobStatus = async (jobId, newStatus) => {
+    try {
+      const response = await http.patch(`/jobs/status/${jobId}`, {
+        status: newStatus,
+      });
+      if (response.data && response.data.success) {
+        const newJobs = (prev) =>
+          prev
+            ? prev.map((job) =>
+                job._id === jobId ? { ...job, status: newStatus } : job,
+              )
+            : prev;
+        setJobs(newJobs);
+
+        return response.data.job;
+      } else {
+        throw new Error(
+          response.data?.message || 'Failed to update job status',
+        );
+      }
+    } catch (error) {
+      console.error('Error updating job status:', error);
+      throw error;
+    }
+  };
+
   const deleteJob = async (jobId) => {
     try {
       const response = await http.delete(`/jobs/${jobId}`);
       if (response.data && response.data.success) {
-        setJobs((prev) =>
-          prev ? prev.filter((job) => job._id !== jobId) : prev,
-        );
-        return true;
+        const newJobs = (prev) =>
+          prev ? prev.filter((job) => job._id !== jobId) : prev;
+        setJobs(newJobs);
       } else {
         throw new Error(response.data?.message || 'Failed to delete job');
       }
@@ -94,9 +119,7 @@ const JobProvider = ({ children }) => {
     }
   };
 
-  const countJobs = () => {
-    return jobs ? jobs.length : 0;
-  };
+  const countJobs = () => jobs?.length ?? 0;
 
   return (
     <JobContext.Provider
@@ -105,6 +128,7 @@ const JobProvider = ({ children }) => {
         countJobs,
         createJob,
         updateJob,
+        switchJobStatus,
         deleteJob,
         fetchJobViaId,
         showCreateModal: showModal,

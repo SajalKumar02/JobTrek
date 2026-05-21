@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
+import { useDraggable } from '@dnd-kit/react';
+
 interface ImportantDate {
   label: string;
   date: string;
@@ -26,8 +28,14 @@ const JobCard: React.FC<JobCardProps> = ({
   importantDates,
   _id,
 }) => {
-  const firstDate =
-    importantDates && importantDates.length > 0 ? importantDates[0] : undefined;
+  const { ref } = useDraggable({
+    id: _id,
+  });
+
+  const lastDate =
+    importantDates && importantDates.length > 0
+      ? importantDates[importantDates.length - 1]
+      : undefined;
 
   const navigate = useNavigate();
 
@@ -39,7 +47,8 @@ const JobCard: React.FC<JobCardProps> = ({
 
   return (
     <div
-      className="bg-white rounded-lg shadow flex flex-col gap-2 p-4 border border-gray-200 hover:shadow-lg cursor-pointer transition"
+      ref={ref}
+      className="bg-white rounded-lg shadow flex flex-col gap-2 p-3 border border-gray-200 hover:shadow-lg cursor-pointer transition"
       onClick={handleClick}
       role="button"
       tabIndex={0}
@@ -72,14 +81,14 @@ const JobCard: React.FC<JobCardProps> = ({
       </div>
       <div className="text-gray-600 text-sm font-medium">{jobRole}</div>
       <div className="flex items-center mt-1 space-x-2 text-xs">
-        {firstDate && (
+        {lastDate && (
           <div className="flex items-center bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
             <span className="font-semibold">
-              {firstDate.label ? `${firstDate.label} ` : ''}
+              {lastDate.label ? `${lastDate.label} ` : ''}
             </span>
-            <span>
-              {firstDate.date
-                ? new Date(firstDate.date).toLocaleDateString()
+            <span className="ms-2">
+              {lastDate.date
+                ? new Date(lastDate.date).toLocaleDateString()
                 : ''}
             </span>
           </div>

@@ -1,34 +1,43 @@
+import { DragDropProvider } from '@dnd-kit/react';
+
 import StatBar from '../features/jobs/components/StatBar.tsx';
 import JobTypesFilterPills from '../features/jobs/components/JobTypesFilterPills.tsx';
 import Pipeline from '../features/jobs/components/pipeline/Pipeline.tsx';
-
-import {
-  groupJobsByStatus,
-  getStatCountByStatus,
-} from '../features/jobs/utils/pipeline.utils.ts';
 
 import { useJobs } from '../features/jobs/hooks/useJobs.ts';
 import PipelineFooter from '../features/jobs/components/pipeline/PipelineFooter.tsx';
 
 const Jobs = () => {
-  const { jobs } = useJobs();
-
-  const groupedJobs = groupJobsByStatus(jobs);
-  const statJobs = getStatCountByStatus(jobs);
+  const { jobs, deleteJob, switchJobStatus } = useJobs();
 
   return (
-    <>
+    <div className="flex flex-col">
       {/* Stat Bar */}
-      <StatBar statJobs={statJobs} />
+      <StatBar />
 
       <JobTypesFilterPills />
 
       {/* Pipeline */}
-      <Pipeline groupedJobs={groupedJobs} />
+      <DragDropProvider
+        onDragEnd={(event) => {
+          if (!event.operation.target) return;
+          else if (event.operation.target.id === 'delete') {
+            deleteJob(event.operation.source.id);
+          } else {
+            switchJobStatus(
+              event.operation.source.id,
+              event.operation.target.id,
+            );
+            return;
+          }
+        }}
+      >
+        <Pipeline jobs={jobs} />
 
-      {/* Pipeline Footer */}
-      <PipelineFooter />
-    </>
+        {/* Pipeline Footer */}
+        <PipelineFooter />
+      </DragDropProvider>
+    </div>
   );
 };
 

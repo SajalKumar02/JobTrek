@@ -1,8 +1,12 @@
+import { useMemo } from 'react';
+import { groupJobsByStatus } from '../../utils/pipeline.utils';
 import PipelineColumn from './PipelineColumn';
 
-const Pipeline = ({ groupedJobs }) => {
+const Pipeline = ({ jobs }) => {
+  const groupedJobs = useMemo(() => groupJobsByStatus(jobs), [jobs]);
+
   return (
-    <div className="flex w-full gap-2 py-2 bg-gray-50 overflow-x-auto">
+    <div className="grid grid-cols-6 gap-2 py-2 bg-gray-50 overflow-x-auto h-full">
       <PipelineColumn
         title="Wishlist"
         count={groupedJobs.wishlist.length}
