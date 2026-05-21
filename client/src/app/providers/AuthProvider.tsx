@@ -7,6 +7,8 @@ const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [user, setUser] = useState();
+
   const handleAuth = async ({ email, password }) => {
     setLoading(true);
     try {
@@ -43,25 +45,66 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUserProfile = async (updatedProfile) => {
+    try {
+      const response = await http.patch('/user/profile', updatedProfile);
+      if (response.data && response.data.success) {
+        setUser(response.data.user);
+      } else {
+        throw new Error(response.data?.message || 'Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
-    http
-      .post('/auth/token/refresh')
-      .then((response) => {
+    const refreshingAccessToken = async () => {
+      try {
+        const response = await http.post('/auth/token/refresh');
         if (response.data.success) {
           setAuthenticated(true);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    refreshingAccessToken();
+
+    const getUser = async () => {
+      try {
+        setLoading(true);
+        const response = await http.get('/user/me');
+        if (response.data && response.data.user) {
+          setUser(response.data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        setUser(null);
+        console.error('Get user error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getUser();
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ authenticated, loading, handleAuth, logOut }}
+      value={{
+        user,
+        authenticated,
+        loading,
+        handleAuth,
+        logOut,
+        updateUserProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>

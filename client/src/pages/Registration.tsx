@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
-import { AuthContext } from '../app/providers/AuthProvider';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import Loader from '../shared/components/Loader';
+import { useAuth } from '../features/auth/hooks/useAuth';
 
 const Registration = () => {
-  const { authenticated, loading, handleAuth } = useContext(AuthContext);
+  const { authenticated, loading, handleAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

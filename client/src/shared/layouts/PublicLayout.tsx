@@ -1,9 +1,8 @@
 import { Link, Outlet } from 'react-router';
-import { useContext } from 'react';
-import { AuthContext } from '../../app/providers/AuthProvider';
+import { useAuth } from '../../features/auth/hooks/useAuth';
 
 const PublicLayout = () => {
-  const { logOut, authenticated } = useContext(AuthContext);
+  const { logOut, authenticated } = useAuth();
 
   const handleLogout = async () => {
     await logOut();
