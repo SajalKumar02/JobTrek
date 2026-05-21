@@ -5,6 +5,7 @@ import {
     getAJob,
     getAllJob,
     editAJob,
+    changeJobStatus,
     deleteAJob
 } from "../Controllers/job.Controller";
 
@@ -17,6 +18,7 @@ JobRouter.use(authMiddleware)
     .get("/", getAllJob)
     .get("/:jobId", getAJob)
     .patch("/:jobId", editAJob)
+    .patch('/:jobId', changeJobStatus)
     .delete("/:jobId", deleteAJob)
 
 export default JobRouter;

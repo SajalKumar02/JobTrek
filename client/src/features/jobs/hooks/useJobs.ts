@@ -8,6 +8,7 @@ export const useJobs = () => {
         createJob,
         updateJob,
         deleteJob,
+        fetchJobViaId,
         showCreateModal,
         setShowCreateModal,
         setCloseCreateModal
@@ -19,6 +20,7 @@ export const useJobs = () => {
         createJob,
         updateJob,
         deleteJob,
+        fetchJobViaId,
         showCreateModal,
         setShowCreateModal,
         setCloseCreateModal

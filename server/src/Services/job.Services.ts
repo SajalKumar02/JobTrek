@@ -30,6 +30,10 @@ export const jobService = {
         return { result };
     },
 
+    changeJobStatus: async (req) => {
+
+    },
+
     deleteJob: async (req) => {
         await JobModel.findByIdAndDelete(req.params.jobId);
         return;

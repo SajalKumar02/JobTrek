@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
 interface ImportantDate {
   label: string;
@@ -15,6 +16,7 @@ export interface JobCardProps {
     | 'freelancing'
     | 'part time';
   importantDates?: ImportantDate[];
+  _id: string;
 }
 
 const JobCard: React.FC<JobCardProps> = ({
@@ -22,12 +24,29 @@ const JobCard: React.FC<JobCardProps> = ({
   jobRole,
   jobType,
   importantDates,
+  _id,
 }) => {
   const firstDate =
     importantDates && importantDates.length > 0 ? importantDates[0] : undefined;
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (_id) {
+      navigate(`/jobs/${_id}`);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow flex flex-col gap-2 p-4 border border-gray-200 hover:shadow-lg">
+    <div
+      className="bg-white rounded-lg shadow flex flex-col gap-2 p-4 border border-gray-200 hover:shadow-lg cursor-pointer transition"
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') handleClick();
+      }}
+    >
       <div className="flex items-center justify-between mb-1">
         <div className="font-bold text-base text-gray-800 truncate">
           {companyName}

@@ -27,7 +27,7 @@ export const addAJob = async (req: AuthRequest, res: Response) => {
 
 export const getAJob = async (req: AuthRequest, res: Response) => {
     try {
-        const result = await jobService.getJob(req);
+        const { result } = await jobService.getJob(req);
 
         res.status(200).json({
             success: true,
@@ -63,6 +63,19 @@ export const editAJob = async (req: AuthRequest, res: Response) => {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
 };
+
+export const changeJobStatus = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await jobService.changeJobStatus(req);
+
+        res.status(200).json({
+            success: true,
+            job: result
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+    }
+}
 
 export const deleteAJob = async (req: AuthRequest, res: Response) => {
     try {

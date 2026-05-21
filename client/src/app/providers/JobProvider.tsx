@@ -80,6 +80,20 @@ const JobProvider = ({ children }) => {
     }
   };
 
+  const fetchJobViaId = async (jobId) => {
+    try {
+      const response = await http.get(`/jobs/${jobId}`);
+      if (response.data && response.data.success) {
+        return response.data.job;
+      } else {
+        throw new Error(response.data?.message || 'Failed to delete job');
+      }
+    } catch (error) {
+      console.error('Error deleting job:', error);
+      throw error;
+    }
+  };
+
   const countJobs = () => {
     return jobs ? jobs.length : 0;
   };
@@ -92,6 +106,7 @@ const JobProvider = ({ children }) => {
         createJob,
         updateJob,
         deleteJob,
+        fetchJobViaId,
         showCreateModal: showModal,
         setShowCreateModal,
         setCloseCreateModal,

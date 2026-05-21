@@ -10,18 +10,16 @@ const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
             title.toLowerCase() === 'wishlist'
               ? 'text-gray-400'
               : title === 'Applied'
-                ? 'border-b-[#226086]'
+                ? 'border-b-cyan-500'
                 : title === 'OA'
-                  ? 'border-b-[#8B5D29]'
+                  ? 'border-b-yellow-800'
                   : title === 'Interview'
-                    ? 'border-b-[#5A5C87]'
+                    ? 'border-b-indigo-500'
                     : title === 'Offer'
                       ? 'border-b-green-400'
                       : title === 'Rejected'
                         ? 'border-red-500'
-                        : title === 'Wishlist'
-                          ? 'border-b-[#444] text-gray-400'
-                          : ''
+                        : ''
           }
          `}
       >
@@ -46,6 +44,7 @@ const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
                 jobRole={job.jobRole}
                 jobType={job.jobType}
                 importantDates={job.importantDates}
+                _id={job._id}
               />
             </div>
           ))
