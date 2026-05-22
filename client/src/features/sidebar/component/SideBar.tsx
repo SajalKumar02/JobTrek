@@ -7,8 +7,10 @@ import { useAuth } from '../../auth/hooks/useAuth';
 const SideBar = () => {
   const navigate = useNavigate();
 
-  const { user, logOut } = useAuth();
+  const { user, loading, logOut } = useAuth();
   const { countJobs } = useJobs();
+
+  if (loading) return null;
 
   return (
     <aside className="min-w-56 bg-white border-r border-black/10 flex flex-col">
@@ -80,10 +82,10 @@ const SideBar = () => {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[13px] font-medium text-gray-900 truncate">
-              {user.username}
+              {user && user.username}
             </div>
             <div className="text-[11px] text-gray-400 truncate">
-              {user.email}
+              {user && user.email}
             </div>
           </div>
         </div>

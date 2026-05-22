@@ -2,6 +2,9 @@ import JobCard from './JobCard';
 
 import { useDroppable } from '@dnd-kit/react';
 
+import { getJobsThroughStatus } from '../../utils/pipeline.utils';
+import { useJobs } from '../../hooks/useJobs';
+
 function Droppable({ title, children }) {
   const { ref } = useDroppable({
     id: title.toLowerCase(),
@@ -10,9 +13,13 @@ function Droppable({ title, children }) {
   return <div ref={ref}>{children}</div>;
 }
 
-const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
+const PipelineColumn = ({ title = '' }) => {
+  const { jobs } = useJobs();
+  const filteredJobs = getJobsThroughStatus(jobs, title);
+  const count = filteredJobs.length;
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-70 min-w-[20rem] max-w-xs">
       {/* Table Header */}
       <div
         className={`sticky top-0 z-10 bg-white border-b-3 rounded-t-l 
@@ -42,22 +49,21 @@ const PipelineColumn = ({ title = '', count = 0, jobs = [] }) => {
       </div>
       {/* Table Body */}
       <Droppable title={title}>
-        <div className="flex-1 flex flex-col divide-y divide-gray-100 bg-white border-b border-x border-gray-200 rounded-b-lg">
-          {jobs.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center py-6 text-gray-400 text-sm">
+        <div className="flex-1 flex flex-col bg-white border-b border-x border-gray-200 rounded-b-lg h-full p-2 gap-2">
+          {filteredJobs.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center py-6 text-gray-400 text-sm h-full">
               No jobs in this stage.
             </div>
           ) : (
-            jobs.map((job) => (
-              <div className="px-3 py-2" key={job._id}>
-                <JobCard
-                  companyName={job.companyName}
-                  jobRole={job.jobRole}
-                  jobType={job.jobType}
-                  importantDates={job.importantDates}
-                  _id={job._id}
-                />
-              </div>
+            filteredJobs.map((job) => (
+              <JobCard
+                key={job._id}
+                companyName={job.companyName}
+                jobRole={job.jobRole}
+                jobType={job.jobType}
+                importantDates={job.importantDates}
+                _id={job._id}
+              />
             ))
           )}
         </div>

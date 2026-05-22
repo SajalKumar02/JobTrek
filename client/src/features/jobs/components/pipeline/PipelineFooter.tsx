@@ -11,7 +11,7 @@ function Droppable({ id, children }) {
 
 const PipelineFooter = () => {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between mt-2">
       <Droppable id="delete">
         <div className="flex items-center space-x-2 border border-red-300 bg-red-50 text-red-500 px-3 py-1 rounded-md text-xs opacity-70 hover:opacity-100 transition-opacity">
           <Trash2 className="w-4 h-4" />

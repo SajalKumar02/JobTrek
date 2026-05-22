@@ -4,21 +4,22 @@ import http from '../../features/api/api';
 const JobContext = createContext(null);
 
 const JobProvider = ({ children }) => {
-  const [jobs, setJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [jobs, setJobs] = useState([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await http.get('/jobs/');
-        if (response.data && response.data.success) {
-          setJobs(response.data.jobs);
+        if (response.data?.success) {
+          setJobs(response.data.jobs || []); // ✅ Explicit fallback
         } else {
-          setJobs([]);
+          throw new Error(response.data?.message || 'Failed to fetch');
         }
-      } catch (error) {
+      } catch (err) {
+        setError(err.message);
         setJobs([]);
-        console.error('Failed to fetch jobs:', error);
       }
     };
     fetchJobs();
@@ -50,7 +51,18 @@ const JobProvider = ({ children }) => {
       if (response.data && response.data.success) {
         setJobs((prev) =>
           prev
-            ? prev.map((job) => (job._id === jobId ? response.data.job : job))
+            ? prev.map((job) =>
+                job._id === jobId
+                  ? Object.fromEntries(
+                      Object.keys(job).map((key) => [
+                        key,
+                        key in response.data.job
+                          ? response.data.job[key]
+                          : job[key],
+                      ]),
+                    )
+                  : job,
+              )
             : prev,
         );
         return response.data.job;
@@ -76,8 +88,6 @@ const JobProvider = ({ children }) => {
               )
             : prev;
         setJobs(newJobs);
-
-        return response.data.job;
       } else {
         throw new Error(
           response.data?.message || 'Failed to update job status',
@@ -109,6 +119,15 @@ const JobProvider = ({ children }) => {
     try {
       const response = await http.get(`/jobs/${jobId}`);
       if (response.data && response.data.success) {
+        setJobs((prev) =>
+          prev
+            ? prev.map((job) =>
+                job._id === response.data.job._id
+                  ? { ...job, ...response.data.job }
+                  : job,
+              )
+            : [response.data.job],
+        );
         return response.data.job;
       } else {
         throw new Error(response.data?.message || 'Failed to delete job');

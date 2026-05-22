@@ -18,56 +18,6 @@ export const groupJobsByStatus = (jobs) => {
     return groupedJobs;
 };
 
-// export const getStatCountByStatus = (jobs) => {
-//     let total = 0;
-//     let active = 0;
-//     let interview = 0;
-//     let offers = 0;
-
-//     let appliedCount = 0; // jobs not in wishlist
-//     let respondedCount = 0;  // jobs not rejected
-
-//     if (Array.isArray(jobs) && jobs.length > 0) {
-//         for (const job of jobs) {
-//             total++;
-//             const status = String(job?.status || '').toLowerCase();
-
-//             // 'Active' means not rejected
-//             if (status !== 'rejected') {
-//                 active++;
-//             }
-//             if (status === 'interview') {
-//                 interview++;
-//             }
-//             if (status === 'offer') {
-//                 offers++;
-//             }
-//             if (status !== 'wishlist') {
-//                 appliedCount++;
-//             }
-//             if (status !== 'rejected') {
-//                 respondedCount++;
-//             }
-//         }
-//     }
-
-//     // console.log(respondedCount)
-//     // console.log(appliedCount)
-
-//     const responseRate =
-//         appliedCount > 0 ? Math.round((respondedCount / appliedCount) * 100) : 0;
-
-//     // console.log(responseRate)
-
-
-//     return {
-//         total,
-//         active,
-//         interview,
-//         offers,
-//         responseRate
-//     };
-// };
 export const getStatCountByStatus = (jobs) => {
     let total = 0;
     let active = 0;
@@ -98,4 +48,11 @@ export const getStatCountByStatus = (jobs) => {
         appliedCount > 0 ? Math.round((respondedCount / appliedCount) * 100) : 0;
 
     return { total, active, interview, offers, responseRate };
+};
+
+export const getJobsThroughStatus = (jobs, status) => {
+    const normalizedStatus = status.toLowerCase();
+    return jobs.filter(job =>
+        String(job?.status || '').toLowerCase() === normalizedStatus
+    );
 };

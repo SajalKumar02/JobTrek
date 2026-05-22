@@ -6,9 +6,10 @@ import Pipeline from '../features/jobs/components/pipeline/Pipeline.tsx';
 
 import { useJobs } from '../features/jobs/hooks/useJobs.ts';
 import PipelineFooter from '../features/jobs/components/pipeline/PipelineFooter.tsx';
+import { Navigate } from 'react-router';
 
 const Jobs = () => {
-  const { jobs, deleteJob, switchJobStatus } = useJobs();
+  const { deleteJob, switchJobStatus } = useJobs();
 
   return (
     <div className="flex flex-col">
@@ -21,18 +22,20 @@ const Jobs = () => {
       <DragDropProvider
         onDragEnd={(event) => {
           if (!event.operation.target) return;
-          else if (event.operation.target.id === 'delete') {
+          else if (
+            event.operation.target &&
+            event.operation.target.id === 'delete'
+          ) {
             deleteJob(event.operation.source.id);
-          } else {
+          } else if (event.operation.target) {
             switchJobStatus(
               event.operation.source.id,
               event.operation.target.id,
             );
-            return;
           }
         }}
       >
-        <Pipeline jobs={jobs} />
+        <Pipeline />
 
         {/* Pipeline Footer */}
         <PipelineFooter />
