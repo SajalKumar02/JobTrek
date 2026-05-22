@@ -20,3 +20,8 @@ export const statusOptions = [
     { label: 'Offer', value: 'offer' },
     { label: 'Rejected', value: 'rejected' },
 ];
+
+export const filterOptions = [
+    { label: 'All', value: 'all' },
+    ...jobTypeOptions
+];

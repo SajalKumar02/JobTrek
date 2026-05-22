@@ -2,8 +2,13 @@ import JobCard from './JobCard';
 
 import { useDroppable } from '@dnd-kit/react';
 
-import { getJobsThroughStatus } from '../../utils/pipeline.utils';
+import {
+  getJobsThroughStatus,
+  getJobsViaJobType,
+  getJobsForSearch,
+} from '../../utils/pipeline.utils';
 import { useJobs } from '../../hooks/useJobs';
+import { useMemo } from 'react';
 
 function Droppable({ title, children }) {
   const { ref } = useDroppable({
@@ -14,8 +19,19 @@ function Droppable({ title, children }) {
 }
 
 const PipelineColumn = ({ title = '' }) => {
-  const { jobs } = useJobs();
-  const filteredJobs = getJobsThroughStatus(jobs, title);
+  const { jobs, filterString, searchString } = useJobs();
+
+  const filteredJobs = useMemo(() => {
+    let jobsByStatus = getJobsThroughStatus(jobs, title);
+    if (filterString !== 'all') {
+      jobsByStatus = getJobsViaJobType(jobsByStatus, filterString);
+    }
+    if (searchString !== '') {
+      jobsByStatus = getJobsForSearch(jobsByStatus, searchString);
+    }
+    return jobsByStatus;
+  }, [jobs, title, filterString, searchString]);
+
   const count = filteredJobs.length;
 
   return (

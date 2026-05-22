@@ -8,6 +8,9 @@ const JobProvider = ({ children }) => {
   const [jobs, setJobs] = useState([]);
   const [error, setError] = useState<string | null>(null);
 
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -27,6 +30,10 @@ const JobProvider = ({ children }) => {
 
   const setShowCreateModal = () => setShowModal(true);
   const setCloseCreateModal = () => setShowModal(false);
+
+  const handleSetFilter = (filterString) => setFilter(filterString);
+
+  const handleSetSearchString = (searchString) => setSearch(searchString);
 
   const createJob = async (jobData) => {
     try {
@@ -153,6 +160,10 @@ const JobProvider = ({ children }) => {
         showCreateModal: showModal,
         setShowCreateModal,
         setCloseCreateModal,
+        filterString: filter,
+        handleSetFilter,
+        searchString: search,
+        handleSetSearchString,
       }}
     >
       {children}

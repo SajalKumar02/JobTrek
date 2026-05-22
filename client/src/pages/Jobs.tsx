@@ -6,7 +6,6 @@ import Pipeline from '../features/jobs/components/pipeline/Pipeline.tsx';
 
 import { useJobs } from '../features/jobs/hooks/useJobs.ts';
 import PipelineFooter from '../features/jobs/components/pipeline/PipelineFooter.tsx';
-import { Navigate } from 'react-router';
 
 const Jobs = () => {
   const { deleteJob, switchJobStatus } = useJobs();

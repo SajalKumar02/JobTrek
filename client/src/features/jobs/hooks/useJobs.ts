@@ -12,7 +12,11 @@ export const useJobs = () => {
         fetchJobViaId,
         showCreateModal,
         setShowCreateModal,
-        setCloseCreateModal
+        setCloseCreateModal,
+        filterString,
+        handleSetFilter,
+        searchString,
+        handleSetSearchString
     } = useContext(JobContext);
 
     return {
@@ -25,6 +29,10 @@ export const useJobs = () => {
         fetchJobViaId,
         showCreateModal,
         setShowCreateModal,
-        setCloseCreateModal
+        setCloseCreateModal,
+        filterString,
+        handleSetFilter,
+        searchString,
+        handleSetSearchString
     };
 }

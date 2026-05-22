@@ -1,5 +1,9 @@
 import { useMemo } from 'react';
-import { getStatCountByStatus } from '../utils/pipeline.utils';
+import {
+  getJobsForSearch,
+  getJobsViaJobType,
+  getStatCountByStatus,
+} from '../utils/pipeline.utils';
 import { useJobs } from '../hooks/useJobs';
 
 type Stat = {
@@ -26,12 +30,22 @@ const StatPill = ({ label, value, sub, colorClass }: Stat) => (
 );
 
 const StatBar = () => {
-  const { jobs } = useJobs();
+  const { jobs, filterString, searchString } = useJobs();
 
-  const { total, active, interview, offers, responseRate } = useMemo(
-    () => getStatCountByStatus(jobs),
-    [jobs],
-  );
+  const filteredJobs = useMemo(() => {
+    let jobsByStatus = jobs;
+    if (filterString !== 'all') {
+      jobsByStatus = getJobsViaJobType(jobsByStatus, filterString);
+    }
+    if (searchString !== '') {
+      jobsByStatus = getJobsForSearch(jobsByStatus, searchString);
+    }
+    return jobsByStatus;
+  }, [jobs, filterString, searchString]);
+
+  const { total, active, interview, offers, responseRate } = useMemo(() => {
+    return getStatCountByStatus(filteredJobs);
+  }, [filteredJobs]);
 
   const stats: Stat[] = useMemo(
     () => [
