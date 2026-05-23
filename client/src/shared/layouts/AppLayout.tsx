@@ -86,7 +86,7 @@ export default function AppLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-3">
+        <main className="grid p-3">
           <Outlet />
         </main>
       </div>
