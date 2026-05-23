@@ -25,3 +25,29 @@ export const filterOptions = [
     { label: 'All', value: 'all' },
     ...jobTypeOptions
 ];
+
+export const initialStateJob = {
+    // About Company
+    companyName: '',
+    officeAddress: '',
+    // About Job
+    jobRole: '',
+    description: '',
+    jobType: 'full time',
+    location: 'onSite',
+
+    // Miscellaneous
+    ctc: '',
+    basePay: '',
+    monthlySalary: '',
+    bonusIncluded: false,
+    bonusDescription: '',
+    benefits: false,
+    benefitsDetails: [],
+    isActive: true,
+    importantDates: [],
+
+    // User Setting
+    status: 'wishlist',
+    notes: '',
+};

@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router';
-import { LineChart, LogOut } from 'lucide-react';
+import { LineChart, LogOut, Users } from 'lucide-react';
 import { NAV_ITEMS } from '../constants/constant';
 import { useJobs } from '../../jobs/hooks/useJobs';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -77,9 +77,10 @@ const SideBar = () => {
       {/* Bottom */}
       <div className="p-2.5 border-t border-black/10">
         <div className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-stone-100 cursor-pointer transition-colors">
-          <div className="w-[30px] h-[30px] rounded-full bg-blue-50 flex items-center justify-center text-[12px] font-medium text-blue-700 shrink-0">
-            SK
+          <div className="w-[30px] h-[30px] rounded-full bg-blue-50 flex items-center justify-center text-blue-700 shrink-0">
+            <Users size={20} />
           </div>
+
           <div className="flex-1 min-w-0">
             <div className="text-[13px] font-medium text-gray-900 truncate">
               {user && user.username}

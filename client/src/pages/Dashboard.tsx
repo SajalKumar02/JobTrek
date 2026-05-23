@@ -48,7 +48,13 @@ const Dashboard = () => {
           </span>
         </button>
       </div>
+      {/* StatBar */}
       <StatBar />
+      <>
+        {/* Upcoming Deadlines */}
+        {/* Pipeline Breakdown */}
+      </>
+      {/* Recent Activity */}
     </>
   );
 };

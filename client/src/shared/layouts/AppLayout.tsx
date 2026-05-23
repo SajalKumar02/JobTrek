@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { useJobs } from '../../features/jobs/hooks/useJobs';
 import SideBar from '../../features/sidebar/component/SideBar';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 function useBreadcrumb() {
   const location = useLocation();
@@ -30,14 +30,22 @@ export default function AppLayout() {
   const breadcrumb = useBreadcrumb();
   const { setShowCreateModal, searchString, handleSetSearchString } = useJobs();
 
-  const [search, setSearch] = useState(searchString);
+  const [searchInput, setSearchInput] = useState(searchString);
+
+  const handleChangeSearchInput = useCallback(
+    (newStringInput) => setSearchInput(newStringInput),
+    [],
+  );
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      handleSetSearchString(search);
+    const timeoutId = setTimeout(() => {
+      handleSetSearchString(searchInput);
     }, 300);
-    return () => clearTimeout(handler);
-  }, [search, handleSetSearchString]);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchInput, handleSetSearchString]);
 
   return (
     <div className="grid min-h-screen bg-stone-50 grid-cols-[220px_1fr]">
@@ -61,8 +69,8 @@ export default function AppLayout() {
               />
               <input
                 type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={searchInput}
+                onChange={(e) => handleChangeSearchInput(e.target.value)}
                 className="h-8 w-3xs pl-8 pr-2.5 rounded-md border border-gray-500/40 bg-white text-xs text-gray-900 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-150"
                 placeholder="Search jobs..."
               />

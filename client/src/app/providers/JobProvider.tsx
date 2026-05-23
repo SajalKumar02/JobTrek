@@ -83,6 +83,9 @@ const JobProvider = ({ children }) => {
   };
 
   const switchJobStatus = async (jobId, newStatus) => {
+    const job = jobs.find((j) => j._id === jobId);
+    if (!job) return;
+
     try {
       const response = await http.patch(`/jobs/status/${jobId}`, {
         status: newStatus,

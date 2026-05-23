@@ -12,6 +12,7 @@ import AppLayout from '../shared/layouts/AppLayout';
 import JobProvider from './providers/JobProvider';
 import CreateJobModal from '../features/jobs/components/CreateJobModal';
 import JobView from '../pages/JobView';
+import PageNotFound from '../pages/PageNotFound';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/jobs/:jobId" element={<JobView />} />
           </Route>
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

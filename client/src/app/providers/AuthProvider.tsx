@@ -60,39 +60,20 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const refreshingAccessToken = async () => {
+    const init = async () => {
       try {
-        const response = await http.post('/auth/token/refresh');
-        if (response.data.success) {
-          setAuthenticated(true);
-        }
+        await http.post('/auth/token/refresh');
+        setAuthenticated(true);
+
+        const userRes = await http.get('/user/me');
+        setUser(userRes.data.user);
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
       }
     };
-
-    refreshingAccessToken();
-
-    const getUser = async () => {
-      try {
-        setLoading(true);
-        const response = await http.get('/user/me');
-        if (response.data && response.data.user) {
-          setUser(response.data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        setUser(null);
-        console.error('Get user error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getUser();
+    init();
   }, []);
 
   return (

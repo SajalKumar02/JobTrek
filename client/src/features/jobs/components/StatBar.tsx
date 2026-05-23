@@ -15,17 +15,15 @@ type Stat = {
 
 const StatPill = ({ label, value, sub, colorClass }: Stat) => (
   <div className="rounded-lg border border-[#393939] bg-[#22252a] flex flex-col items-start px-5 py-3 shadow transition">
-    <div className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-0.5">
+    <div className="text-[0.85rem] text-gray-400 uppercase tracking-wider font-semibold mb-1">
       {label}
     </div>
     <div
-      className={`text-lg font-bold mb-0.5 drop-shadow-sm ${
-        colorClass || 'text-white'
-      }`}
+      className={`text-2xl mb-1 drop-shadow-sm ${colorClass || 'text-white'}`}
     >
       {value}
     </div>
-    <div className="text-xs text-gray-300 font-normal tracking-wide">{sub}</div>
+    <div className="text-sm text-gray-300 font-normal tracking-wide">{sub}</div>
   </div>
 );
 

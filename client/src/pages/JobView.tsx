@@ -5,17 +5,22 @@ import { useJobs } from '../features/jobs/hooks/useJobs';
 
 import { ArrowLeft, Pencil, Save } from 'lucide-react';
 
+import {
+  jobTypeOptions,
+  locationOptions,
+  statusOptions,
+  initialStateJob,
+} from '../features/jobs/types/contants';
+
 const JobView = () => {
   const { jobId } = useParams();
   const { fetchJobViaId, updateJob } = useJobs();
 
-  const [job, setJob] = useState(null);
+  const [form, setForm] = useState(initialStateJob);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [editing, setEditing] = useState(false);
 
-  // Form state
-  const [form, setForm] = useState({});
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -24,14 +29,13 @@ const JobView = () => {
       try {
         if (jobId) {
           const fetchedJob = await fetchJobViaId(jobId);
-          setJob(fetchedJob);
-          setForm(fetchedJob || {});
+          setForm(fetchedJob || initialStateJob);
         } else {
           setError('Job ID not found in URL.');
         }
       } catch {
         setError('Could not fetch job details.');
-        setJob(null);
+        setForm(initialStateJob);
       } finally {
         setLoading(false);
       }
@@ -40,6 +44,22 @@ const JobView = () => {
     fetchJob();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobId]);
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const response = await updateJob(jobId, form);
+      console.log(response);
+      setForm(response);
+      setEditing(false);
+    } catch {
+      setError('Could not update job.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -65,22 +85,6 @@ const JobView = () => {
     });
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      await updateJob(jobId, form);
-      const updatedJob = await fetchJobViaId(jobId);
-      setJob(updatedJob);
-      setEditing(false);
-    } catch {
-      setError('Could not update job.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleAddImportantDate = () => {
     setForm((prev) => ({
       ...prev,
@@ -90,16 +94,8 @@ const JobView = () => {
     }));
   };
 
-  if (loading) {
-    return <div>Loading job details...</div>;
-  }
-
   if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!job) {
-    return <div>Job not found.</div>;
+    return;
   }
 
   return (
@@ -133,10 +129,12 @@ const JobView = () => {
         )}
       </div>
 
+      {/* Header */}
       <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">
         Job Details
       </h2>
 
+      {/* FORM */}
       <form className="space-y-3" onSubmit={handleSave}>
         <div>
           <label className="font-semibold text-gray-700 block">
@@ -177,25 +175,43 @@ const JobView = () => {
         </div>
         <div>
           <label className="font-semibold text-gray-700 block">Job Type:</label>
-          <input
+          <select
             name="jobType"
             value={form.jobType || ''}
             onChange={handleChange}
             className="border rounded px-2 py-1 w-full"
             required
             disabled={!editing}
-          />
+          >
+            <option value="" disabled>
+              Select job type
+            </option>
+            {jobTypeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="font-semibold text-gray-700 block">Location:</label>
-          <input
+          <select
             name="location"
             value={form.location || ''}
             onChange={handleChange}
             className="border rounded px-2 py-1 w-full"
             required
             disabled={!editing}
-          />
+          >
+            <option value="" disabled>
+              Select location
+            </option>
+            {locationOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="font-semibold text-gray-700 block">
@@ -211,14 +227,25 @@ const JobView = () => {
         </div>
         <div>
           <label className="font-semibold text-gray-700 block">Status:</label>
-          <input
+          <select
             name="status"
             value={form.status || ''}
             onChange={handleChange}
             className="border rounded px-2 py-1 w-full"
             disabled={!editing}
-          />
+            required
+          >
+            <option value="" disabled>
+              Select status
+            </option>
+            {statusOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
+
         <div>
           <label className="font-semibold text-gray-700 block">Base Pay:</label>
           <input
@@ -323,7 +350,7 @@ const JobView = () => {
           <input
             type="checkbox"
             name="isActive"
-            checked={!!form.isActive}
+            checked={form.isActive}
             onChange={handleChange}
             className="mr-2"
             disabled={!editing}
