@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react';
+import { Info, Trash2 } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/react';
 
 function Droppable({ id, children }) {
@@ -18,8 +18,10 @@ const PipelineFooter = () => {
           <span>Drag here to delete</span>
         </div>
       </Droppable>
-      <span className="text-gray-500 text-xs px-3 py-1 rounded-md bg-gray-50 border border-gray-200">
-        Drag cards between columns to update status
+      <span className="flex items-center w-full text-xs px-3 py-2 rounded-md bg-[#22304a] border border-[#294067] text-[#bcd0ea]">
+        <Info className="w-4 h-4 mr-2 text-[#7ea7ce]" />
+        Drag cards between columns to update status or use the grip handle to
+        reorder
       </span>
     </div>
   );

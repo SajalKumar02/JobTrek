@@ -7,7 +7,7 @@ import RecentActivity from '../shared/components/RecentActivity';
 
 const Dashboard = () => {
   return (
-    <div className="grid gap-2 px-2">
+    <div className="grid gap-2 px-2 pb-4">
       {/* Dashboard Top */}
       <DashboardTop />
       {/* StatBar */}

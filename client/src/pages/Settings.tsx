@@ -1,46 +1,48 @@
-import React from 'react';
+import { Palette } from 'lucide-react';
+import ProfileCard from '../shared/components/ProfileCard';
 
 const Settings = () => {
   return (
-    <div className="max-w-xl mx-auto px-6 py-8 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-semibold mb-6">Settings</h2>
-
-      {/* 
-        === Example Settings for a Small React Application ===
-
-        1. Theme Toggle (Light/Dark mode)
-        2. Notification Preferences (enable/disable notifications)
-        3. Manage Account (change email, update password)
-        4. Language Selection
-        5. Privacy Options (public/private profile)
-        6. Data Export/Import
-        7. Application Version Information
-        8. Delete Account Option
-        9. Default Landing Page Selection
-        10. Accessibility Settings (font size, color contrast)
-
-        Add each section below as needed, with relevant UI elements (switches, forms, dropdowns, etc.)
-      */}
-
-      {/* Theme Toggle Example */}
-      <div className="mb-4">
-        <label className="flex items-center gap-2">
-          {/* TODO: Implement theme toggling logic */}
-          <input type="checkbox" disabled />
-          Dark Mode (Coming Soon)
-        </label>
+    <div className="grid grid-rows-[auto_4fr] gap-2 px-4 pb-4">
+      <div className="">
+        <span className="text-gray-500">
+          Manage your account and preferences
+        </span>
       </div>
+      <div className="grid grid-rows-5 gap-4">
+        {/* ProfileCard */}
+        <ProfileCard />
 
-      {/* Notification Preferences Example */}
-      <div className="mb-4">
-        <label className="flex items-center gap-2">
-          {/* TODO: Implement notifications settings */}
-          <input type="checkbox" disabled />
-          Enable Notifications (Coming Soon)
-        </label>
+        {/* App Appearence Card */}
+        <div className="dashboard-card p-0 overflow-hidden text-[#232321]">
+          <div className="flex items-center gap-2 px-4 pt-4 pb-2 text-[#232321]">
+            <Palette className="w-5 h-5" />
+            <span className="font-medium text-base">Appearance</span>
+          </div>
+          <div className="">
+            <div className="flex items-center justify-between px-4 py-3">
+              <div>
+                <div className="font-medium text-sm text-[#232321]">
+                  Dark Mode
+                </div>
+                <div className="text-xs text-[#727272]">
+                  Switch to dark theme
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" />
+                <div className="w-10 h-6 bg-[#e0e0de] peer-focus:outline-none rounded-full peer peer-checked:bg-[#7F7F75] transition-colors"></div>
+                <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-[#232321] rounded-full shadow-md transition-transform peer-checked:translate-x-4"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Notifications Card */}
+        <div className="dashboard-card p-4">Notifications Card</div>
+        {/* Data Privacy Card */}
+        <div className="dashboard-card p-4">Data Privacy Card</div>
       </div>
-
-      {/* More settings can be added here following the above examples */}
     </div>
   );
 };

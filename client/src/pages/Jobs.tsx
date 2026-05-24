@@ -5,13 +5,12 @@ import JobTypesFilterPills from '../features/jobs/components/JobTypesFilterPills
 import Pipeline from '../features/jobs/components/pipeline/Pipeline.tsx';
 
 import { useJobs } from '../features/jobs/hooks/useJobs.ts';
-import PipelineFooter from '../features/jobs/components/pipeline/PipelineFooter.tsx';
 
 const Jobs = () => {
   const { deleteJob, switchJobStatus } = useJobs();
 
   return (
-    <div className="flex flex-col">
+    <div className="grid grid-rows-[105px_30px_auto] gap-2 px-2 pb-4">
       {/* Stat Bar */}
       <StatBar />
 
@@ -35,9 +34,6 @@ const Jobs = () => {
         }}
       >
         <Pipeline />
-
-        {/* Pipeline Footer */}
-        <PipelineFooter />
       </DragDropProvider>
     </div>
   );
