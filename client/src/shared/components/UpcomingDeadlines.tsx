@@ -38,12 +38,12 @@ const sampleDeadlines: Deadline[] = [
 
 const UpcomingDeadlines = () => {
   return (
-    <div className="flex-3/5 bg-white rounded-lg px-3 py-2 w-full mx-auto border border-gray-300 shadow-sm">
-      <div className="flex items-center justify-between mb-1">
+    <div className="dashboard-card grid gap-2 px-3 py-2">
+      <div className="flex items-center justify-between">
         <span className="font-semibold text-sm">Upcoming deadlines</span>
         <span className="text-xs text-gray-500">next 7 days</span>
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="grid gap-2">
         {sampleDeadlines.map((d) => (
           <div
             key={d.company + d.label}
@@ -89,7 +89,7 @@ const UpcomingDeadlines = () => {
           </div>
         ))}
       </div>
-      <div className="text-center text-gray-400 text-xs mt-2">
+      <div className="text-center text-gray-400 text-xs">
         No more deadlines this week
       </div>
     </div>

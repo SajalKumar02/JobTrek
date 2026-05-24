@@ -7,12 +7,12 @@ import RecentActivity from '../shared/components/RecentActivity';
 
 const Dashboard = () => {
   return (
-    <>
+    <div className="grid gap-2 px-2">
       {/* Dashboard Top */}
       <DashboardTop />
       {/* StatBar */}
       <StatBar />
-      <div className="flex flex-row gap-3 w-full mb-2">
+      <div className="grid grid-cols-[3fr_2fr] gap-2">
         {/* Upcoming Deadlines */}
         <UpcomingDeadlines />
         {/* Pipeline Breakdown */}
@@ -21,7 +21,7 @@ const Dashboard = () => {
 
       {/* Recent Activity */}
       <RecentActivity />
-    </>
+    </div>
   );
 };
 

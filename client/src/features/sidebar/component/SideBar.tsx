@@ -13,7 +13,7 @@ const SideBar = () => {
   if (loading) return null;
 
   return (
-    <aside className="min-w-56 bg-white border-r border-black/10 flex flex-col">
+    <aside className="bg-white border-r border-black/10 flex flex-col">
       {/* Logo */}
       <div
         className="flex items-center gap-2.5 px-4.5 py-5 border-b border-black/10 cursor-pointer"

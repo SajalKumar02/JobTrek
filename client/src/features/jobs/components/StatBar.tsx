@@ -13,7 +13,7 @@ type Stat = {
 };
 
 const StatPill = ({ label, value, sub }: Stat) => (
-  <div className="rounded-lg border border-[#393939] flex flex-col items-start px-5 py-3 shadow transition">
+  <div className="dashboard-card flex flex-col items-start px-5 py-3 transition">
     <div className="text-[0.85rem] text-gray-600 uppercase tracking-wider font-semibold mb-1">
       {label}
     </div>
@@ -72,7 +72,7 @@ const StatBar = () => {
   );
 
   return (
-    <div className="grid grid-cols-5 space-x-3 w-full justify-start mb-2">
+    <div className="grid grid-cols-5 space-x-2">
       {stats.map((stat, i) => (
         <StatPill
           key={i}
