@@ -4,4 +4,7 @@
   .dashboard-card {
     @apply bg-white border border-gray-300 shadow-sm rounded-lg;
   }
+  .setting-card {
+    @apply bg-white border border-gray-300 shadow-sm rounded-lg py-2;
+  }
 }

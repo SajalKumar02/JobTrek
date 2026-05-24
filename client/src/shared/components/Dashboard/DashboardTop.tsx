@@ -1,5 +1,5 @@
-import { useJobs } from '../../features/jobs/hooks/useJobs';
-import { getTodayWithDay } from '../utils/date';
+import { useJobs } from '../../../features/jobs/hooks/useJobs';
+import { getTodayWithDay } from '../../utils/date';
 
 const DashboardTop = () => {
   const todayString = getTodayWithDay();
