@@ -10,6 +10,7 @@ export interface AuthRequest<T = Record<string, any>> extends Request {
         refreshToken?: string;
         accessToken?: string;
     };
+
 }
 
 export interface AuthServiceResponse {
@@ -18,9 +19,13 @@ export interface AuthServiceResponse {
     isNewUser: boolean;
 }
 
-export interface ProtectedRequest<T = Record<string, unknown>> extends AuthRequest<T> {
+export interface ProtectedRequest<T = Record<string, any>> extends AuthRequest<T> {
     user: {
         userId: Types.ObjectId;
+    };
+    params: {
+        jobId?: string;
+        userId?: string;
     };
 }
 

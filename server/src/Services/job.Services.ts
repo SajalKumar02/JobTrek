@@ -11,20 +11,18 @@ export const jobService = {
             userId: userId
         };
 
-        const job: JobDocument = new JobModel(reqBody);
-
-        await job.save();
-
+        const job: JobDocument | null = await JobModel.create(reqBody);
         return job;
     },
 
     getJob: async (jobId: Types.ObjectId): Promise<JobDocument | null> => {
         const result: JobDocument | null = await JobModel.findById(jobId);
+
         return result;
     },
 
     getAllJob: async (userId: Types.ObjectId): Promise<Partial<JobDocument[]>> => {
-        const result: Partial<JobDocument[]> | null = await JobModel.find({ userId }).select("companyName jobType jobRole importantDates status");
+        const result: Partial<JobDocument[]> | [] = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status");
         return result;
     },
 
