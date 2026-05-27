@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { JobDocument } from "../Model/job.Model";
 
 export interface IImportantDate {
     label: string,
@@ -25,3 +26,5 @@ export interface IJob {
     status: "wishlist" | "applied" | "oa" | "interview" | "offer" | "rejected";
     notes: string,
 }
+
+export type JobSummary = Pick<JobDocument, "companyName" | "jobType" | "jobRole" | "importantDates" | "status">

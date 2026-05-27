@@ -1,10 +1,10 @@
 import { NextFunction, Response } from "express";
 
-import { AuthRequest } from "../Types";
+import { ProtectedRequest } from "../Types";
 import { verifyAccessToken } from "../Utils/token.Util";
 import { Types } from "mongoose";
 
-export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextFunction) => {
   const { accessToken } = req.cookies;
 
   if (!accessToken) {

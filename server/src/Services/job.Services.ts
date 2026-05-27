@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 
 import JobModel, { JobDocument } from "../Model/job.Model"
 
-import { IJob } from "../Types";
+import { IJob, JobSummary } from "../Types";
 
 export const jobService = {
     addJob: async (newJob: Partial<IJob>, userId: Types.ObjectId): Promise<JobDocument | null> => {
@@ -11,28 +11,29 @@ export const jobService = {
             userId: userId
         };
 
-        const job: JobDocument | null = await JobModel.create(reqBody);
+        const job = await JobModel.create(reqBody);
         return job;
     },
 
     getJob: async (jobId: Types.ObjectId): Promise<JobDocument | null> => {
-        const result: JobDocument | null = await JobModel.findById(jobId);
+        const result = await JobModel.findById(jobId);
 
         return result;
     },
 
-    getAllJob: async (userId: Types.ObjectId): Promise<Partial<JobDocument[]>> => {
-        const result: Partial<JobDocument[]> | [] = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status");
+    getAllJob: async (userId: Types.ObjectId): Promise<JobSummary[]> => {
+        const result = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status");
+
         return result;
     },
 
     editJob: async (jobId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
-        const result: JobDocument | null = await JobModel.findByIdAndUpdate(jobId, updates, { returnDocument: 'after' });
+        const result = await JobModel.findByIdAndUpdate(jobId, updates, { returnDocument: 'after' });
         return result;
     },
 
     changeJobStatus: async (jobId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
-        const result: JobDocument | null = await JobModel.findByIdAndUpdate(jobId, updates, { returnDocument: 'after' });
+        const result = await JobModel.findByIdAndUpdate(jobId, updates, { returnDocument: 'after' });
         return result;
     },
 
