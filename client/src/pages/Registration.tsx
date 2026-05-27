@@ -1,28 +1,41 @@
-import { useNavigate } from 'react-router';
-import { useEffect } from 'react';
+// import { useNavigate } from 'react-router';
+// import { useEffect } from 'react';
 import Loader from '../shared/components/Loader';
 import { useAuth } from '../features/auth/hooks/useAuth';
+import { useNavigate } from 'react-router';
+import { useEffect } from 'react';
+import { useToast } from '../features/toast/hooks/useToast';
 
 const Registration = () => {
   const { authenticated, loading, handleAuth } = useAuth();
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    handleAuth({ email, password });
+    const { success, message } = await handleAuth({ email, password });
+    if (success) {
+      showToast('success', message);
+      navigate('/dashboard');
+    } else {
+      showToast('warning', 'Something Went Wrong');
+    }
   };
 
+  // console.log(authenticated);
+  // console.log(loading);
+
   useEffect(() => {
-    if (!loading && authenticated) {
+    if (authenticated) {
       navigate('/dashboard');
     }
   }, [authenticated, loading, navigate]);
 
-  if (!authenticated && loading) {
-    return <Loader />;
-  }
+  // if (!authenticated && loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

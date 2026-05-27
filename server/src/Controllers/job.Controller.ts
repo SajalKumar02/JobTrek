@@ -1,85 +1,77 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 
 import { jobService } from "../Services/job.Services";
-import { Types } from "mongoose";
 
-interface AuthRequest extends Request {
-    params: {
-        id: string;
-    };
-    user?: {
-        userId: Types.ObjectId;
-    };
-}
+import { JobRequest } from "../Types";
 
-export const addAJob = async (req: AuthRequest, res: Response) => {
+export const addAJob = async (req: JobRequest, res: Response) => {
     try {
-        const result = await jobService.addJob(req);
+        const job = await jobService.addJob(req.body, req.user.userId);
 
         res.status(200).json({
             success: true,
-            job: result.job
+            job
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
 };
 
-export const getAJob = async (req: AuthRequest, res: Response) => {
+export const getAJob = async (req: JobRequest, res: Response) => {
     try {
-        const { result } = await jobService.getJob(req);
+        const job = await jobService.getJob(req.params.jobId);
 
         res.status(200).json({
             success: true,
-            job: result
+            job
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
 };
 
-export const getAllJob = async (req: AuthRequest, res: Response) => {
+export const getAllJob = async (req: JobRequest, res: Response) => {
     try {
-        const { result } = await jobService.getAllJob(req);
+        const jobs = await jobService.getAllJob(req.user.userId);
 
         res.status(200).json({
             success: true,
-            jobs: result
+            jobs
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
 };
 
-export const editAJob = async (req: AuthRequest, res: Response) => {
+export const editAJob = async (req: JobRequest, res: Response) => {
     try {
-        const result = await jobService.editJob(req);
+        const job = await jobService.editJob(req.params.jobId, req.body);
 
         res.status(200).json({
             success: true,
-            job: result
+            job
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
 };
 
-export const changeJobStatus = async (req: AuthRequest, res: Response) => {
+export const changeJobStatus = async (req: JobRequest, res: Response) => {
     try {
-        const result = await jobService.changeJobStatus(req);
+        const job = await jobService.changeJobStatus(req.params.jobId, req.body);
 
         res.status(200).json({
             success: true,
-            job: result
+            job
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
 }
 
-export const deleteAJob = async (req: AuthRequest, res: Response) => {
+export const deleteAJob = async (req: JobRequest, res: Response) => {
     try {
-        await jobService.deleteJob(req);
+        await jobService.deleteJob(req.params.jobId);
 
         res.status(200).json({
             success: true

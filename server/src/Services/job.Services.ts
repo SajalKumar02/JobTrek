@@ -1,43 +1,45 @@
-import JobModel, { IJob } from "../Model/job.Model"
+import { Types } from "mongoose";
+
+import JobModel, { JobDocument } from "../Model/job.Model"
+
+import { IJob } from "../Types";
 
 export const jobService = {
-    addJob: async (req) => {
-
+    addJob: async (newJob: Partial<IJob>, userId: Types.ObjectId): Promise<JobDocument | null> => {
         const reqBody = {
-            ...req.body,
-            userId: req.user.userId
+            ...newJob,
+            userId: userId
         };
 
-        const job = new JobModel(reqBody);
+        const job: JobDocument = new JobModel(reqBody);
 
         await job.save();
 
-        return { job };
+        return job;
     },
 
-    getJob: async (req) => {
-        const result = await JobModel.findById(req.params.jobId);
-        return { result };
+    getJob: async (jobId: Types.ObjectId): Promise<JobDocument | null> => {
+        const result: JobDocument | null = await JobModel.findById(jobId);
+        return result;
     },
 
-    getAllJob: async (req) => {
-        const result = await JobModel.find({ userId: req.user.userId }).select("companyName jobType jobRole importantDates status");
-
-        return { result };
+    getAllJob: async (userId: Types.ObjectId): Promise<Partial<JobDocument[]>> => {
+        const result: Partial<JobDocument[]> | null = await JobModel.find({ userId }).select("companyName jobType jobRole importantDates status");
+        return result;
     },
 
-    editJob: async (req) => {
-        const result = await JobModel.findByIdAndUpdate(req.params.jobId, req.body, { returnDocument: 'after' });
-        return { result };
+    editJob: async (jobId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
+        const result: JobDocument | null = await JobModel.findByIdAndUpdate(jobId, updates, { returnDocument: 'after' });
+        return result;
     },
 
-    changeJobStatus: async (req) => {
-        const result = await JobModel.findByIdAndUpdate(req.params.jobId, req.body, { returnDocument: 'after' });
-        return { result };
+    changeJobStatus: async (jobId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
+        const result: JobDocument | null = await JobModel.findByIdAndUpdate(jobId, updates, { returnDocument: 'after' });
+        return result;
     },
 
-    deleteJob: async (req) => {
-        await JobModel.findByIdAndDelete(req.params.jobId);
+    deleteJob: async (jobId: Types.ObjectId) => {
+        await JobModel.findByIdAndDelete(jobId);
         return;
     },
 }

@@ -21,20 +21,19 @@ const App = () => {
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Registration />} />
         </Route>
-        <Route element={<ProtectedRoute />}>
-          <Route
-            element={
-              <JobProvider>
-                <AppLayout />
-              </JobProvider>
-            }
-          >
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/jobs" element={<Jobs />} />
-            <Route path="/jobs/:jobId" element={<JobView />} />
-          </Route>
+        <Route
+          element={
+            <JobProvider>
+              <AppLayout />
+            </JobProvider>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/jobs/:jobId" element={<JobView />} />
         </Route>
+        {/* <Route element={<ProtectedRoute />}></Route> */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

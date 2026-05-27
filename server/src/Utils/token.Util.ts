@@ -1,41 +1,36 @@
 import { Response } from 'express';
 
 import jwt from 'jsonwebtoken';
+
+import { DecodedToken } from '../Types/index';
 import { Types } from 'mongoose';
 
-interface TokenPayload {
-  id: Types.ObjectId;
-}
-
-// accepting email
-// return access token
 export const generateAccessToken = (id: Types.ObjectId): string => {
-  const payload: TokenPayload = { id };
-  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
+  const accessToken = jwt.sign({ id: id.toString() }, process.env.JWT_ACCESS_SECRET, {
     expiresIn: '15m',
   });
   return accessToken;
 };
 
 export const generateRefreshToken = (id: Types.ObjectId): string => {
-  const payload: TokenPayload = { id };
-  const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+  const refreshToken = jwt.sign({ id: id.toString() }, process.env.JWT_REFRESH_SECRET, {
     expiresIn: '7d',
   });
   return refreshToken;
 };
 
-export const verifyAccessToken = (token: string) => {
+export const verifyAccessToken = (token: string): DecodedToken | null => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as TokenPayload;
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as DecodedToken;
     return decoded;
   } catch (error) {
     return null;
   }
 };
-export const verifyRefreshToken = (token: string) => {
+
+export const verifyRefreshToken = (token: string): DecodedToken | null => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET) as TokenPayload;
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET) as DecodedToken;
     return decoded;
   } catch (error) {
     return null;

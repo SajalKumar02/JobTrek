@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-
 import { authService } from '../Services/auth.Services';
 
 import { mountTokenToResponse } from '../Utils/token.Util';
-import { Types } from 'mongoose';
 
-export const registerOrLogin = async (req: Request, res: Response) => {
+import { AuthRequest } from '../Types/index';
+import { Response } from 'express';
+
+export const registerOrLogin = async (req: AuthRequest, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -13,20 +13,14 @@ export const registerOrLogin = async (req: Request, res: Response) => {
 
     mountTokenToResponse(res, result.accessToken, result.refreshToken);
 
-    res.status(200).json({
+    res.status(result.isNewUser ? 201 : 200).json({
       success: true,
-      user: result.user,
+      message: result.isNewUser ? "User Registered" : "User Logged In"
     });
   } catch (error) {
     res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
   }
 };
-
-interface AuthRequest extends Request {
-  user?: {
-    userId: Types.ObjectId;
-  };
-}
 
 export const changePassword = async (req: AuthRequest, res: Response) => {
   try {
@@ -37,21 +31,21 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
 
     res.status(200).json({
       success: true,
-      user: result.user,
+      message: "User Password Changed"
     });
   } catch (error) {
     res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
   }
 };
 
-export const refreshAccessToken = async (req: Request, res: Response) => {
+export const refreshAccessToken = async (req: AuthRequest, res: Response) => {
   try {
     const { refreshToken } = req.cookies;
 
     if (!refreshToken) {
-      return res.send({
-        message: 'Refresh token not found',
+      return res.status(401).send({
         success: false,
+        message: 'REFRESH TOKEN EXPIRED',
       });
     }
 
@@ -61,32 +55,19 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      data: { user: result.user },
+      message: "Access token refreshed"
     });
   } catch (error) {
     res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
   }
 };
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (req: AuthRequest, res: Response) => {
   try {
-    await authService.logoutUser(req);
+    await authService.logoutUser(req.user.userId);
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
     res.json({ success: true, message: 'Logged out' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
-  }
-};
-
-// Developer Mode
-export const deleteAllData = async (req: Request, res: Response) => {
-  try {
-    await authService.deleteAll();
-
-    res.status(200).json({
-      success: true,
-    });
   } catch (error) {
     res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
   }

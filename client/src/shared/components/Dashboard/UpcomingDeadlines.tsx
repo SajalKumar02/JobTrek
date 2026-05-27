@@ -28,12 +28,6 @@ const sampleDeadlines: Deadline[] = [
     dateLabel: 'May 30',
     isPrimary: false,
   },
-  {
-    company: 'Swiggy',
-    label: 'Application closes',
-    dateLabel: 'May 30',
-    isPrimary: false,
-  },
 ];
 
 const UpcomingDeadlines = () => {

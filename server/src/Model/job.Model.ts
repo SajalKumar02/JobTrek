@@ -1,34 +1,8 @@
-import mongoose, { Document, Types } from 'mongoose';
+import { Schema, model, HydratedDocument } from "mongoose";
 
-export interface IImportantDate {
-    label: string,
-    date: Date,
-}
+import { IJob } from "../Types/index";
 
-export interface IJob extends Document {
-    companyName: string;
-    jobRole: string;
-    description?: string;
-    ctc: number;
-    basePay: number;
-    monthlySalary: number;
-    jobType: "Full Time" | "Internship" | "Contract" | "Freelancing" | "Part Time";
-    bonusIncluded: boolean;
-    bonusDescription?: string;
-    benefits: boolean;
-    benefitsDetails?: string[];
-    location: "remote" | "onSite" | "hybrid";
-    OfficeAddress?: string;
-    isActive?: boolean;
-    status: "wishlist" | "applied" | "oa" | "interview" | "offer" | "rejected";
-    createdAt: Date;
-    updatedAt: Date;
-    importantDates: IImportantDate[];
-    notes: string,
-    userId: Types.ObjectId
-}
-
-const jobSchema = new mongoose.Schema(
+const jobSchema = new Schema<IJob>(
     {
         // About Company
         companyName: { type: String, required: true },
@@ -62,7 +36,12 @@ const jobSchema = new mongoose.Schema(
             date: { type: Date }
         }],
         // User Setting
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        userId: {
+            type:
+                Schema.Types.ObjectId,
+            ref: "User",
+            required: true
+        },
         status: {
             type: String,
             enum: ["wishlist", "applied", "oa", "interview", "offer", "rejected"],
@@ -79,6 +58,7 @@ const jobSchema = new mongoose.Schema(
     }
 );
 
-const JobModel = mongoose.model<IJob>("Job", jobSchema);
+const JobModel = model<IJob>("Job", jobSchema);
 
+export type JobDocument = HydratedDocument<IJob>
 export default JobModel;

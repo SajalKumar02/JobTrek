@@ -1,9 +1,9 @@
 import { generateUsername, generateFromEmail } from "unique-username-generator";
 
-export const generateUsernameForUser = async (): Promise<string> => {
+export const generateUsernameForUser = (): string => {
     return generateUsername();
 };
 
-export const generateUsernameFromEmail = async (email: string): Promise<string> => {
+export const generateUsernameFromEmail = (email: string): string => {
     return generateFromEmail(email, { stripLeadingDigits: true });
 }

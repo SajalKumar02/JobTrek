@@ -1,23 +1,21 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import { userService } from '../Services/user.Services';
-import { Types } from 'mongoose';
 
-interface AuthRequest extends Request {
-  user?: {
-    userId: Types.ObjectId;
-  };
-}
+import { ProtectedRequest } from '../Types';
+import { UserDocument } from '../Model/user.Model';
+import { AppError } from '../Utils/error.Util';
 
-export const getUser = async (req: AuthRequest, res: Response) => {
+export const getUser = async (req: ProtectedRequest, res: Response) => {
   try {
     const { userId } = req.user;
 
-    const result = await userService.getUserByID(userId);
+    const user: UserDocument | null = await userService.getUserByID(userId);
+    if (!user) throw new AppError("User Not Found", 404);
 
     res.status(200).json({
       success: true,
-      user: result,
+      user
     });
   } catch (error) {
     res.status(500).json({
@@ -28,16 +26,17 @@ export const getUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const editUser = async (req: AuthRequest, res: Response) => {
+export const editUser = async (req: ProtectedRequest, res: Response) => {
   try {
     const { userId } = req.user;
-    const reqBody = req.body;
+    const updates = req.body;
 
-    const result = await userService.editUserViaId(userId, reqBody);
+    const user: UserDocument | null = await userService.editUserViaId(userId, updates);
+    if (!user) throw new AppError("User Not Found", 404);
 
     res.status(200).json({
       success: true,
-      user: result
+      user
     });
   } catch (error) {
     res.status(500).json({

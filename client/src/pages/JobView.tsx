@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { useJobs } from '../features/jobs/hooks/useJobs';
-
 import { ArrowLeft, Pencil, Save } from 'lucide-react';
+
+import { useJobs } from '../features/jobs/hooks/useJobs';
 
 import {
   jobTypeOptions,
@@ -12,9 +12,12 @@ import {
   initialStateJob,
 } from '../features/jobs/types/contants';
 
+import { useToast } from '../features/toast/hooks/useToast';
+
 const JobView = () => {
   const { jobId } = useParams();
   const { fetchJobViaId, updateJob } = useJobs();
+  const { showToast } = useToast();
 
   const [form, setForm] = useState(initialStateJob);
   const [loading, setLoading] = useState(true);
@@ -50,13 +53,14 @@ const JobView = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await updateJob(jobId, form);
-      console.log(response);
-      setForm(response);
+      const { result } = await updateJob(jobId, form);
+      setForm(result);
       setEditing(false);
     } catch {
+      showToast('warning', 'Job Updating Failed');
       setError('Could not update job.');
     } finally {
+      showToast('success', 'Job Updated Successfully');
       setLoading(false);
     }
   };

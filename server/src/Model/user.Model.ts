@@ -1,15 +1,9 @@
 // User schema
-import mongoose, { Document } from "mongoose";
+import { Schema, model, HydratedDocument } from "mongoose";
 
-export interface IUser extends Document {
-    email: string;
-    username: string;
-    password: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import { IUser } from "../Types/index";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema<IUser>(
     {
         email: {
             type: String,
@@ -32,13 +26,15 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: false,
             select: false,
         },
 
     },
     { timestamps: true }
 );
-const UserModel = mongoose.model<IUser>("User", userSchema);
+
+const UserModel = model<IUser>("User", userSchema);
+
+export type UserDocument = HydratedDocument<IUser>;
 
 export default UserModel;

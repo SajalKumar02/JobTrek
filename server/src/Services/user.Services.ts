@@ -1,21 +1,18 @@
-import mongoose, { Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-import UserModel, { IUser } from '../Model/user.Model';
+import UserModel, { UserDocument } from '../Model/user.Model';
 
-interface CustomRequest extends mongoose.Document {
-  email: string;
-  username: string;
-}
+import { IUser } from '../Types';
 
 export const userService = {
-  getUserByID: async (userId: Types.ObjectId) => {
-    const user: IUser | null = await UserModel.findById(userId);
+  getUserByID: async (userId: Types.ObjectId): Promise<UserDocument | null> => {
+    const user: UserDocument | null = await UserModel.findById(userId);
 
     return user;
   },
 
-  editUserViaId: async (userId: Types.ObjectId, reqBody: CustomRequest) => {
-    const user = await UserModel.findByIdAndUpdate(userId, reqBody, { returnDocument: 'after' });
+  editUserViaId: async (userId: Types.ObjectId, updates: Partial<IUser>): Promise<UserDocument | null> => {
+    const user: UserDocument | null = await UserModel.findByIdAndUpdate(userId, updates, { returnDocument: 'after' });
 
     return user;
   },

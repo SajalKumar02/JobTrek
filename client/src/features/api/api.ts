@@ -10,34 +10,34 @@ const config: AxiosRequestConfig = {
 
 const http: AxiosInstance = axios.create(config);
 
+http.defaults.withCredentials = true;
+
 http.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (
-            error.response &&
-            error.response.data &&
-            error.response.data.message === "REFRESH TOKEN EXPIRED"
-        ) {
-            window.location.href = "/register";
-        }
-        if (
-            error.response &&
-            error.response.data &&
-            error.response.data.message === "ACCESS TOKEN EXPIRED"
-        ) {
-            try {
-                return http.post('/auth/token/refresh')
-                    .then(() => {
-                        const originalRequest = error.config;
-                        return http(originalRequest);
-                    });
-
-            } catch (refreshError) {
-                window.location.href = "/register";
-                return Promise.reject(refreshError);
-            }
-        }
-        return Promise.reject(error);
+    async (error) => {
+        console.log(error);
+        // if (
+        //     error.response &&
+        //     error.response.data &&
+        //     error.response.data.message === "REFRESH TOKEN EXPIRED"
+        // ) {
+        // window.location.href = "/register";
+        // }
+        // else if (
+        //     error.response &&
+        //     error.response.data &&
+        //     error.response.data.message === "ACCESS TOKEN EXPIRED"
+        // ) {
+        //     try {
+        //         console.log("API INTERCEPTOR")
+        //         const originalRequest = error.config;
+        //         await http.post('/auth/token/refresh');
+        //         return http(originalRequest);
+        //     } catch (refreshError) {
+        //         window.location.href = "/register";
+        //         return Promise.reject(refreshError);
+        //     }
+        // }
     }
 );
 

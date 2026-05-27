@@ -3,14 +3,21 @@ import { LineChart, LogOut, Users } from 'lucide-react';
 import { NAV_ITEMS } from '../constants/constant';
 import { useJobs } from '../../jobs/hooks/useJobs';
 import { useAuth } from '../../auth/hooks/useAuth';
+import { useEffect } from 'react';
 
 const SideBar = () => {
   const navigate = useNavigate();
 
-  const { user, loading, logOut } = useAuth();
+  const { user, logOut } = useAuth();
   const { countJobs } = useJobs();
 
-  if (loading) return null;
+  const handleLogOut = async (e) => {
+    e.preventDefault();
+    const success = await logOut();
+    if (success) {
+      navigate('/register');
+    }
+  };
 
   return (
     <aside className="bg-white border-r border-black/10 flex flex-col">
@@ -91,7 +98,7 @@ const SideBar = () => {
           </div>
         </div>
         <button
-          onClick={logOut}
+          onClick={handleLogOut}
           className="flex items-center gap-2 px-2.5 py-2 rounded-lg w-full text-[13px] text-gray-400 hover:bg-red-50 hover:text-red-700 transition-colors mt-0.5 group"
         >
           <LogOut

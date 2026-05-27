@@ -29,7 +29,5 @@ AuthRouter
   .put('/password', authMiddleware, changePassword)
   // Logs out the user; protected route
   .post('/logout', authMiddleware, logout)
-  // Deletes all user data; usually for dev/admin
-  .delete('/all', deleteAllData);
 
 export default AuthRouter;

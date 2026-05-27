@@ -1,18 +1,11 @@
-// Refresh token schema
-// token storage/retrieval
-// token cleanup
-import mongoose from "mongoose";
+import { model, Schema, HydratedDocument } from "mongoose";
 
-export interface IToken extends Document {
-    userId: mongoose.Schema.Types.ObjectId;
-    refreshToken: string;
-    expiresAt: Date;
-}
+import { IToken } from "../Types/index";
 
-const tokenSchema = new mongoose.Schema(
+const tokenSchema = new Schema<IToken>(
     {
         userId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
@@ -21,6 +14,7 @@ const tokenSchema = new mongoose.Schema(
     }
 );
 
-const TokenModel = mongoose.model("Token", tokenSchema);
+const TokenModel = model("Token", tokenSchema);
 
+export type TokenDocument = HydratedDocument<IToken>
 export default TokenModel;
