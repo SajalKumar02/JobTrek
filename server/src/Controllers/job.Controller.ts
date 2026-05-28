@@ -32,10 +32,12 @@ export const addAJob = async (req: ProtectedRequest, res: Response) => {
 export const getAJob = async (req: ProtectedRequest, res: Response) => {
     try {
         const jobId = new Types.ObjectId(req.params.jobId);
-        const job = await jobService.getJob(jobId);
+        const userId = new Types.ObjectId(req.user.userId);
+
+        const job = await jobService.getJob(jobId, userId);
 
         if (!job) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "Job Not Found"
             })
@@ -67,14 +69,25 @@ export const getAllJob = async (req: ProtectedRequest, res: Response) => {
 export const editAJob = async (req: ProtectedRequest, res: Response) => {
     try {
         const jobId = new Types.ObjectId(req.params.jobId);
-        const updates: Partial<IJob> = req.body;
+        const userId = new Types.ObjectId(req.user.userId);
 
-        const job: JobDocument | null = await jobService.editJob(jobId, updates);
+        const { userId: _omit, ...restUpdates } = req.body;
+        const updates: Partial<IJob> = restUpdates;
+
+        const job: JobDocument | null = await jobService.editJob(jobId, userId, updates);
+
+        if (!job) {
+            return res.status(404).json({
+                success: false,
+                message: "Job Not Found"
+            })
+        }
 
         res.status(200).json({
             success: true,
             job
         });
+
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
     }
@@ -83,6 +96,8 @@ export const editAJob = async (req: ProtectedRequest, res: Response) => {
 export const changeJobStatus = async (req: ProtectedRequest, res: Response) => {
     try {
         const jobId = new Types.ObjectId(req.params.jobId);
+        const userId = new Types.ObjectId(req.user.userId);
+
         const { status } = req.body;
 
         if (!status) {
@@ -91,7 +106,7 @@ export const changeJobStatus = async (req: ProtectedRequest, res: Response) => {
 
         const updates: Pick<IJob, "status"> = { status }
 
-        const job: JobDocument | null = await jobService.changeJobStatus(jobId, updates);
+        const job: JobDocument | null = await jobService.changeJobStatus(jobId, userId, updates);
 
         res.status(200).json({
             success: true,
@@ -105,7 +120,9 @@ export const changeJobStatus = async (req: ProtectedRequest, res: Response) => {
 export const deleteAJob = async (req: ProtectedRequest, res: Response) => {
     try {
         const jobId = new Types.ObjectId(req.params.jobId);
-        await jobService.deleteJob(jobId);
+        const userId = new Types.ObjectId(req.user.userId);
+
+        await jobService.deleteJob(jobId, userId);
 
         res.status(200).json({
             success: true
