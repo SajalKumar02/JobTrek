@@ -1,6 +1,7 @@
 import { Schema, model, HydratedDocument } from "mongoose";
 
 import { IJob } from "../Types/index";
+import { JobLocation, JobStatusType, JobType } from "../Constants/job.constants";
 
 const jobSchema = new Schema<IJob>(
     {
@@ -12,13 +13,13 @@ const jobSchema = new Schema<IJob>(
         description: { type: String },
         jobType: {
             type: String,
-            enum: ["full time", "internship", "contract", "freelancing", "part time"],
+            enum: JobType,
             lowercase: true,
             required: true
         },
         location: {
             type: String,
-            enum: ["remote", "onSite", "hybrid"],
+            enum: JobLocation,
             default: "onSite",
             required: true,
         },
@@ -44,7 +45,7 @@ const jobSchema = new Schema<IJob>(
         },
         status: {
             type: String,
-            enum: ["wishlist", "applied", "oa", "interview", "offer", "rejected"],
+            enum: JobStatusType,
             default: "wishlist",
             lowercase: true,
             required: true

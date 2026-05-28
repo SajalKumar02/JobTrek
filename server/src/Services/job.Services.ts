@@ -38,7 +38,10 @@ export const jobService = {
     },
 
     deleteJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {
-        await JobModel.findOneAndDelete({ _id: jobId, userId: userId });
-        return;
+        const job = await JobModel.findOneAndDelete({ _id: jobId, userId: userId });
+        if (job) {
+            return true;
+        }
+        return false;
     },
 }

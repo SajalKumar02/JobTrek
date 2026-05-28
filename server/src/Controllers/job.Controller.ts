@@ -5,11 +5,14 @@ import { jobService } from "../Services/job.Services";
 
 import { IJob, ProtectedRequest } from "../Types";
 import { JobDocument } from "../Model/job.Model";
+import { JobStatusType } from "../Constants/job.constants";
 
 export const addAJob = async (req: ProtectedRequest, res: Response) => {
     try {
-        const updates = req.body;
+        const { userId: _omit, ...restUpdates } = req.body;
+
         const userId = new Types.ObjectId(req.user.userId);
+        const updates: Partial<IJob> = restUpdates;
 
         const job = await jobService.addJob(updates, userId);
 
@@ -104,6 +107,13 @@ export const changeJobStatus = async (req: ProtectedRequest, res: Response) => {
             return res.status(400).json({ success: false, message: "Status is required" })
         }
 
+        if (!JobStatusType.includes(status)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid status value"
+            })
+        }
+
         const updates: Pick<IJob, "status"> = { status }
 
         const job: JobDocument | null = await jobService.changeJobStatus(jobId, userId, updates);
@@ -122,10 +132,10 @@ export const deleteAJob = async (req: ProtectedRequest, res: Response) => {
         const jobId = new Types.ObjectId(req.params.jobId);
         const userId = new Types.ObjectId(req.user.userId);
 
-        await jobService.deleteJob(jobId, userId);
+        const isJob: boolean = await jobService.deleteJob(jobId, userId);
 
         res.status(200).json({
-            success: true
+            success: isJob
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
