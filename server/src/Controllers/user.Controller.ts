@@ -33,9 +33,9 @@ export const getUser = async (req: ProtectedRequest, res: Response) => {
   }
 };
 
-export const editUserUsername = async (req: ProtectedRequest, res: Response) => {
+export const editUserUsername = async (req: ProtectedRequest<IUserUpdatePayload>, res: Response) => {
   try {
-    const userId = new Types.ObjectId(req.user.userId);
+    const userId = req.user.userId;
 
     const updates: IUserUpdatePayload = {
       username: req.body.username

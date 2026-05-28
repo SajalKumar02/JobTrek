@@ -5,7 +5,6 @@ import {
   changePassword,
   refreshAccessToken,
   logout,
-  deleteAllData,
 } from '../Controllers/auth.Controller';
 
 import { authMiddleware } from '../Middleware/auth.Middleware';

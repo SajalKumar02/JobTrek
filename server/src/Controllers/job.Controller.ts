@@ -5,7 +5,8 @@ import { jobService } from "../Services/job.Services";
 
 import { IJob, ProtectedRequest } from "../Types";
 import { JobDocument } from "../Model/job.Model";
-import { JobStatusType } from "../Constants/job.constants";
+
+import { JobStatusType } from "../Constants/job.Constants";
 
 export const addAJob = async (req: ProtectedRequest, res: Response) => {
     try {

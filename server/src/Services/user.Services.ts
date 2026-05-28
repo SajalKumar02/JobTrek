@@ -11,7 +11,7 @@ export const userService = {
     return user;
   },
 
-  editUserViaId: async (userId: Types.ObjectId, updates: Partial<IUser>): Promise<UserDocument | null> => {
+  editUserViaId: async (userId: Types.ObjectId, updates: Pick<IUser, "username">): Promise<UserDocument | null> => {
     const user = await UserModel.findOneAndUpdate({ _id: userId }, updates, { returnDocument: 'after' });
 
     return user;

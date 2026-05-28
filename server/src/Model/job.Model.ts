@@ -1,7 +1,8 @@
 import { Schema, model, HydratedDocument } from "mongoose";
 
 import { IJob } from "../Types/index";
-import { JobLocation, JobStatusType, JobType } from "../Constants/job.constants";
+
+import { JobLocation, JobStatusType, JobType } from "../Constants/job.Constants";
 
 const jobSchema = new Schema<IJob>(
     {
