@@ -1,17 +1,24 @@
 import { Response } from 'express';
+import { Types } from 'mongoose';
+
+import { UserDocument } from '../Model/user.Model';
 
 import { userService } from '../Services/user.Services';
 
-import { ProtectedRequest } from '../Types';
-import { UserDocument } from '../Model/user.Model';
-import { AppError } from '../Utils/error.Util';
+import { IUser, ProtectedRequest } from '../Types';
 
 export const getUser = async (req: ProtectedRequest, res: Response) => {
   try {
-    const { userId } = req.user;
+    const userId = new Types.ObjectId(req.user.userId);
 
-    const user: UserDocument | null = await userService.getUserByID(userId);
-    if (!user) throw new AppError("User Not Found", 404);
+    const user = await userService.getUserByID(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found"
+      })
+    }
 
     res.status(200).json({
       success: true,
@@ -28,11 +35,17 @@ export const getUser = async (req: ProtectedRequest, res: Response) => {
 
 export const editUser = async (req: ProtectedRequest, res: Response) => {
   try {
-    const { userId } = req.user;
-    const updates = req.body;
+    const userId = new Types.ObjectId(req.user.userId);
+    const updates: Partial<IUser> = req.body;
 
     const user: UserDocument | null = await userService.editUserViaId(userId, updates);
-    if (!user) throw new AppError("User Not Found", 404);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found"
+      })
+    }
 
     res.status(200).json({
       success: true,

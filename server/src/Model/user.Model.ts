@@ -36,5 +36,4 @@ const userSchema = new Schema<IUser>(
 const UserModel = model<IUser>("User", userSchema);
 
 export type UserDocument = HydratedDocument<IUser>;
-
 export default UserModel;
