@@ -92,7 +92,10 @@ export const editAJob = async (req: ProtectedRequest, res: Response) => {
         });
 
     } catch (error) {
-        res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });
+        res.status(500).json({
+            success: false,
+            message: (error as Error).message || 'Internal server error'
+        });
     }
 };
 

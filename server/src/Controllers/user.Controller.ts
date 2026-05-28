@@ -5,7 +5,7 @@ import { UserDocument } from '../Model/user.Model';
 
 import { userService } from '../Services/user.Services';
 
-import { IUser, ProtectedRequest } from '../Types';
+import { IUserUpdatePayload, ProtectedRequest } from '../Types';
 
 export const getUser = async (req: ProtectedRequest, res: Response) => {
   try {
@@ -33,10 +33,13 @@ export const getUser = async (req: ProtectedRequest, res: Response) => {
   }
 };
 
-export const editUser = async (req: ProtectedRequest, res: Response) => {
+export const editUserUsername = async (req: ProtectedRequest, res: Response) => {
   try {
     const userId = new Types.ObjectId(req.user.userId);
-    const updates: Partial<IUser> = req.body;
+
+    const updates: IUserUpdatePayload = {
+      username: req.body.username
+    };
 
     const user: UserDocument | null = await userService.editUserViaId(userId, updates);
 
@@ -59,3 +62,5 @@ export const editUser = async (req: ProtectedRequest, res: Response) => {
     });
   }
 };
+
+export const editUserEmail = async (req: ProtectedRequest, res: Response) => { }
