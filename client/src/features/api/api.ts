@@ -14,35 +14,15 @@ http.defaults.withCredentials = true;
 
 http.interceptors.response.use(
     function (response) {
-        console.log(response);
         return response;
     },
     function (error) {
-        console.log("This is an error");
-        // console.log("API INTERCEPTOR")
-        // if (
-        //     error.response &&
-        //     error.response.data &&
-        //     error.response.data.message === "ACCESS TOKEN EXPIRED"
-        // ) {
-        //     try {
-        //         if (!error.config) {
-        //             return Promise.reject(error);
-        //         }
-
-        //         const originalRequest = error.config;
-        //         if (originalRequest._retry) {
-        //             window.location.href = "/register";
-        //             return Promise.reject(error);
-        //         }
-        //         originalRequest._retry = true;
-        //         await http.post('/auth/token/refresh');
-        //         return http(originalRequest);
-        //     } catch (refreshError) {
-        //         window.location.href = "/register";
-        //         return Promise.reject(refreshError);
-        //     }
-        // }
+        if (error.response?.status === 401) {
+            const isLoginPage = window.location.pathname === '/register';
+            if (!isLoginPage) {
+                window.location.href = "/register";
+            }
+        }
         return Promise.reject(error);
     }
 );

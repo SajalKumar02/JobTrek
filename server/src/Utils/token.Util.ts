@@ -9,7 +9,7 @@ export const generateAccessToken = (id) => {
 
 export const verifyAccessToken = (token) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    const decoded: unknown = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     return decoded;
   } catch (error) {
     return null;
@@ -17,7 +17,7 @@ export const verifyAccessToken = (token) => {
 };
 
 export const mountTokenToResponse = (res, accessToken) => {
-  const accessMaxAge = 15 * 60 * 1000;
+  const accessMaxAge = 15 * 24 * 60 * 60 * 1000;
 
   res.cookie('accessToken', accessToken, {
     httpOnly: true,

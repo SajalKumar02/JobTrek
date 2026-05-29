@@ -1,7 +1,8 @@
+import { asyncHander } from "../Utils/asyncHandler";
 import { AppError } from "../Utils/error.Util";
 import { verifyAccessToken } from "../Utils/token.Util";
 
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = asyncHander((req, res, next) => {
   const { accessToken } = req.cookies;
 
   if (!accessToken) {
@@ -17,4 +18,4 @@ export const authMiddleware = (req, res, next) => {
   req.user = { userId: decoded.id };
 
   next();
-};
+})

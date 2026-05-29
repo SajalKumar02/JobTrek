@@ -1,15 +1,10 @@
-// import { useNavigate } from 'react-router';
-// import { useEffect } from 'react';
-import Loader from '../shared/components/Loader';
 import { useAuth } from '../features/auth/hooks/useAuth';
-import { useNavigate } from 'react-router';
-import { useEffect } from 'react';
+import { Navigate } from 'react-router';
 import { useToast } from '../features/toast/hooks/useToast';
 
 const Registration = () => {
   const { authenticated, loading, handleAuth } = useAuth();
   const { showToast } = useToast();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,24 +13,14 @@ const Registration = () => {
     const { success, message } = await handleAuth({ email, password });
     if (success) {
       showToast('success', message);
-      navigate('/dashboard');
     } else {
-      showToast('warning', 'Something Went Wrong');
+      showToast('warning', message);
     }
   };
 
-  // console.log(authenticated);
-  // console.log(loading);
-
-  useEffect(() => {
-    if (authenticated) {
-      navigate('/dashboard');
-    }
-  }, [authenticated, loading, navigate]);
-
-  // if (!authenticated && loading) {
-  //   return <Loader />;
-  // }
+  if (authenticated && !loading) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

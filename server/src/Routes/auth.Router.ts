@@ -20,13 +20,18 @@ const AuthRouter = Router();
 
 AuthRouter
   // User login or registration
-  .post('/login', loginLimiter, registerOrLogin)
-  // .post('/login', registerOrLogin)
+  // .post('/login', loginLimiter, registerOrLogin)
+  .post('/login', registerOrLogin)
   // Refreshes access token
   // .post('/token/refresh', refreshAccessToken)
   // Change user's password; protected route
   .put('/password', authMiddleware, changePassword)
   // Logs out the user; protected route
   .post('/logout', authMiddleware, logout)
+  .get("/access/check", authMiddleware, (req, res) => {
+    res.status(200).json({
+      success: true,
+    });
+  });
 
 export default AuthRouter;

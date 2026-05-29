@@ -14,9 +14,9 @@ const SideBar = () => {
 
   const handleLogOut = async (e) => {
     e.preventDefault();
-    const success = await logOut();
+    const { success, message } = await logOut();
     if (success) {
-      showToast('success', 'Log Out successful');
+      showToast('success', message);
       navigate('/register');
     }
   };

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+
 import http from '../../features/api/api';
 
 const AuthContext = createContext(null);
@@ -23,29 +24,29 @@ const AuthProvider = ({ children }) => {
       );
       if (response.data && response.data.success) {
         setAuthenticated(true);
-      } else {
-        setAuthenticated(false);
       }
       return response.data;
     } catch (error) {
-      console.log(error);
       setAuthenticated(false);
-      console.error('Authentication error:', error);
-      return false;
+      return {
+        success: false,
+        message: error?.response?.data?.message,
+      };
     } finally {
       setLoading(false);
     }
   };
 
   const logOut = async () => {
+    setLoading(true);
     try {
       const response = await http.post('/auth/logout');
       if (response.data && response.data.success) {
         setAuthenticated(false);
-        return response.data.success === true;
+        return response.data;
       }
     } catch (error) {
-      console.error('Logout error:', error);
+      return error.response.data;
     } finally {
       setAuthenticated(false);
       setUser(undefined);
@@ -58,32 +59,46 @@ const AuthProvider = ({ children }) => {
       const response = await http.patch('/user/profile', updatedProfile);
       if (response.data && response.data.success) {
         setUser(response.data.user);
-      } else {
-        throw new Error(response.data?.message || 'Failed to update profile');
+      }
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
+  };
+
+  const checkAccessToken = async () => {
+    try {
+      const response = await http.get('/auth/access/check');
+
+      if (response.data && response.data.success) {
+        setAuthenticated(false);
+        return response.data;
       }
     } catch (error) {
-      console.error('Error updating user profile:', error);
-      throw error;
+      return error.response.data;
+    } finally {
+      setUser(undefined);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!authenticated) return;
-
+    if (loading) return;
+    // only run when loading is off
     const getUserProfile = async () => {
       try {
         const response = await http.get('/user/me');
         if (response.data && response.data.success) {
+          setAuthenticated(response.data.success);
           setUser(response.data.user);
         }
       } catch (error) {
-        console.error('Error updating user profile:', error);
-        throw error;
+        console.log(error.response.data.message);
       }
     };
 
     getUserProfile();
-  }, [authenticated]);
+  }, [loading]);
 
   return (
     <AuthContext.Provider
@@ -94,6 +109,7 @@ const AuthProvider = ({ children }) => {
         handleAuth,
         logOut,
         updateUserProfile,
+        checkAccessToken,
       }}
     >
       {children}
