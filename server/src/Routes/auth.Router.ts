@@ -20,10 +20,7 @@ const AuthRouter = Router();
 
 AuthRouter
   // User login or registration
-  // .post('/login', loginLimiter, registerOrLogin)
-  .post('/login', registerOrLogin)
-  // Refreshes access token
-  // .post('/token/refresh', refreshAccessToken)
+  .post('/login', loginLimiter, registerOrLogin)
   // Change user's password; protected route
   .put('/password', authMiddleware, changePassword)
   // Logs out the user; protected route
