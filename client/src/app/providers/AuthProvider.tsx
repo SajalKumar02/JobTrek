@@ -43,13 +43,12 @@ const AuthProvider = ({ children }) => {
       const response = await http.post('/auth/logout');
       if (response.data && response.data.success) {
         setAuthenticated(false);
+        setUser(undefined);
         return response.data;
       }
     } catch (error) {
-      return error.response.data;
+      return error.response?.data;
     } finally {
-      setAuthenticated(false);
-      setUser(undefined);
       setLoading(false);
     }
   };
@@ -71,7 +70,7 @@ const AuthProvider = ({ children }) => {
       const response = await http.get('/auth/access/check');
 
       if (response.data && response.data.success) {
-        setAuthenticated(false);
+        setAuthenticated(true);
         return response.data;
       }
     } catch (error) {

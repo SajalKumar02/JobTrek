@@ -52,7 +52,7 @@ export const authService = {
   changeUserPassword: async (userId, oldPassword, newPassword) => {
     let user = await UserModel.findById(userId).select('+password');
     if (!user) {
-      throw new Error("")
+      throw new AppError("User not found", 404)
     }
     if (!await comparePassword(user.password, oldPassword)) {
       throw new AppError("Incorrect old Password", 401);

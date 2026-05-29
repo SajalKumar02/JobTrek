@@ -27,7 +27,7 @@ AuthRouter
   // Change user's password; protected route
   .put('/password', authMiddleware, changePassword)
   // Logs out the user; protected route
-  .post('/logout', authMiddleware, logout)
+  .post('/logout', logout)
   .get("/access/check", authMiddleware, (req, res) => {
     res.status(200).json({
       success: true,
