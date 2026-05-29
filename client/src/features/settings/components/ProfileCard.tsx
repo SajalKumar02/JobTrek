@@ -1,6 +1,8 @@
 import { User } from 'lucide-react';
+import { useAuth } from '../../auth/hooks/useAuth';
 
 const ProfileCard = () => {
+  const { user } = useAuth();
   return (
     <div className="dashboard-card p-4 flex flex-col gap-3">
       <div className="text-gray-700 flex items-center gap-2">
@@ -13,8 +15,10 @@ const ProfileCard = () => {
             A
           </div>
           <div className="flex flex-col my-auto">
-            <span className="font-medium text-base text-gray-900">admin</span>
-            <span className="text-sm text-gray-700">admin@flow.com</span>
+            <span className="font-medium text-base text-gray-900">
+              {user.username}
+            </span>
+            <span className="text-sm text-gray-700">{user.email}</span>
           </div>
         </div>
         <button className="border border-gray-500 rounded px-4 py-1 bg-[#f7f7f7] hover:bg-[#e5e5e5] text-gray-900 text-sm transition-colors my-auto">

@@ -47,7 +47,11 @@ const AuthProvider = ({ children }) => {
         return response.data;
       }
     } catch (error) {
-      return error.response?.data;
+      console.log(error);
+      return {
+        success: false,
+        message: error?.response?.data?.message || 'Logout failed',
+      };
     } finally {
       setLoading(false);
     }
@@ -61,7 +65,10 @@ const AuthProvider = ({ children }) => {
       }
       return response.data;
     } catch (error) {
-      return error.response.data;
+      return {
+        success: false,
+        message: error?.response?.data?.message || 'Failed to update profile',
+      };
     }
   };
 

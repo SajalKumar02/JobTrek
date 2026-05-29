@@ -1,9 +1,9 @@
 import StatBar from '../features/jobs/components/StatBar';
 
-import DashboardTop from '../shared/components/Dashboard/DashboardTop';
-import UpcomingDeadlines from '../shared/components/Dashboard/UpcomingDeadlines';
-import PipeLineSnapshot from '../shared/components/Dashboard/PipeLineSnapshot';
-import RecentActivity from '../shared/components/Dashboard/RecentActivity';
+import DashboardTop from '../features/dashboard/components/DashboardTop';
+import UpcomingDeadlines from '../features/dashboard/components/UpcomingDeadlines';
+import PipeLineSnapshot from '../features/dashboard/components/PipeLineSnapshot';
+import RecentActivity from '../features/dashboard/components/RecentActivity';
 
 const Dashboard = () => {
   return (

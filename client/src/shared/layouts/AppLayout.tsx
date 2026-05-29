@@ -8,11 +8,13 @@ import AppTopBar from '../components/AppTopBar';
 export default function AppLayout() {
   return (
     <>
-      <div className="bg-stone-50 grid min-h-screen grid-cols-[220px_1fr]">
+      <div className="bg-stone-50 grid h-screen grid-cols-[220px_1fr] overflow-hidden">
         <SideBar />
-        <div className="grid grid-rows-[52px_1fr] gap-2">
+        <div className="grid grid-rows-[52px_1fr] gap-2 overflow-hidden">
           <AppTopBar />
-          <Outlet />
+          <div className="overflow-auto">
+            <Outlet />
+          </div>
         </div>
       </div>
       <CreateJobModal />

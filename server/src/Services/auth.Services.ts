@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 import { comparePassword, passwordHash } from '../Utils/password.Util';
-import { generateUsernameFromEmail } from '../Utils/username.Util';
+import { generateUsernameForUser } from '../Utils/username.Util';
 import {
   generateAccessToken,
 } from '../Utils/token.Util';
@@ -32,7 +32,7 @@ export const authService = {
 
     } else {
       const hashPassword = await passwordHash(password);
-      const newUsername = generateUsernameFromEmail(email);
+      const newUsername = generateUsernameForUser();
       isNewUser = true;
 
       user = await UserModel.create({

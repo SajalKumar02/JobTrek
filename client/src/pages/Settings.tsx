@@ -1,7 +1,7 @@
 import { Bell, Palette } from 'lucide-react';
-import ProfileCard from '../shared/components/Settings/ProfileCard';
 
-import SettingCardHeader from '../shared/components/Settings/SettingCardHeader';
+import ProfileCard from '../features/settings/components/ProfileCard';
+import SettingCardHeader from '../features/settings/components/SettingCardHeader';
 
 const ToggleButton = ({ buttonTitle, buttonSubtitle, checked }) => {
   return (
@@ -10,7 +10,7 @@ const ToggleButton = ({ buttonTitle, buttonSubtitle, checked }) => {
         <div className="font-medium text-sm text-neutral-900">
           {buttonTitle}
         </div>
-        <div className="text-xs text-[#727272]">{buttonSubtitle}</div>
+        <div className="text-xs text-gray-500">{buttonSubtitle}</div>
       </div>
       <label className="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" className="sr-only peer" value={checked} />
@@ -34,6 +34,10 @@ const Settings = () => {
       <div className="flex flex-col gap-4">
         {/* ProfileCard */}
         <ProfileCard />
+
+        <div className="text-lg font-semibold text-neutral-900">
+          Experimental Features
+        </div>
 
         {/* App Appearence Card */}
         <div className="setting-card overflow-hidden text-neutral-900">

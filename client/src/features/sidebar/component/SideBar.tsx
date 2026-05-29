@@ -18,6 +18,8 @@ const SideBar = () => {
     if (success) {
       showToast('success', message);
       navigate('/register');
+    } else {
+      showToast('warning', message);
     }
   };
 

@@ -20,9 +20,6 @@ const userSchema = new Schema<IUser>(
             type: String,
             required: [true, 'Username is required'],
             lowercase: true,
-            unique: true,
-            trim: true,
-            index: true,
         },
         password: {
             type: String,
