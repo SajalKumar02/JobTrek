@@ -7,15 +7,12 @@ export interface AuthRequest<T = Record<string, any>> extends Request {
     };
     body: T;
     cookies: {
-        refreshToken?: string;
         accessToken?: string;
     };
-
 }
 
 export interface AuthServiceResponse {
     accessToken: string;
-    refreshToken: string;
     isNewUser: boolean;
 }
 

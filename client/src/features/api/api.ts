@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 
 const config: AxiosRequestConfig = {
-    baseURL: "http://localhost:8000/api",
+    baseURL: "http://localhost:8000/api/v1",
     headers: {
         "Content-Type": "application/json",
     },
@@ -13,24 +13,29 @@ const http: AxiosInstance = axios.create(config);
 http.defaults.withCredentials = true;
 
 http.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        console.log(error);
+    function (response) {
+        console.log(response);
+        return response;
+    },
+    function (error) {
+        console.log("This is an error");
+        // console.log("API INTERCEPTOR")
         // if (
-        //     error.response &&
-        //     error.response.data &&
-        //     error.response.data.message === "REFRESH TOKEN EXPIRED"
-        // ) {
-        // window.location.href = "/register";
-        // }
-        // else if (
         //     error.response &&
         //     error.response.data &&
         //     error.response.data.message === "ACCESS TOKEN EXPIRED"
         // ) {
         //     try {
-        //         console.log("API INTERCEPTOR")
+        //         if (!error.config) {
+        //             return Promise.reject(error);
+        //         }
+
         //         const originalRequest = error.config;
+        //         if (originalRequest._retry) {
+        //             window.location.href = "/register";
+        //             return Promise.reject(error);
+        //         }
+        //         originalRequest._retry = true;
         //         await http.post('/auth/token/refresh');
         //         return http(originalRequest);
         //     } catch (refreshError) {
@@ -38,6 +43,7 @@ http.interceptors.response.use(
         //         return Promise.reject(refreshError);
         //     }
         // }
+        return Promise.reject(error);
     }
 );
 

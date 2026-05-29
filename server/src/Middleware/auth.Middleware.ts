@@ -1,29 +1,20 @@
-import { NextFunction, Response } from "express";
-
-import { ProtectedRequest } from "../Types";
+import { AppError } from "../Utils/error.Util";
 import { verifyAccessToken } from "../Utils/token.Util";
-import { Types } from "mongoose";
 
-export const authMiddleware = (req: ProtectedRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = (req, res, next) => {
   const { accessToken } = req.cookies;
 
   if (!accessToken) {
-    return res.status(401).send({
-      message: "ACCESS TOKEN EXPIRED",
-      success: false
-    });
+    throw new AppError("ACCESS TOKEN NOT FOUND", 401)
   }
 
   const decoded = verifyAccessToken(accessToken);
 
   if (!decoded) {
-    return res.status(401).send({
-      message: "ACCESS TOKEN EXPIRED",
-      success: false
-    });
+    throw new AppError("ACCESS TOKEN EXPIRED", 401);
   }
 
-  req.user = { userId: new Types.ObjectId(decoded.id) };
+  req.user = { userId: decoded.id };
 
   next();
 };

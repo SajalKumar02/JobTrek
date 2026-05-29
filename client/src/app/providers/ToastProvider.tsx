@@ -17,7 +17,7 @@ const ToastProvider = ({ children }) => {
     ]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    }, 10000);
+    }, 1000);
   }, []);
 
   return (

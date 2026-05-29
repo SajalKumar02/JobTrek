@@ -103,8 +103,8 @@ const CreateJobModal = () => {
     };
 
     await createJob(jobBody);
-    setForm(initialForm); // Reset form after creating
-    setCloseCreateModal(); // Close the modal after submission
+    setForm(initialForm);
+    setCloseCreateModal();
   };
 
   if (!showCreateModal) {

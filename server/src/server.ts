@@ -25,7 +25,7 @@ app.use(
   }),
 );
 
-app.use('/api', IndexRouter);
+app.use('/api/v1', IndexRouter);
 
 // app.all('*', (req, res) => {
 //   res.status(404).json({

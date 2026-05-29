@@ -37,7 +37,8 @@ const JobView = () => {
           setError('Job ID not found in URL.');
         }
       } catch {
-        setError('Could not fetch job details.');
+        showToast('warning', 'Could not fetch job details.');
+
         setForm(initialStateJob);
       } finally {
         setLoading(false);

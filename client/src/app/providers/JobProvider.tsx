@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import http from '../../features/api/api';
 
 const JobContext = createContext(null);
@@ -127,28 +127,22 @@ const JobProvider = ({ children }) => {
 
   const fetchJobViaId = async (jobId) => {
     try {
-      const response = await http.get(`/jobs/${jobId}`);
+      const job = jobs.find((j) => j._id === jobId);
+
+      const response = await http.get(`/jobs/${job._id}`);
       if (response.data && response.data.success) {
-        setJobs((prev) =>
-          prev
-            ? prev.map((job) =>
-                job._id === response.data.job._id
-                  ? { ...job, ...response.data.job }
-                  : job,
-              )
-            : [response.data.job],
-        );
         return response.data.job;
       } else {
-        throw new Error(response.data?.message || 'Failed to delete job');
+        // throw new Error(response.data?.message || 'Failed to delete job');
+        throw new Error(response.data.message);
       }
     } catch (error) {
-      console.error('Error deleting job:', error);
-      throw error;
+      console.log(error);
+      // throw new Error(response.error.data.message);
     }
   };
 
-  const countJobs = () => jobs?.length ?? 0;
+  const countJobs = useCallback(() => (jobs ? jobs.length : 0), [jobs]);
 
   return (
     <JobContext.Provider

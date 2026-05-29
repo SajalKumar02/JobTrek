@@ -3,18 +3,20 @@ import { LineChart, LogOut, Users } from 'lucide-react';
 import { NAV_ITEMS } from '../constants/constant';
 import { useJobs } from '../../jobs/hooks/useJobs';
 import { useAuth } from '../../auth/hooks/useAuth';
-import { useEffect } from 'react';
+import { useToast } from '../../toast/hooks/useToast';
 
 const SideBar = () => {
   const navigate = useNavigate();
 
   const { user, logOut } = useAuth();
   const { countJobs } = useJobs();
+  const { showToast } = useToast();
 
   const handleLogOut = async (e) => {
     e.preventDefault();
     const success = await logOut();
     if (success) {
+      showToast('success', 'Log Out successful');
       navigate('/register');
     }
   };

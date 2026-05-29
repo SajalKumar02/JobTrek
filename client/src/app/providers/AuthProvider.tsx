@@ -6,7 +6,6 @@ const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [user, setUser] = useState();
 
   const handleAuth = async ({ email, password }) => {
@@ -39,10 +38,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const logOut = async () => {
-    console.log('Logout Working');
     try {
       const response = await http.post('/auth/logout');
-      console.log(response.data);
       if (response.data && response.data.success) {
         setAuthenticated(false);
         return response.data.success === true;
@@ -70,38 +67,23 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const getUserProfile = async () => {
-    try {
-      const response = await http.get('/user/me');
-      if (response.data && response.data.success) {
-        setUser(response.data.user);
+  useEffect(() => {
+    if (!authenticated) return;
+
+    const getUserProfile = async () => {
+      try {
+        const response = await http.get('/user/me');
+        if (response.data && response.data.success) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error('Error updating user profile:', error);
+        throw error;
       }
-    } catch (error) {
-      console.error('Error updating user profile:', error);
-      throw error;
-    }
-  };
+    };
 
-  // useEffect(() => {
-  //   const init = async () => {
-  //     if (loading && !authenticated) return;
-  //     // try should run when
-  //     // there is no loading (loading === false) and
-  //     // authenticated is true (authenticate === true)
-  //     try {
-  //       // await http.post('/auth/token/refresh');
-  //       setAuthenticated(true);
-
-  //       const userRes = await http.get('/user/me');
-  //       setUser(userRes.data.user);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   init();
-  // }, [authenticated, loading]);
+    getUserProfile();
+  }, [authenticated]);
 
   return (
     <AuthContext.Provider
@@ -111,7 +93,6 @@ const AuthProvider = ({ children }) => {
         loading,
         handleAuth,
         logOut,
-        getUserProfile,
         updateUserProfile,
       }}
     >

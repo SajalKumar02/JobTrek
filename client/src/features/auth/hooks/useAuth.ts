@@ -8,7 +8,6 @@ export const useAuth = () => {
         loading,
         handleAuth,
         logOut,
-        getUserProfile,
         updateUserProfile
     } = useContext(AuthContext);
 
@@ -18,7 +17,6 @@ export const useAuth = () => {
         loading,
         handleAuth,
         logOut,
-        getUserProfile,
         updateUserProfile
     }
 }
