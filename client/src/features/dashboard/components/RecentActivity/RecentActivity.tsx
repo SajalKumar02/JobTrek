@@ -9,10 +9,8 @@ const RecentActivity = () => {
     return jobs.sort((a, b) => a.updatedAt > b.updatedAt).slice(0, 5);
   }, [jobs]);
 
-  console.log(RecentActivity);
-
   return (
-    <div className="dashboard-card py-4 px-4">
+    <div className="dashboard-card">
       <div className="flex items-center justify-between mb-3">
         <div className="text-[1.08rem] font-semibold">Recent activity</div>
         <a

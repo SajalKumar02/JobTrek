@@ -32,7 +32,7 @@ const sampleDeadlines: Deadline[] = [
 
 const UpcomingDeadlines = () => {
   return (
-    <div className="dashboard-card grid gap-2 px-3 py-2">
+    <div className="dashboard-card grid gap-2">
       <div className="flex items-center justify-between">
         <span className="font-semibold text-sm">Upcoming deadlines</span>
         <span className="text-xs text-gray-500">next 7 days</span>

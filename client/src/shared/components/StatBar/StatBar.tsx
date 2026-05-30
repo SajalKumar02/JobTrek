@@ -3,9 +3,9 @@ import {
   getJobsForSearch,
   getJobsViaJobType,
   getStatCountByStatus,
-} from '../../utils/pipeline.utils';
-import { useJobs } from '../../hooks/useJobs';
+} from '../../../features/jobs/utils/pipeline.utils';
 import StatPill from './StatPill';
+import { useJobs } from '../../../features/jobs/hooks/useJobs';
 
 type Stat = {
   label: string;
@@ -63,7 +63,7 @@ const StatBar = () => {
   );
 
   return (
-    <div className="grid grid-cols-5 space-x-2">
+    <div className="grid grid-cols-5 gap-2">
       {stats.map((stat, i) => (
         <StatPill
           key={i}

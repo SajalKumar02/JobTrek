@@ -1,5 +1,5 @@
 const StatPill = ({ label, value, sub }) => (
-  <div className="dashboard-card flex flex-col items-start px-5 py-3 transition">
+  <div className="dashboard-card flex flex-col items-start transition">
     <div className="text-[0.85rem] text-gray-600 uppercase tracking-wider font-semibold mb-1">
       {label}
     </div>

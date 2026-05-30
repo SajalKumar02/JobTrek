@@ -15,7 +15,8 @@ import AppLayout from '../shared/layouts/AppLayout';
 import JobProvider from './providers/JobProvider';
 
 // Specific Use Cases Pages
-import JobView from '../pages/JobView';
+import JobView from '../features/jobs/components/JobView';
+
 import PageNotFound from '../pages/PageNotFound';
 
 const App = () => {

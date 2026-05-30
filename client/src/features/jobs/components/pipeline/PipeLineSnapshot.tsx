@@ -42,7 +42,7 @@ const PipeLineSnapshot = () => {
   const maxValue = Math.max(...statJobCountsArray.map((d) => d.value), 1);
 
   return (
-    <div className="dashboard-card grid grid-rows-[auto_5fr] gap-2 p-4">
+    <div className="dashboard-card grid grid-rows-[auto_5fr] gap-2">
       <div>
         <p className="font-semibold text-lg">Pipeline snapshot</p>
       </div>

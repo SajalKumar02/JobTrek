@@ -33,7 +33,7 @@ const ProfileCard = () => {
   };
 
   return (
-    <div className="dashboard-card p-4 flex flex-col gap-3">
+    <div className="dashboard-card flex flex-col gap-3">
       <div className="text-gray-700 flex items-center gap-2">
         <User className="w-5 h-5 inline-block mt-0.5" />
         <span className="font-medium text-sm text-gray-900">Profile</span>
