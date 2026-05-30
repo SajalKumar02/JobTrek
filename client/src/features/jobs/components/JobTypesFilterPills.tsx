@@ -5,7 +5,7 @@ const JobTypesFilterPills = () => {
   const { filterString, handleSetFilter } = useJobs();
 
   return (
-    <div className="grid grid-cols-12 gap-2">
+    <div className="grid grid-cols-6 gap-2">
       {filterOptions.map((filter) => (
         <button
           key={filter.value}

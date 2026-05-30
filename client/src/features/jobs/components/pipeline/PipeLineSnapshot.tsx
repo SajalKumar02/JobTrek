@@ -1,29 +1,6 @@
 import React from 'react';
-
-const pipelineData = [
-  {
-    label: 'Wishlist',
-    value: 6,
-  },
-  {
-    label: 'Applied',
-    value: 10,
-  },
-  {
-    label: 'OA',
-    value: 4,
-  },
-  {
-    label: 'Interview',
-    value: 4,
-  },
-  {
-    label: 'Offer',
-    value: 1,
-  },
-];
-
-const maxValue = Math.max(...pipelineData.map((d) => d.value), 1);
+import { useJobs } from '../../hooks/useJobs';
+import { getStatCountByStatus } from '../../utils/pipeline.utils';
 
 const PipelineBarRow: React.FC<{
   label: string;
@@ -53,13 +30,24 @@ const PipelineBarRow: React.FC<{
 };
 
 const PipeLineSnapshot = () => {
+  const { jobs } = useJobs();
+
+  const statJobCountsArray = Object.entries(getStatCountByStatus(jobs)).map(
+    ([key, value]) => ({
+      label: key,
+      value,
+    }),
+  );
+
+  const maxValue = Math.max(...statJobCountsArray.map((d) => d.value), 1);
+
   return (
     <div className="dashboard-card grid grid-rows-[auto_5fr] gap-2 p-4">
       <div>
         <p className="font-semibold text-lg">Pipeline snapshot</p>
       </div>
       <div className="grid">
-        {pipelineData.map((stage) => (
+        {statJobCountsArray.map((stage) => (
           <PipelineBarRow
             key={stage.label}
             label={stage.label}

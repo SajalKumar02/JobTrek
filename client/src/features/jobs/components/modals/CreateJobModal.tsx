@@ -4,9 +4,9 @@ import {
   jobTypeOptions,
   locationOptions,
   statusOptions,
-} from '../types/contants';
+} from '../../types/contants';
 
-import { useJobs } from '../hooks/useJobs';
+import { useJobs } from '../../hooks/useJobs';
 import { X } from 'lucide-react';
 
 const initialForm = {

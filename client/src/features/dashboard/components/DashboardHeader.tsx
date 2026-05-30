@@ -2,7 +2,7 @@ import AddApplicationButton from '../../../shared/components/AddApplicationButto
 import { getTodayWithDay } from '../../../shared/utils/date';
 import { useJobs } from '../../jobs/hooks/useJobs';
 
-const DashboardTop = () => {
+const DashboardHeader = () => {
   const todayString = getTodayWithDay();
 
   const { countJobs } = useJobs();
@@ -24,4 +24,4 @@ const DashboardTop = () => {
   );
 };
 
-export default DashboardTop;
+export default DashboardHeader;

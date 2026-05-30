@@ -1,4 +1,4 @@
-import { useJobs } from '../../jobs/hooks/useJobs';
+import { useJobs } from '../../../jobs/hooks/useJobs';
 import { useMemo } from 'react';
 import RecentActivityCard from './RecentActivityCard';
 

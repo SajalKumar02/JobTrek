@@ -1,6 +1,6 @@
 import { DragDropProvider } from '@dnd-kit/react';
 
-import StatBar from '../features/jobs/components/StatBar.tsx';
+import StatBar from '../features/jobs/components/StatBar/StatBar.tsx';
 import JobTypesFilterPills from '../features/jobs/components/JobTypesFilterPills.tsx';
 import Pipeline from '../features/jobs/components/pipeline/Pipeline.tsx';
 

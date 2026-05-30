@@ -3,7 +3,7 @@ import { statusOptions } from '../../types/contants';
 
 const Pipeline = () => {
   return (
-    <div className="grid">
+    <div className="grid overflow-auto">
       <div className="flex gap-2">
         {statusOptions.map((status) => (
           <PipelineColumn key={status.value} title={status.label} />
