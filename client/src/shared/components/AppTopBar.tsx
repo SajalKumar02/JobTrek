@@ -6,9 +6,10 @@ import {
   Settings,
   Search,
   LineChart,
-  Plus,
 } from 'lucide-react';
+
 import { useJobs } from '../../features/jobs/hooks/useJobs';
+import AddApplicationButton from './AddApplicationButton';
 
 function useBreadcrumb() {
   const location = useLocation();
@@ -26,7 +27,7 @@ function useBreadcrumb() {
 }
 
 const AppTopBar = () => {
-  const { setShowCreateModal, searchString, handleSetSearchString } = useJobs();
+  const { searchString, handleSetSearchString } = useJobs();
 
   const [searchInput, setSearchInput] = useState(searchString);
   const breadcrumb = useBreadcrumb();
@@ -67,13 +68,7 @@ const AppTopBar = () => {
             placeholder="Search jobs..."
           />
         </div>
-        <button
-          className="flex items-center gap-1.5 h-8 px-3.5 rounded-md border border-gray-500/40 bg-white hover:bg-gray-100 transition-all text-gray-900 text-xs font-semibold focus:ring-2 focus:ring-blue-400"
-          onClick={() => setShowCreateModal()}
-        >
-          <Plus size={17} />
-          <span className="truncate">Add opportunity</span>
-        </button>
+        <AddApplicationButton />
       </div>
     </header>
   );

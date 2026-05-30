@@ -22,7 +22,7 @@ export const jobService = {
     },
 
     getAllJob: async (userId: Types.ObjectId): Promise<JobSummary[]> => {
-        const result = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status");
+        const result = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status updatedAt");
 
         return result;
     },

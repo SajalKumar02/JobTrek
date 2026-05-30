@@ -19,7 +19,6 @@ const userSchema = new Schema<IUser>(
         username: {
             type: String,
             required: [true, 'Username is required'],
-            lowercase: true,
         },
         password: {
             type: String,

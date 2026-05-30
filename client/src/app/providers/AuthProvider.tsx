@@ -59,7 +59,7 @@ const AuthProvider = ({ children }) => {
 
   const updateUserProfile = async (updatedProfile) => {
     try {
-      const response = await http.patch('/user/profile', updatedProfile);
+      const response = await http.patch('/user/username', updatedProfile);
       if (response.data && response.data.success) {
         setUser(response.data.user);
       }
@@ -68,6 +68,21 @@ const AuthProvider = ({ children }) => {
       return {
         success: false,
         message: error?.response?.data?.message || 'Failed to update profile',
+      };
+    }
+  };
+
+  const updateUserEmail = async (updatedEmail) => {
+    try {
+      const response = await http.patch('/user/email', updatedEmail);
+      if (response.data && response.data.success) {
+        setUser(response.data.user);
+      }
+      return response.data;
+    } catch (error) {
+      return {
+        success: false,
+        message: error?.response?.data?.message || 'Failed to update email',
       };
     }
   };
@@ -115,6 +130,7 @@ const AuthProvider = ({ children }) => {
         handleAuth,
         logOut,
         updateUserProfile,
+        updateUserEmail,
         checkAccessToken,
       }}
     >

@@ -40,7 +40,10 @@ const JobCard: React.FC<JobCardProps> = ({
     }
   };
 
-  const lastDate = importantDates[importantDates.length - 1];
+  const lastDate =
+    importantDates && importantDates.length > 0
+      ? importantDates[importantDates.length - 1]
+      : undefined;
 
   return (
     <div
@@ -78,13 +81,13 @@ const JobCard: React.FC<JobCardProps> = ({
       </div>
       <div className="text-gray-600 text-sm font-medium">{jobRole}</div>
       <div className="flex items-center mt-1 space-x-2 text-xs">
-        {lastDate && (
+        {(lastDate?.label || lastDate?.date) && (
           <div className="flex items-center bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
             <span className="font-semibold">
-              {lastDate.label && `${lastDate.label} `}
+              {lastDate?.label && `${lastDate.label} `}
             </span>
             <span className="ms-2">
-              {lastDate.date && new Date(lastDate.date).toLocaleDateString()}
+              {lastDate?.date && new Date(lastDate.date).toLocaleDateString()}
             </span>
           </div>
         )}
