@@ -18,7 +18,9 @@ const ToastContainer = () => {
                       ? 'bg-red-600 text-white'
                       : toast.type === 'updated'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-900 text-white'
+                        : toast.type === 'error'
+                          ? 'bg-red-700 text-white'
+                          : 'bg-gray-900 text-white'
               }`}
             >
               {toast.message}

@@ -1,12 +1,16 @@
-import { useJobs } from '../../../jobs/hooks/useJobs';
 import { useMemo } from 'react';
+
+import { useJobs } from '../../../jobs/hooks/useJobs';
+
 import RecentActivityCard from './RecentActivityCard';
 
 const RecentActivity = () => {
   const { jobs } = useJobs();
 
-  const RecentActivity = useMemo(() => {
-    return jobs.sort((a, b) => a.updatedAt > b.updatedAt).slice(0, 5);
+  const recentActivities = useMemo(() => {
+    return [...jobs]
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+      .slice(0, 5);
   }, [jobs]);
 
   return (
@@ -21,7 +25,7 @@ const RecentActivity = () => {
         </a>
       </div>
       <div className="grid grid-cols-5 gap-2">
-        {RecentActivity.map((activity) => (
+        {recentActivities.map((activity) => (
           <RecentActivityCard
             activity={activity}
             id={activity._id}

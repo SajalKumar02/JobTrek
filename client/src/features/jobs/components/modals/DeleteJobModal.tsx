@@ -1,25 +1,28 @@
 import { Trash2 } from 'lucide-react';
+import { useDroppable } from '@dnd-kit/react';
 
-const DeleteJobModal = () => {
+function Droppable({ id, children }) {
+  const { ref } = useDroppable({
+    id,
+  });
+
+  return <div ref={ref}>{children}</div>;
+}
+
+const DeleteJobModal = ({ showDeleteModal }) => {
+  if (!showDeleteModal) {
+    return null;
+  }
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      {/* Modal overlay */}
-      <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm"></div>
-      {/* Modal content */}
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md mx-4 p-6 flex flex-col items-center z-10">
-        <div className="w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-red-100">
-          <Trash2 className="w-10 h-10 text-red-500" />
-        </div>
-        <h2 className="text-xl font-semibold mb-2 text-center text-gray-800">
-          Drop here to delete
-        </h2>
-        <p className="text-gray-500 text-center mb-4">
-          Drag a job card onto this area to remove it from your list. This
-          action can’t be undone.
-        </p>
-        <div className="w-full h-24 border-2 border-dashed border-red-300 rounded-lg flex items-center justify-center bg-red-50 transition-colors hover:bg-red-100">
-          <span className="text-red-400 font-medium">Drop job card here</span>
-        </div>
+    <div className="fixed left-1/2 top-8 transform -translate-x-1/2 z-50 flex justify-center w-full pointer-events-none">
+      <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center pointer-events-auto">
+        <Droppable id="delete">
+          <div className="h-24 min-w-[340px] px-4 border-2 border-dashed border-red-300 rounded-lg flex flex-col gap-2 items-center justify-center bg-red-50 transition-colors hover:bg-red-100">
+            <Trash2 className="w-10 h-10 text-red-500" />
+            <span className="text-red-400 font-medium">Drop job card here</span>
+          </div>
+        </Droppable>
       </div>
     </div>
   );

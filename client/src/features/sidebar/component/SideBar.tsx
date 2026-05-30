@@ -1,16 +1,20 @@
 import { NavLink, useNavigate } from 'react-router';
 import { LineChart, LogOut, Users } from 'lucide-react';
 import { NAV_ITEMS } from '../constants/constant';
-import { useJobs } from '../../jobs/hooks/useJobs';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { useToast } from '../../toast/hooks/useToast';
+
+import { countJobs } from '../../jobs/utils/job.utils';
+import { useJobs } from '../../jobs/hooks/useJobs';
 
 const SideBar = () => {
   const navigate = useNavigate();
 
   const { user, logOut } = useAuth();
-  const { countJobs } = useJobs();
+  const { jobs } = useJobs();
   const { showToast } = useToast();
+
+  const appicationsCount = countJobs(jobs);
 
   const handleLogOut = async (e) => {
     e.preventDefault();
@@ -74,7 +78,7 @@ const SideBar = () => {
                             : 'bg-stone-100 text-gray-500',
                         ].join(' ')}
                       >
-                        {countJobs()}
+                        {appicationsCount}
                       </span>
                     )}
                   </>

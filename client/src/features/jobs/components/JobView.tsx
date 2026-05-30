@@ -15,32 +15,24 @@ import { useToast } from '../../toast/hooks/useToast';
 
 const JobView = () => {
   const { jobId } = useParams();
+
   const { fetchJobViaId, updateJob } = useJobs();
   const { showToast } = useToast();
 
   const [form, setForm] = useState(initialStateJob);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
-      setLoading(true);
-      setError('');
+      if (!jobId) {
+        return;
+      }
       try {
-        if (jobId) {
-          const fetchedJob = await fetchJobViaId(jobId);
-          setForm(fetchedJob || initialStateJob);
-        } else {
-          setError('Job ID not found in URL.');
-        }
-      } catch {
-        showToast('warning', 'Could not fetch job details.');
-
+        const data = await fetchJobViaId(jobId);
+        setForm(data.job);
+      } catch (error) {
+        showToast('error', error.response.data.message);
         setForm(initialStateJob);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -50,18 +42,14 @@ const JobView = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
     try {
-      const { result } = await updateJob(jobId, form);
-      setForm(result);
-      setEditing(false);
-    } catch {
-      showToast('warning', 'Job Updating Failed');
-      setError('Could not update job.');
+      const data = await updateJob(jobId, form);
+      setForm(data.job);
+      showToast('success', data.message);
+    } catch (error) {
+      showToast('error', error.response.data.message);
     } finally {
-      showToast('success', 'Job Updated Successfully');
-      setLoading(false);
+      setEditing(false);
     }
   };
 
@@ -97,10 +85,6 @@ const JobView = () => {
         : [{ label: '', date: '' }],
     }));
   };
-
-  if (error) {
-    return;
-  }
 
   return (
     <div className="grid px-2 pb-4">

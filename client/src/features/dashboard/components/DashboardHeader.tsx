@@ -2,10 +2,14 @@ import AddApplicationButton from '../../../shared/components/AddApplicationButto
 import { getTodayWithDay } from '../../../shared/utils/date';
 import { useJobs } from '../../jobs/hooks/useJobs';
 
+import { countJobs } from '../../jobs/utils/job.utils';
+
 const DashboardHeader = () => {
   const todayString = getTodayWithDay();
 
-  const { countJobs } = useJobs();
+  const { jobs } = useJobs();
+
+  const applicationsCount = countJobs(jobs);
 
   return (
     <div className="dashboard-card flex flex-row justify-between items-center">
@@ -15,7 +19,7 @@ const DashboardHeader = () => {
           {todayString}
           &nbsp;·&nbsp;{' '}
           <span className="font-medium">
-            {countJobs()} applications tracked
+            {applicationsCount} applications tracked
           </span>
         </p>
       </div>

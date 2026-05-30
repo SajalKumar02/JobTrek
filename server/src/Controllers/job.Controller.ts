@@ -26,6 +26,7 @@ export const addAJob = async (req: ProtectedRequest, res: Response) => {
 
         res.status(200).json({
             success: true,
+            message: "Job Switched Successfully",
             job
         });
     } catch (error) {
@@ -49,6 +50,7 @@ export const getAJob = async (req: ProtectedRequest, res: Response) => {
 
         res.status(200).json({
             success: true,
+            message: "Job fetched successfully",
             job
         });
     } catch (error) {
@@ -63,6 +65,7 @@ export const getAllJob = async (req: ProtectedRequest, res: Response) => {
 
         res.status(200).json({
             success: true,
+            message: "Job Updated Successfully",
             jobs
         });
     } catch (error) {
@@ -89,6 +92,7 @@ export const editAJob = async (req: ProtectedRequest, res: Response) => {
 
         res.status(200).json({
             success: true,
+            message: "Job Updated Successfully",
             job
         });
 
@@ -124,6 +128,7 @@ export const changeJobStatus = async (req: ProtectedRequest, res: Response) => {
 
         res.status(200).json({
             success: true,
+            message: "Job Status Updated Successfully",
             job
         });
     } catch (error) {
@@ -138,8 +143,16 @@ export const deleteAJob = async (req: ProtectedRequest, res: Response) => {
 
         const isJob: boolean = await jobService.deleteJob(jobId, userId);
 
+        if (!isJob) {
+            return res.status(404).json({
+                success: false,
+                message: "Job not found"
+            });
+        }
+
         res.status(200).json({
-            success: isJob
+            success: isJob,
+            message: "Job deleted successfully"
         });
     } catch (error) {
         res.status(500).json({ success: false, message: (error as Error).message || 'Internal server error' });

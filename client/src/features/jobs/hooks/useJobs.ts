@@ -4,7 +4,6 @@ import { JobContext } from "../../../app/providers/JobProvider";
 export const useJobs = () => {
     const {
         jobs,
-        countJobs,
         createJob,
         updateJob,
         switchJobStatus,
@@ -21,7 +20,6 @@ export const useJobs = () => {
 
     return {
         jobs,
-        countJobs,
         createJob,
         updateJob,
         switchJobStatus,
