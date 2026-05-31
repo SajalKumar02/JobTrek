@@ -1,5 +1,5 @@
 import JobTypesFilterPills from '../features/jobs/components/JobTypesFilterPills.tsx';
-import Pipeline from '../features/jobs/components/pipeline/Pipeline.tsx';
+import Pipeline from '../features/pipeline/components/Pipeline.tsx';
 
 import StatBar from '../shared/components/StatBar/StatBar.tsx';
 

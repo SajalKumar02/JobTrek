@@ -9,8 +9,28 @@ const RecentActivity = () => {
 
   const recentActivities = useMemo(() => {
     return [...jobs]
-      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-      .slice(0, 5);
+      .sort((a, b) => {
+        const updatedAtA = new Date(a.updatedAt).getTime();
+        const updatedAtB = new Date(b.updatedAt).getTime();
+        if (updatedAtB !== updatedAtA) {
+          return updatedAtB - updatedAtA;
+        }
+
+        const lastStatusA =
+          a.statusHistory && a.statusHistory.length > 0
+            ? new Date(
+                a.statusHistory[a.statusHistory.length - 1].date,
+              ).getTime()
+            : 0;
+        const lastStatusB =
+          b.statusHistory && b.statusHistory.length > 0
+            ? new Date(
+                b.statusHistory[b.statusHistory.length - 1].date,
+              ).getTime()
+            : 0;
+        return lastStatusB - lastStatusA;
+      })
+      .slice(0, 3);
   }, [jobs]);
 
   return (
@@ -24,7 +44,7 @@ const RecentActivity = () => {
           View all &rarr;
         </a>
       </div>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-4 gap-2">
         {recentActivities.map((activity) => (
           <RecentActivityCard
             activity={activity}

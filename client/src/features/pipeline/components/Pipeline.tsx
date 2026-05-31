@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
-import { useJobs } from '../../hooks/useJobs';
-import { useToast } from '../../../toast/hooks/useToast';
+import { useJobs } from '../../jobs/hooks/useJobs';
+import { useToast } from '../../toast/hooks/useToast';
+
+import JobDragDropProvider from '../../JobDragDropProvider/components/JobDragDropProvider';
 
 import PipelineColumn from './PipelineColumn';
-import JobDragDropProvider from '../../../JobDragDropProvider/components/JobDragDropProvider';
-import DeleteJobModal from '../modals/DeleteJobModal';
+import DeleteJobModal from '../../jobs/modals/DeleteJobModal';
 
-import { statusOptions } from '../../types/contants';
+import { statusOptions } from '../../jobs/types/contants';
 
 const Pipeline = () => {
   const { deleteJob, switchJobStatus } = useJobs();
@@ -18,9 +19,10 @@ const Pipeline = () => {
   const handleSwitch = async (sourceId, targetId) => {
     try {
       const data = await switchJobStatus(sourceId, targetId);
+      if (!data) return;
       showToast('success', data.message);
     } catch (error) {
-      showToast('error', error.response.data.message);
+      showToast('error', error.message || error.response.data.message);
     }
   };
 
@@ -38,7 +40,7 @@ const Pipeline = () => {
     if (!event.operation.target) return;
     else if (event.operation.target && event.operation.target.id === 'delete') {
       handleDelete(event.operation.source.id);
-    } else if (event.operation.target) {
+    } else if (event.operation.target.id !== event.operation.source.id) {
       handleSwitch(event.operation.source.id, event.operation.target.id);
     }
   };

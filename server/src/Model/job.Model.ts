@@ -51,6 +51,12 @@ const jobSchema = new Schema<IJob>(
             lowercase: true,
             required: true
         },
+        statusHistory: [
+            {
+                label: { type: String, enum: JobStatusType, required: true },
+                date: { type: Date }
+            }
+        ],
         notes: {
             type: String
         }

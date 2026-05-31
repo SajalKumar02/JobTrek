@@ -1,36 +1,51 @@
 import { CalendarDays } from 'lucide-react';
-
-type Deadline = {
-  company: string;
-  label: string;
-  dateLabel: string;
-  isPrimary: boolean;
-  isTomorrow?: boolean;
-};
-
-const sampleDeadlines: Deadline[] = [
-  {
-    company: 'Flipkart',
-    label: 'OA deadline',
-    dateLabel: 'Tomorrow',
-    isPrimary: true,
-    isTomorrow: true,
-  },
-  {
-    company: 'Razorpay',
-    label: 'Interview round 1',
-    dateLabel: 'May 27',
-    isPrimary: false,
-  },
-  {
-    company: 'Swiggy',
-    label: 'Application closes',
-    dateLabel: 'May 30',
-    isPrimary: false,
-  },
-];
+import { useJobs } from '../../../jobs/hooks/useJobs';
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router';
+import { getCustomDate } from '../../../../shared/utils/date';
 
 const UpcomingDeadlines = () => {
+  const { jobs } = useJobs();
+  const navigate = useNavigate();
+
+  const deadlineJob = useMemo(() => {
+    const now = new Date();
+    now.setDate(now.getDate() - 1);
+
+    const sevenDaysFromNow = new Date(now);
+    sevenDaysFromNow.setDate(now.getDate() + 7);
+
+    const jobsUnderCurrentWeek = jobs.filter(
+      (job) =>
+        Array.isArray(job.importantDates) &&
+        job.importantDates.some((d) => {
+          if (!d.date) return false;
+          const date = new Date(d.date);
+          return date >= now && date <= sevenDaysFromNow;
+        }),
+    );
+
+    const deadlineJobArray = jobsUnderCurrentWeek
+      .sort(
+        (a, b) =>
+          new Date(
+            a.importantDates[a.importantDates.length - 1]?.date,
+          ).getTime() -
+          new Date(
+            b.importantDates[b.importantDates.length - 1]?.date,
+          ).getTime(),
+      )
+      .slice(0, 4);
+
+    return deadlineJobArray;
+  }, [jobs]);
+
+  const latestDate = (importantDates) => {
+    if (importantDates.length === 0) return;
+
+    return getCustomDate(importantDates[importantDates.length - 1].date);
+  };
+
   return (
     <div className="dashboard-card grid gap-2">
       <div className="flex items-center justify-between">
@@ -38,15 +53,15 @@ const UpcomingDeadlines = () => {
         <span className="text-xs text-gray-500">next 7 days</span>
       </div>
       <div className="grid gap-2">
-        {sampleDeadlines.map((d) => (
+        {deadlineJob.map((d) => (
           <div
-            key={d.company + d.label}
+            key={d._id}
+            onClick={() => navigate(`/jobs/${d._id}`)}
             className={
               d.isPrimary
-                ? 'flex items-center gap-2 bg-gray-200 rounded-md px-2 py-2 border-0'
-                : 'flex items-center gap-2 bg-transparent rounded-md border border-gray-300 px-2 py-2'
+                ? 'flex items-center gap-2 cursor-pointer bg-gray-200 rounded-md px-2 py-2 border-0'
+                : 'flex items-center gap-2 cursor-pointer bg-transparent rounded-md border border-gray-300 px-2 py-2'
             }
-            style={{ minHeight: '36px' }}
           >
             <div className="shrink-0">
               <div
@@ -65,9 +80,11 @@ const UpcomingDeadlines = () => {
             </div>
             <div className="flex flex-col grow leading-none">
               <span className="font-semibold text-sm leading-tight truncate">
-                {d.company}
+                {d.companyName}
               </span>
-              <span className="text-xs text-gray-600 truncate">{d.label}</span>
+              <span className="text-xs text-gray-600 truncate">
+                {d.jobRole}
+              </span>
             </div>
             <div className="flex flex-col items-end">
               <span
@@ -77,14 +94,14 @@ const UpcomingDeadlines = () => {
                     : 'text-gray-600 text-xs'
                 }
               >
-                {d.dateLabel}
+                {latestDate(d.importantDates)}
               </span>
             </div>
           </div>
         ))}
       </div>
       <div className="text-center text-gray-400 text-xs">
-        No more deadlines this week
+        No more deadlines in next 7 days...
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 import { jobService } from "../Services/job.Services";
 
-import { IJob, ProtectedRequest } from "../Types";
+import { IJob, IStatusHistoryItem, ProtectedRequest } from "../Types";
 import { JobDocument } from "../Model/job.Model";
 
 import { JobStatusType } from "../Constants/job.Constants";
@@ -13,7 +13,13 @@ export const addAJob = async (req: ProtectedRequest, res: Response) => {
         const { userId: _omit, ...restUpdates } = req.body;
 
         const userId = new Types.ObjectId(req.user.userId);
-        const updates: Partial<IJob> = restUpdates;
+
+        const statusHistory: IStatusHistoryItem[] = [{
+            label: restUpdates.status,
+            date: new Date()
+        }]
+
+        const updates: Partial<IJob> = { ...restUpdates, statusHistory: [...statusHistory] };
 
         const job = await jobService.addJob(updates, userId);
 

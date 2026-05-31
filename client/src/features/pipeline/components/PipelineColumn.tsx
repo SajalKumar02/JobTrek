@@ -1,14 +1,15 @@
-import JobCard from './JobCard';
-
+import { useMemo } from 'react';
 import { useDroppable } from '@dnd-kit/react';
 
 import {
   getJobsThroughStatus,
   getJobsViaJobType,
   getJobsForSearch,
-} from '../../utils/pipeline.utils';
-import { useJobs } from '../../hooks/useJobs';
-import { useMemo } from 'react';
+} from '../utils/pipeline.utils';
+
+import { useJobs } from '../../jobs/hooks/useJobs';
+
+import JobCard from './JobCard';
 
 function Droppable({ title, children }) {
   const { ref } = useDroppable({

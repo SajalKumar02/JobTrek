@@ -6,6 +6,12 @@ export interface IImportantDate {
     date: Date,
 }
 
+export interface IStatusHistoryItem {
+    label: string;
+    date: Date;
+}
+
+
 export interface IJob {
     companyName: string;
     officeAddress?: string;
@@ -24,6 +30,7 @@ export interface IJob {
     importantDates: IImportantDate[];
     userId: Types.ObjectId;
     status: "wishlist" | "applied" | "oa" | "interview" | "offer" | "rejected";
+    statusHistory: IStatusHistoryItem[],
     notes: string,
 }
 

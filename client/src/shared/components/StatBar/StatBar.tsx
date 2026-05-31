@@ -3,7 +3,7 @@ import {
   getJobsForSearch,
   getJobsViaJobType,
   getStatCountByStatus,
-} from '../../../features/jobs/utils/pipeline.utils';
+} from '../../../features/pipeline/utils/pipeline.utils';
 import StatPill from './StatPill';
 import { useJobs } from '../../../features/jobs/hooks/useJobs';
 

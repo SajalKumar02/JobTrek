@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 
-import CreateJobModal from '../../features/jobs/components/modals/CreateJobModal';
+import CreateJobModal from '../../features/jobs/modals/CreateJobModal';
 
 import SideBar from '../../features/sidebar/component/SideBar';
 import AppTopBar from '../components/AppTopBar';

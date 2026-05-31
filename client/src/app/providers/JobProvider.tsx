@@ -50,7 +50,11 @@ const JobProvider = ({ children }) => {
   const switchJobStatus = async (jobId, newStatus) => {
     const job = jobs.find((j) => j._id === jobId);
 
-    if (!job) return;
+    if (!job || job.status === newStatus) return;
+
+    if (job.statusHistory && job.statusHistory.length > 6) {
+      throw new Error('Limit Reached, Click on Job to Update');
+    }
 
     const response = await http.patch(`/jobs/status/${jobId}`, {
       status: newStatus,
@@ -60,7 +64,19 @@ const JobProvider = ({ children }) => {
       const newJobs = (prev) =>
         prev
           ? prev.map((job) =>
-              job._id === jobId ? { ...job, status: newStatus } : job,
+              job._id === jobId
+                ? {
+                    ...job,
+                    status: newStatus,
+                    statusHistory: [
+                      ...job.statusHistory,
+                      {
+                        label: newStatus,
+                        date: new Date(),
+                      },
+                    ],
+                  }
+                : job,
             )
           : prev;
       setJobs(newJobs);

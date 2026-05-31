@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import { useJobs } from '../hooks/useJobs';
+
 import {
   jobTypeOptions,
   locationOptions,
   statusOptions,
-} from '../../types/contants';
+} from '../types/contants';
 
-import { useJobs } from '../../hooks/useJobs';
 import { X } from 'lucide-react';
 
 const initialForm = {
@@ -24,7 +25,7 @@ const initialForm = {
   benefits: false,
   benefitsDetails: '',
   isActive: true,
-  importantDates: [{ label: '', date: '' }],
+  importantDates: [],
   status: 'wishlist',
   notes: '',
 };
@@ -311,35 +312,36 @@ const CreateJobModal = () => {
           {/* Important Dates */}
           <div className="mb-4">
             <label className="block mb-1 font-medium">Important Dates</label>
-            {form.importantDates.map((date, idx) => (
-              <div key={idx} className="mb-2 flex gap-2 items-center">
-                <input
-                  type="text"
-                  placeholder="Label"
-                  value={date.label}
-                  onChange={(e) =>
-                    handleImportantDateChange(idx, 'label', e.target.value)
-                  }
-                  className="border p-2 rounded"
-                />
-                <input
-                  type="date"
-                  value={date.date}
-                  onChange={(e) =>
-                    handleImportantDateChange(idx, 'date', e.target.value)
-                  }
-                  className="border p-2 rounded"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImportantDate(idx)}
-                  className="px-2 py-1 text-red-500"
-                  disabled={form.importantDates.length === 1}
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
+            {form.importantDates.length > 0 &&
+              form.importantDates.map((date, idx) => (
+                <div key={idx} className="mb-2 flex gap-2 items-center">
+                  <input
+                    type="text"
+                    placeholder="Label"
+                    value={date.label || null}
+                    onChange={(e) =>
+                      handleImportantDateChange(idx, 'label', e.target.value)
+                    }
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="date"
+                    value={date.date || null}
+                    onChange={(e) =>
+                      handleImportantDateChange(idx, 'date', e.target.value)
+                    }
+                    className="border p-2 rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImportantDate(idx)}
+                    className="px-2 py-1 text-red-500 cursor-pointer"
+                    disabled={form.importantDates.length === 1}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
             <button
               type="button"
               onClick={addImportantDate}

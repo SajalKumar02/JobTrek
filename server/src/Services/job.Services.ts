@@ -22,7 +22,7 @@ export const jobService = {
     },
 
     getAllJob: async (userId: Types.ObjectId): Promise<JobSummary[]> => {
-        const result = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status updatedAt");
+        const result = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status statusHistory updatedAt");
 
         return result;
     },
@@ -33,8 +33,27 @@ export const jobService = {
     },
 
     changeJobStatus: async (jobId: Types.ObjectId, userId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
-        const result = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, updates, { returnDocument: 'after' });
-        return result;
+        const result = await JobModel.findOne({ _id: jobId, userId: userId });
+
+        const jobUpdates = {
+            ...updates,
+            statusHistory: [
+                ...result.statusHistory,
+                {
+                    label: updates.status,
+                    date: new Date()
+                }
+            ]
+        };
+
+        const updatedJob = await JobModel.findOneAndUpdate(
+            { _id: jobId, userId: userId },
+            jobUpdates,
+            { new: true }
+        );
+
+        return updatedJob;
+
     },
 
     deleteJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {
