@@ -9,6 +9,7 @@ import {
 } from '../types/contants';
 
 import { X } from 'lucide-react';
+import { useToast } from '../../toast/hooks/useToast';
 
 const initialForm = {
   companyName: '',
@@ -25,19 +26,28 @@ const initialForm = {
   benefits: false,
   benefitsDetails: '',
   isActive: true,
-  importantDates: [],
   status: 'wishlist',
   notes: '',
 };
 
+interface ImportanceDate {
+  idx: string;
+  label: string;
+  date: string;
+}
+
 const CreateJobModal = () => {
   const [form, setForm] = useState(initialForm);
+  const [importantDates, setImportantDate] = useState<ImportanceDate[]>([]);
+
   const { createJob, showCreateModal, setCloseCreateModal } = useJobs();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setCloseCreateModal();
+        setImportantDate([]);
       }
     };
 
@@ -64,48 +74,53 @@ const CreateJobModal = () => {
     }
   };
 
-  const handleImportantDateChange = (
-    idx: number,
-    field: string,
-    value: string,
-  ) => {
-    const newDates = form.importantDates.map((date, i) =>
-      i === idx ? { ...date, [field]: value } : date,
+  // Important Date functions
+  const handleAddImportantDate = () => {
+    setImportantDate((prev) => [
+      ...prev,
+      {
+        idx: Date.now().toString(),
+        label: '',
+        date: '',
+      },
+    ]);
+  };
+
+  const handleRemoveImportantDate = (key: string) => {
+    setImportantDate((prev) => prev.filter((a) => a.idx !== key));
+  };
+
+  const handleImportantDateChange = (key, field, value) => {
+    setImportantDate((prev) =>
+      prev.map((date) =>
+        date.idx === key ? { ...date, [field]: value } : date,
+      ),
     );
-    setForm((prev) => ({ ...prev, importantDates: newDates }));
-  };
-
-  const addImportantDate = () => {
-    setForm((prev) => ({
-      ...prev,
-      importantDates: [...prev.importantDates, { label: '', date: '' }],
-    }));
-  };
-
-  const removeImportantDate = (idx: number) => {
-    setForm((prev) => ({
-      ...prev,
-      importantDates: prev.importantDates.filter((_, i) => i !== idx),
-    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const jobBody = {
+        companyName: form.companyName,
+        officeAddress: form.officeAddress,
+        jobRole: form.jobRole,
+        description: form.description,
+        jobType: form.jobType,
+        status: form.status,
+        notes: form.notes,
+        importantDates,
+      };
 
-    const jobBody = {
-      companyName: form.companyName,
-      officeAddress: form.officeAddress,
-      jobRole: form.jobRole,
-      description: form.description,
-      jobType: form.jobType,
-      importantDates: form.importantDates,
-      status: form.status,
-      notes: form.notes,
-    };
-
-    await createJob(jobBody);
-    setForm(initialForm);
-    setCloseCreateModal();
+      const response = await createJob(jobBody);
+      showToast('success', response.message);
+      setForm(initialForm);
+    } catch (error) {
+      showToast('error', error.response.data.message || error.message);
+    } finally {
+      setImportantDate([]);
+      setCloseCreateModal();
+    }
   };
 
   if (!showCreateModal) {
@@ -312,39 +327,46 @@ const CreateJobModal = () => {
           {/* Important Dates */}
           <div className="mb-4">
             <label className="block mb-1 font-medium">Important Dates</label>
-            {form.importantDates.length > 0 &&
-              form.importantDates.map((date, idx) => (
-                <div key={idx} className="mb-2 flex gap-2 items-center">
+            {importantDates.length > 0 &&
+              importantDates.map((date) => (
+                <div key={date.idx} className="mb-2 flex gap-2 items-center">
                   <input
                     type="text"
                     placeholder="Label"
-                    value={date.label || null}
+                    value={date.label}
                     onChange={(e) =>
-                      handleImportantDateChange(idx, 'label', e.target.value)
+                      handleImportantDateChange(
+                        date.idx,
+                        'label',
+                        e.target.value,
+                      )
                     }
                     className="border p-2 rounded"
                   />
                   <input
                     type="date"
-                    value={date.date || null}
+                    value={date.date}
                     onChange={(e) =>
-                      handleImportantDateChange(idx, 'date', e.target.value)
+                      handleImportantDateChange(
+                        date.idx,
+                        'date',
+                        e.target.value,
+                      )
                     }
                     className="border p-2 rounded"
                   />
                   <button
                     type="button"
-                    onClick={() => removeImportantDate(idx)}
+                    onClick={() => handleRemoveImportantDate(date.idx)}
                     className="px-2 py-1 text-red-500 cursor-pointer"
-                    disabled={form.importantDates.length === 1}
                   >
-                    X
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               ))}
             <button
               type="button"
-              onClick={addImportantDate}
+              onClick={handleAddImportantDate}
               className="px-2 py-1 bg-blue-100 rounded text-blue-700 mt-1"
             >
               Add Date

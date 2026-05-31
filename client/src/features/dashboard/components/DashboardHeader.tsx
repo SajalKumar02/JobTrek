@@ -1,5 +1,5 @@
 import AddApplicationButton from '../../../shared/components/AddApplicationButton';
-import { getTodayWithDay } from '../../../shared/utils/date';
+import { getTodayWithDay } from '../../../shared/utils/date.utils';
 import { useJobs } from '../../jobs/hooks/useJobs';
 
 import { countJobs } from '../../jobs/utils/job.utils';

@@ -10,25 +10,10 @@ const RecentActivity = () => {
   const recentActivities = useMemo(() => {
     return [...jobs]
       .sort((a, b) => {
-        const updatedAtA = new Date(a.updatedAt).getTime();
-        const updatedAtB = new Date(b.updatedAt).getTime();
-        if (updatedAtB !== updatedAtA) {
-          return updatedAtB - updatedAtA;
-        }
+        const updatedAtA = new Date(a.updatedAt);
+        const updatedAtB = new Date(b.updatedAt);
 
-        const lastStatusA =
-          a.statusHistory && a.statusHistory.length > 0
-            ? new Date(
-                a.statusHistory[a.statusHistory.length - 1].date,
-              ).getTime()
-            : 0;
-        const lastStatusB =
-          b.statusHistory && b.statusHistory.length > 0
-            ? new Date(
-                b.statusHistory[b.statusHistory.length - 1].date,
-              ).getTime()
-            : 0;
-        return lastStatusB - lastStatusA;
+        return updatedAtB - updatedAtA;
       })
       .slice(0, 3);
   }, [jobs]);

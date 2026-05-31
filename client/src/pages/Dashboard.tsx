@@ -13,7 +13,7 @@ const Dashboard = () => {
       {/* StatBar */}
       <StatBar />
 
-      <div className="grid grid-cols-[3fr_2fr] gap-2">
+      <div className="grid grid-cols-[2fr_3fr] gap-2">
         {/* Upcoming Deadlines */}
         <UpcomingDeadlines />
         <StageConversionFunnel />

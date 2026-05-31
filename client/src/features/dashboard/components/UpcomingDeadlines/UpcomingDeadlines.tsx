@@ -1,8 +1,11 @@
-import { CalendarDays } from 'lucide-react';
-import { useJobs } from '../../../jobs/hooks/useJobs';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { getCustomDate } from '../../../../shared/utils/date';
+
+import { CalendarDays } from 'lucide-react';
+
+import { useJobs } from '../../../jobs/hooks/useJobs';
+
+import { getCustomDate } from '../../../../shared/utils/date.utils';
 
 const UpcomingDeadlines = () => {
   const { jobs } = useJobs();
@@ -48,7 +51,7 @@ const UpcomingDeadlines = () => {
 
   return (
     <div className="dashboard-card grid gap-2">
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between">
         <span className="font-semibold text-sm">Upcoming deadlines</span>
         <span className="text-xs text-gray-500">next 7 days</span>
       </div>

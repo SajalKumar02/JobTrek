@@ -1,5 +1,6 @@
 import { Clock3 } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { getCustomDate } from '../../../../shared/utils/date.utils';
 
 const RecentActivityCard = ({ activity, id }) => {
   const navigate = useNavigate();
@@ -7,7 +8,7 @@ const RecentActivityCard = ({ activity, id }) => {
   function getDaysBehind(date) {
     // const today = new Date();
 
-    return new Date(date).toLocaleDateString('en');
+    return getCustomDate(date);
   }
 
   return (

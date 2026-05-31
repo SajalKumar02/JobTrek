@@ -82,7 +82,7 @@ const JobCard: React.FC<JobCardProps> = ({
       <div className="text-gray-600 text-sm font-medium">{jobRole}</div>
       <div className="flex items-center mt-1 space-x-2 text-xs">
         {(lastDate?.label || lastDate?.date) && (
-          <div className="flex items-center bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+          <div className="flex items-center justify-between bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
             <span className="font-semibold">
               {lastDate?.label && `${lastDate.label} `}
             </span>

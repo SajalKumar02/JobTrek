@@ -13,12 +13,12 @@ export const locationOptions = [
 ];
 
 export const statusOptions = [
-    { label: 'Wishlist', value: 'wishlist' },
-    { label: 'Applied', value: 'applied' },
-    { label: 'OA', value: 'oa' },
-    { label: 'Interview', value: 'interview' },
-    { label: 'Offer', value: 'offer' },
-    { label: 'Rejected', value: 'rejected' },
+    { order: 1, label: 'Wishlist', value: 'wishlist' },
+    { order: 2, label: 'Applied', value: 'applied' },
+    { order: 3, label: 'OA', value: 'oa' },
+    { order: 4, label: 'Interview', value: 'interview' },
+    { order: 5, label: 'Offer', value: 'offer' },
+    { order: 6, label: 'Rejected', value: 'rejected' },
 ];
 
 export const filterOptions = [
