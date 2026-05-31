@@ -38,7 +38,7 @@ const UpcomingDeadlines = () => {
             b.importantDates[b.importantDates.length - 1]?.date,
           ).getTime(),
       )
-      .slice(0, 4);
+      .slice(0, 3);
 
     return deadlineJobArray;
   }, [jobs]);
@@ -50,12 +50,12 @@ const UpcomingDeadlines = () => {
   };
 
   return (
-    <div className="dashboard-card grid gap-2">
+    <div className="dashboard-card flex flex-col gap-2">
       <div className="flex justify-between">
         <span className="font-semibold text-sm">Upcoming deadlines</span>
         <span className="text-xs text-gray-500">next 7 days</span>
       </div>
-      <div className="grid gap-2">
+      <div className="grid grid-rows-4 gap-2">
         {deadlineJob.map((d) => (
           <div
             key={d._id}
