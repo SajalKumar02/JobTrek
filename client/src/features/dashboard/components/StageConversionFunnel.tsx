@@ -19,23 +19,19 @@ const BarStageConversionBar = ({
         {label}
       </span>
       <div className="flex-1 relative h-8">
-        <div className="absolute inset-0 rounded-md bg-gray-100 border border-gray-200" />
-        <div
-          className="absolute left-0 top-0 h-full rounded-md bg-gray-800 transition-all duration-500 flex items-center px-3"
-          style={{
-            width: `${widthPercent}%`,
-            minWidth: value > 0 ? '2rem' : '0',
-          }}
-        >
-          {value > 0 && (
-            <span className="text-xs font-semibold text-white">{value}</span>
-          )}
+        <div className="h-full rounded-md bg-gray-100 border border-gray-200">
+          <div
+            className="h-full rounded-md bg-gray-800 transition-all duration-500 flex items-center justify-center"
+            style={{
+              width: `${widthPercent}%`,
+              minWidth: value > 0 ? '2rem' : '0',
+            }}
+          >
+            {value > 0 && (
+              <span className="text-xs font-semibold text-white">{value}</span>
+            )}
+          </div>
         </div>
-        {value === 0 && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
-            0
-          </span>
-        )}
       </div>
     </div>
   );
