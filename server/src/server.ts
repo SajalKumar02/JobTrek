@@ -13,27 +13,17 @@ const app = express();
 const port = PORT;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Server can extract req.body
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Middleware
 app.use(
   cors({
-    // added origin
     origin: [FRONTEND_URL as string, 'http://localhost:5173'],
     credentials: true,
   }),
 );
 
 app.use('/api/v1', IndexRouter);
-
-// app.all('*', (req, res) => {
-//   res.status(404).json({
-//     status: 404,
-//     success: false,
-//     message: '!Oops page not found',
-//   });
-// });
 
 connectDb()
   .then(() => {

@@ -3,12 +3,7 @@ import { useParams } from 'react-router';
 
 import { ArrowLeft, Pencil, Save } from 'lucide-react';
 
-import {
-  jobTypeOptions,
-  locationOptions,
-  statusOptions,
-  initialStateJob,
-} from '../types/contants';
+import { jobTypeOptions, locationOptions, statusOptions, initialStateJob } from '../types/contants';
 
 import { useJobs } from '../hooks/useJobs';
 import { useToast } from '../../toast/hooks/useToast';
@@ -44,7 +39,6 @@ const JobView = () => {
     e.preventDefault();
     try {
       const data = await updateJob(jobId, form);
-      setForm(data.job);
       showToast('success', data.message);
     } catch (error) {
       showToast('error', error.response.data.message);
@@ -70,9 +64,7 @@ const JobView = () => {
 
   const handleImportantDateChange = (idx, field, value) => {
     setForm((prev) => {
-      const updatedDates = (prev.importantDates || []).map((d, i) =>
-        i === idx ? { ...d, [field]: value } : d,
-      );
+      const updatedDates = (prev.importantDates || []).map((d, i) => (i === idx ? { ...d, [field]: value } : d));
       return { ...prev, importantDates: updatedDates };
     });
   };
@@ -80,9 +72,7 @@ const JobView = () => {
   const handleAddImportantDate = () => {
     setForm((prev) => ({
       ...prev,
-      importantDates: Array.isArray(prev.importantDates)
-        ? [...prev.importantDates, { label: '', date: '' }]
-        : [{ label: '', date: '' }],
+      importantDates: Array.isArray(prev.importantDates) ? [...prev.importantDates, { label: '', date: '' }] : [{ label: '', date: '' }],
     }));
   };
 
@@ -90,27 +80,17 @@ const JobView = () => {
     <div className="grid px-2 pb-4">
       {/* Bar with Back and Edit/Save buttons */}
       <div className="flex justify-between items-center mb-8">
-        <button
-          onClick={() => window.history.back()}
-          className="flex items-center gap-2 px-4 py-2 rounded border border-gray-300 bg-gray-50 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 transition font-medium"
-        >
+        <button onClick={() => window.history.back()} className="flex items-center gap-2 px-4 py-2 rounded border border-gray-300 bg-gray-50 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 transition font-medium">
           <ArrowLeft size={18} />
           Back
         </button>
         {!editing ? (
-          <button
-            onClick={() => setEditing(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded border border-blue-600 bg-blue-600 text-white cursor-pointer font-medium shadow-sm hover:bg-blue-700 hover:border-blue-700 transition"
-          >
+          <button onClick={() => setEditing(true)} className="flex items-center gap-2 px-4 py-2 rounded border border-blue-600 bg-blue-600 text-white cursor-pointer font-medium shadow-sm hover:bg-blue-700 hover:border-blue-700 transition">
             <Pencil size={18} />
             Edit
           </button>
         ) : (
-          <button
-            onClick={handleSave}
-            type="submit"
-            className="flex items-center gap-2 px-4 py-2 rounded border border-green-600 bg-green-600 text-white cursor-pointer font-medium shadow-sm hover:bg-green-700 hover:border-green-700 transition"
-          >
+          <button onClick={handleSave} type="submit" className="flex items-center gap-2 px-4 py-2 rounded border border-green-600 bg-green-600 text-white cursor-pointer font-medium shadow-sm hover:bg-green-700 hover:border-green-700 transition">
             <Save size={18} />
             Save
           </button>
@@ -119,63 +99,25 @@ const JobView = () => {
 
       {/* Header */}
       <div className="bg-white rounded-lg shadow-md p-8 min-w-2xl mx-auto">
-        <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">
-          Job Details
-        </h2>
+        <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">Job Details</h2>
 
         {/* FORM */}
         <form className="space-y-3" onSubmit={handleSave}>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Company Name:
-            </label>
-            <input
-              name="companyName"
-              value={form.companyName || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block">Company Name:</label>
+            <input name="companyName" value={form.companyName || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" required disabled={!editing} />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Job Role:
-            </label>
-            <input
-              name="jobRole"
-              value={form.jobRole || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block">Job Role:</label>
+            <input name="jobRole" value={form.jobRole || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" required disabled={!editing} />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Description:
-            </label>
-            <textarea
-              name="description"
-              value={form.description || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              rows={4}
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block">Description:</label>
+            <textarea name="description" value={form.description || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" rows={4} disabled={!editing} />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Job Type:
-            </label>
-            <select
-              name="jobType"
-              value={form.jobType || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
-            >
+            <label className="font-semibold text-gray-700 block">Job Type:</label>
+            <select name="jobType" value={form.jobType || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" required disabled={!editing}>
               <option value="" disabled>
                 Select job type
               </option>
@@ -187,17 +129,8 @@ const JobView = () => {
             </select>
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Location:
-            </label>
-            <select
-              name="location"
-              value={form.location || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
-            >
+            <label className="font-semibold text-gray-700 block">Location:</label>
+            <select name="location" value={form.location || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" required disabled={!editing}>
               <option value="" disabled>
                 Select location
               </option>
@@ -209,27 +142,12 @@ const JobView = () => {
             </select>
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Office Address:
-            </label>
-            <input
-              name="officeAddress"
-              value={form.officeAddress || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block">Office Address:</label>
+            <input name="officeAddress" value={form.officeAddress || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" disabled={!editing} />
           </div>
           <div>
             <label className="font-semibold text-gray-700 block">Status:</label>
-            <select
-              name="status"
-              value={form.status || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              disabled={!editing}
-              required
-            >
+            <select name="status" value={form.status || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" disabled={!editing} required>
               <option value="" disabled>
                 Select status
               </option>
@@ -242,156 +160,52 @@ const JobView = () => {
           </div>
 
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Base Pay:
-            </label>
-            <input
-              type="number"
-              name="basePay"
-              value={form.basePay ?? ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              min={0}
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block">Base Pay:</label>
+            <input type="number" name="basePay" value={form.basePay ?? ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" min={0} disabled={!editing} />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Monthly Salary:
-            </label>
-            <input
-              type="number"
-              name="monthlySalary"
-              value={form.monthlySalary ?? ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              min={0}
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block">Monthly Salary:</label>
+            <input type="number" name="monthlySalary" value={form.monthlySalary ?? ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" min={0} disabled={!editing} />
           </div>
           <div>
             <label className="font-semibold text-gray-700 block">CTC:</label>
-            <input
-              type="number"
-              name="ctc"
-              value={form.ctc ?? ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              min={0}
-              disabled={!editing}
-            />
+            <input type="number" name="ctc" value={form.ctc ?? ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" min={0} disabled={!editing} />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Bonus Included:
-            </label>
-            <input
-              type="checkbox"
-              name="bonusIncluded"
-              checked={!!form.bonusIncluded}
-              onChange={handleChange}
-              className="mr-2"
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block mr-2">Bonus Included:</label>
+            <input type="checkbox" name="bonusIncluded" checked={!!form.bonusIncluded} onChange={handleChange} className="mr-2" disabled={!editing} />
           </div>
           {form.bonusIncluded && (
             <div>
-              <label className="font-semibold text-gray-700 block">
-                Bonus Description:
-              </label>
-              <input
-                name="bonusDescription"
-                value={form.bonusDescription || ''}
-                onChange={handleChange}
-                className="border rounded px-2 py-1 w-full"
-                disabled={!editing}
-              />
+              <label className="font-semibold text-gray-700 block">Bonus Description:</label>
+              <input name="bonusDescription" value={form.bonusDescription || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" disabled={!editing} />
             </div>
           )}
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Benefits:
-            </label>
-            <input
-              type="checkbox"
-              name="benefits"
-              checked={!!form.benefits}
-              onChange={handleChange}
-              className="mr-2"
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block mr-2">Benefits:</label>
+            <input type="checkbox" name="benefits" checked={!!form.benefits} onChange={handleChange} className="mr-2" disabled={!editing} />
           </div>
           {form.benefits && (
             <div>
-              <label className="font-semibold text-gray-700 block">
-                Benefits Details (comma separated):
-              </label>
-              <input
-                name="benefitsDetails"
-                value={
-                  Array.isArray(form.benefitsDetails)
-                    ? form.benefitsDetails.join(', ')
-                    : ''
-                }
-                onChange={handleBenefitsDetailsChange}
-                className="border rounded px-2 py-1 w-full"
-                placeholder="e.g. Health Insurance, Gym Membership"
-                disabled={!editing}
-              />
+              <label className="font-semibold text-gray-700 block">Benefits Details (comma separated):</label>
+              <input name="benefitsDetails" value={Array.isArray(form.benefitsDetails) ? form.benefitsDetails.join(', ') : ''} onChange={handleBenefitsDetailsChange} className="border rounded px-2 py-1 w-full" placeholder="e.g. Health Insurance, Gym Membership" disabled={!editing} />
             </div>
           )}
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Active:
-            </label>
-            <input
-              type="checkbox"
-              name="isActive"
-              checked={form.isActive}
-              onChange={handleChange}
-              className="mr-2"
-              disabled={!editing}
-            />
+            <label className="font-semibold text-gray-700 block mr-2">Active:</label>
+            <input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange} className="mr-2" disabled={!editing} />
           </div>
           <div>
             <label className="font-semibold text-gray-700 block">Notes:</label>
-            <textarea
-              name="notes"
-              value={form.notes || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              rows={2}
-              disabled={!editing}
-            />
+            <textarea name="notes" value={form.notes || ''} onChange={handleChange} className="border rounded px-2 py-1 w-full" rows={2} disabled={!editing} />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">
-              Important Dates:
-            </label>
-            {Array.isArray(form.importantDates) &&
-            form.importantDates.length > 0 ? (
+            <label className="font-semibold text-gray-700 block">Important Dates:</label>
+            {Array.isArray(form.importantDates) && form.importantDates.length > 0 ? (
               form.importantDates.map((d, idx) => (
                 <div key={idx} className="flex items-center gap-2 mb-1">
-                  <input
-                    name={`importantDatesLabel${idx}`}
-                    value={d.label || ''}
-                    onChange={(e) =>
-                      handleImportantDateChange(idx, 'label', e.target.value)
-                    }
-                    className="border rounded px-2 py-1 flex-1"
-                    placeholder="Label"
-                    disabled={!editing}
-                  />
-                  <input
-                    name={`importantDatesDate${idx}`}
-                    value={d.date ? d.date.toString().substring(0, 10) : ''}
-                    onChange={(e) =>
-                      handleImportantDateChange(idx, 'date', e.target.value)
-                    }
-                    className="border rounded px-2 py-1 flex-1"
-                    type="date"
-                    disabled={!editing}
-                  />
+                  <input name={`importantDatesLabel${idx}`} value={d.label || ''} onChange={(e) => handleImportantDateChange(idx, 'label', e.target.value)} className="border rounded px-2 py-1 flex-1" placeholder="Label" disabled={!editing} />
+                  <input name={`importantDatesDate${idx}`} value={d.date ? d.date.toString().substring(0, 10) : ''} onChange={(e) => handleImportantDateChange(idx, 'date', e.target.value)} className="border rounded px-2 py-1 flex-1" type="date" disabled={!editing} />
                 </div>
               ))
             ) : (
@@ -399,18 +213,10 @@ const JobView = () => {
             )}
             {editing && (
               <div className="flex gap-3 mt-2">
-                <button
-                  type="button"
-                  className="px-3 py-1 border border-blue-500 rounded bg-blue-500 text-white font-medium hover:bg-blue-600 transition"
-                  onClick={() => handleAddImportantDate()}
-                >
+                <button type="button" className="px-3 py-1 border border-blue-500 rounded bg-blue-500 text-white font-medium hover:bg-blue-600 transition" onClick={() => handleAddImportantDate()}>
                   + Add Important Date
                 </button>
-                <button
-                  type="submit"
-                  className="px-3 py-1 border border-green-600 rounded bg-green-600 text-white font-medium hover:bg-green-700 transition"
-                  onClick={handleSave}
-                >
+                <button type="submit" className="px-3 py-1 border border-green-600 rounded bg-green-600 text-white font-medium hover:bg-green-700 transition" onClick={handleSave}>
                   Save
                 </button>
               </div>

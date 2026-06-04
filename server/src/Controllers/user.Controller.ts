@@ -7,60 +7,41 @@ import { userService } from '../Services/user.Services';
 
 import { IUserUpdatePayload, ProtectedRequest } from '../Types';
 
-export const getUser = async (req: ProtectedRequest, res: Response) => {
-  try {
-    const userId = new Types.ObjectId(req.user.userId);
+import { asyncHander } from '../Utils/asyncHandler';
+import { ApiError } from '../Utils/ApiError.Util';
 
-    const user = await userService.getUserByID(userId);
+export const getUser = asyncHander(async (req: ProtectedRequest, res: Response) => {
+  const userId = new Types.ObjectId(req.user.userId);
 
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User Not Found"
-      })
-    }
+  const user = await userService.getUserByID(userId);
 
-    res.status(200).json({
-      success: true,
-      user
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to get user",
-      error: error?.message || error,
-    });
+  if (!user) {
+    throw new ApiError('User Not Found', 404);
   }
-};
 
-export const editUserUsername = async (req: ProtectedRequest<IUserUpdatePayload>, res: Response) => {
-  try {
-    const userId = req.user.userId;
+  res.status(200).json({
+    success: true,
+    message: 'User Fetched Successfully',
+    user,
+  });
+});
 
-    const updates: IUserUpdatePayload = {
-      username: req.body.username
-    };
+export const editUserUsername = asyncHander(async (req: ProtectedRequest<IUserUpdatePayload>, res: Response) => {
+  const userId = req.user.userId;
 
-    const user: UserDocument | null = await userService.editUserViaId(userId, updates);
+  const updates: IUserUpdatePayload = {
+    username: req.body.username,
+  };
 
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User Not Found"
-      })
-    }
+  const user: UserDocument | null = await userService.editUserViaId(userId, updates);
 
-    res.status(200).json({
-      success: true,
-      user
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to edit user",
-      error: error?.message || error,
-    });
+  if (!user) {
+    throw new ApiError('User Not Found', 404);
   }
-};
 
-export const editUserEmail = async (req: ProtectedRequest, res: Response) => { }
+  res.status(200).json({
+    success: true,
+    message: 'Username Updated Successfully',
+    user,
+  });
+});

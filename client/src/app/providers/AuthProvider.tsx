@@ -7,105 +7,55 @@ const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   const handleAuth = async ({ email, password }) => {
     setLoading(true);
-    try {
-      const response = await http.post(
-        '/auth/login',
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      if (response.data && response.data.success) {
-        setAuthenticated(true);
-      }
-      return response.data;
-    } catch (error) {
-      setAuthenticated(false);
-      return {
-        success: false,
-        message: error?.response?.data?.message,
-      };
-    } finally {
-      setLoading(false);
+    const response = await http.post(
+      '/auth/login',
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+    if (response.data && response.data.success) {
+      setAuthenticated(true);
     }
+    setLoading(false);
+    return response.data;
   };
 
   const logOut = async () => {
-    setLoading(true);
-    try {
-      const response = await http.post('/auth/logout');
-      if (response.data && response.data.success) {
-        setAuthenticated(false);
-        setUser(undefined);
-        return response.data;
-      }
-    } catch (error) {
-      console.log(error);
-      return {
-        success: false,
-        message: error?.response?.data?.message || 'Logout failed',
-      };
-    } finally {
-      setLoading(false);
+    const response = await http.post('/auth/logout');
+    if (response.data && response.data.success) {
+      setAuthenticated(false);
+      setUser(undefined);
     }
+    return response.data;
   };
 
   const updateUserProfile = async (updatedProfile) => {
-    try {
-      const response = await http.patch('/user/username', updatedProfile);
-      if (response.data && response.data.success) {
-        setUser(response.data.user);
-      }
-      return response.data;
-    } catch (error) {
-      return {
-        success: false,
-        message: error?.response?.data?.message || 'Failed to update profile',
-      };
+    const response = await http.patch('/user/username', updatedProfile);
+    if (response.data && response.data.success) {
+      setUser(response.data.user);
     }
+    return response.data;
   };
 
   const updateUserEmail = async (updatedEmail) => {
-    try {
-      const response = await http.patch('/user/email', updatedEmail);
-      if (response.data && response.data.success) {
-        setUser(response.data.user);
-      }
-      return response.data;
-    } catch (error) {
-      return {
-        success: false,
-        message: error?.response?.data?.message || 'Failed to update email',
-      };
+    const response = await http.patch('/user/email', updatedEmail);
+    if (response.data && response.data.success) {
+      setUser(response.data.user);
     }
-  };
-
-  const checkAccessToken = async () => {
-    try {
-      const response = await http.get('/auth/access/check');
-
-      if (response.data && response.data.success) {
-        setAuthenticated(true);
-        return response.data;
-      }
-    } catch (error) {
-      return error.response.data;
-    } finally {
-      setUser(undefined);
-      setLoading(false);
-    }
+    return response.data;
   };
 
   useEffect(() => {
     if (loading) return;
-    // only run when loading is off
+
     const getUserProfile = async () => {
       try {
         const response = await http.get('/user/me');
@@ -131,7 +81,6 @@ const AuthProvider = ({ children }) => {
         logOut,
         updateUserProfile,
         updateUserEmail,
-        checkAccessToken,
       }}
     >
       {children}

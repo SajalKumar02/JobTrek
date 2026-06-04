@@ -2,18 +2,16 @@ import { Types } from 'mongoose';
 
 import { comparePassword, passwordHash } from '../Utils/password.Util';
 import { generateUsernameForUser } from '../Utils/username.Util';
-import {
-  generateAccessToken,
-} from '../Utils/token.Util';
+import { generateAccessToken } from '../Utils/token.Util';
 
 import UserModel from '../Model/user.Model';
 
-import { AppError } from '../Utils/error.Util';
+import { ApiError } from '../Utils/ApiError.Util';
 
 export const authService = {
   registerOrLoginUser: async (email, password) => {
     if (!email || !password) {
-      throw new AppError('Email and Password are required', 400);
+      throw new ApiError('Email and Password are required', 400);
     }
 
     let isNewUser;
@@ -27,9 +25,8 @@ export const authService = {
       const isPasswordValid = await comparePassword(hashedPassword, comparingPassword);
 
       if (!isPasswordValid) {
-        throw new AppError('Invalid email or password', 401);
+        throw new ApiError('Incorrect password', 401);
       }
-
     } else {
       const hashPassword = await passwordHash(password);
       const newUsername = generateUsernameForUser();
@@ -46,16 +43,17 @@ export const authService = {
 
     return {
       accessToken,
-      isNewUser
+      isNewUser,
     };
   },
+
   changeUserPassword: async (userId, oldPassword, newPassword) => {
     let user = await UserModel.findById(userId).select('+password');
     if (!user) {
-      throw new AppError("User not found", 404)
+      throw new ApiError('User not found', 404);
     }
-    if (!await comparePassword(user.password, oldPassword)) {
-      throw new AppError("Incorrect old Password", 401);
+    if (!(await comparePassword(user.password, oldPassword))) {
+      throw new ApiError('Incorrect old Password', 401);
     }
 
     const newHashPassword = await passwordHash(newPassword);

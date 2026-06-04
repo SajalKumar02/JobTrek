@@ -1,66 +1,82 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
-import JobModel, { JobDocument } from "../Model/job.Model"
+import JobModel, { JobDocument } from '../Model/job.Model';
 
-import { IJob, JobSummary } from "../Types";
+import { IJob, JobSummary } from '../Types';
 
 export const jobService = {
-    addJob: async (newJob: Partial<IJob>, userId: Types.ObjectId): Promise<JobDocument | null> => {
-        const reqBody = {
-            ...newJob,
-            userId: userId
-        };
+  addJob: async (newJob: Partial<IJob>, userId: Types.ObjectId): Promise<JobDocument | null> => {
+    const reqBody = {
+      ...newJob,
+      userId: userId,
+    };
 
-        const job = await JobModel.create(reqBody);
-        return job;
-    },
+    const job = await JobModel.create(reqBody);
+    return job;
+  },
 
-    getJob: async (jobId: Types.ObjectId, userId: Types.ObjectId): Promise<JobDocument | null> => {
-        const result = await JobModel.findOne({ _id: jobId, userId: userId });
+  getJob: async (jobId: Types.ObjectId, userId: Types.ObjectId): Promise<JobDocument | null> => {
+    const result = await JobModel.findOne({ _id: jobId, userId: userId });
 
-        return result;
-    },
+    return result;
+  },
 
-    getAllJob: async (userId: Types.ObjectId): Promise<JobSummary[]> => {
-        const result = await JobModel.find({ userId: userId }).select("companyName jobType jobRole importantDates status statusHistory updatedAt");
+  getAllJob: async (userId: Types.ObjectId): Promise<JobSummary[]> => {
+    const result = await JobModel.find({ userId: userId }).select(
+      'companyName jobType jobRole importantDates status statusHistory updatedAt',
+    );
 
-        return result;
-    },
+    return result;
+  },
 
-    editJob: async (jobId: Types.ObjectId, userId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
-        const result = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, updates, { returnDocument: 'after' });
-        return result;
-    },
+  editJob: async (
+    jobId: Types.ObjectId,
+    userId: Types.ObjectId,
+    updates: Partial<IJob>,
+  ): Promise<JobDocument | null> => {
+    const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, updates, {
+      returnDocument: 'after',
+    });
 
-    changeJobStatus: async (jobId: Types.ObjectId, userId: Types.ObjectId, updates: Partial<IJob>): Promise<JobDocument | null> => {
-        const result = await JobModel.findOne({ _id: jobId, userId: userId });
+    if (!updatedJob) return null;
+    // get job and send
+    const result = await JobModel.findOne({ userId: userId, _id: updatedJob._id }).select(
+      'companyName jobType jobRole importantDates status statusHistory updatedAt',
+    );
 
-        const jobUpdates = {
-            ...updates,
-            statusHistory: [
-                ...result.statusHistory,
-                {
-                    label: updates.status,
-                    date: new Date()
-                }
-            ]
-        };
+    return result;
+  },
 
-        const updatedJob = await JobModel.findOneAndUpdate(
-            { _id: jobId, userId: userId },
-            jobUpdates,
-            { new: true }
-        );
+  changeJobStatus: async (
+    jobId: Types.ObjectId,
+    userId: Types.ObjectId,
+    updates: Partial<IJob>,
+  ): Promise<JobDocument | null> => {
+    const result = await JobModel.findOne({ _id: jobId, userId: userId });
 
-        return updatedJob;
+    const jobUpdates = {
+      ...updates,
+      statusHistory: [
+        ...result.statusHistory,
+        {
+          label: updates.status,
+          date: new Date(),
+        },
+      ],
+    };
 
-    },
+    const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, jobUpdates, {
+      new: true,
+    });
 
-    deleteJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {
-        const job = await JobModel.findOneAndDelete({ _id: jobId, userId: userId });
-        if (job) {
-            return true;
-        }
-        return false;
-    },
-}
+    return updatedJob;
+  },
+
+  deleteJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {
+    const job = await JobModel.findOneAndDelete({ _id: jobId, userId: userId });
+    if (job) {
+      return true;
+    }
+    return false;
+  },
+};

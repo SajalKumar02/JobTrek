@@ -1,42 +1,8 @@
-const dayNames = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const shortMonthNames = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+const shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const getTodayWithDay = (): string => {
   const today = new Date();
@@ -49,5 +15,5 @@ export const getTodayWithDay = (): string => {
 
 export const getCustomDate = (dateString) => {
   const date = new Date(dateString);
-  return `${date.getDate()} ${shortMonthNames[date.getMonth() + 1]} ${date.getFullYear()}`;
+  return `${date.getDate()} ${shortMonthNames[date.getMonth()]} ${date.getFullYear()}`;
 };

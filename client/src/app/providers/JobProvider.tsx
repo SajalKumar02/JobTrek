@@ -29,23 +29,28 @@ const JobProvider = ({ children }) => {
   const createJob = async (jobData) => {
     const response = await http.post('/jobs/', jobData);
     if (response.data && response.data.success) {
-      setJobs((prev) =>
-        prev ? [response.data.job, ...prev] : [response.data.job],
-      );
+      setJobs((prev) => (prev ? [response.data.job, ...prev] : [response.data.job]));
       return response.data;
     }
+  };
+
+  const fetchJobViaId = async (jobId) => {
+    const response = await http.get(`/jobs/${jobId}`);
+    return response.data;
   };
 
   const updateJob = async (jobId, updateData) => {
     const response = await http.patch(`/jobs/${jobId}`, updateData);
 
-    const jobData = () => {
-      return jobs.map((job) => (job._id === jobId ? updateData : job));
-    };
+    if (response.data && response.data.success && response.data.job) {
+      setJobs((prev) =>
+        prev ? prev.map((job) => (job._id === jobId ? { ...job, ...response.data.job } : job)) : prev,
+      );
+    }
 
-    setJobs(jobData);
+    const newResponse = await fetchJobViaId(jobId);
 
-    return response.data;
+    return { ...newResponse, message: 'Job Updated Successfully' };
   };
 
   const switchJobStatus = async (jobId, newStatus) => {
@@ -61,44 +66,30 @@ const JobProvider = ({ children }) => {
       status: newStatus,
     });
 
-    if (response.data && response.data.success) {
-      const newJobs = (prev) =>
+    if (response.data && response.data.success && response.data.job) {
+      setJobs((prev) =>
         prev
-          ? prev.map((job) =>
-              job._id === jobId
+          ? prev.map((j) =>
+              j._id === jobId
                 ? {
-                    ...job,
-                    status: newStatus,
-                    statusHistory: [
-                      ...job.statusHistory,
-                      {
-                        label: newStatus,
-                        date: new Date(),
-                      },
-                    ],
+                    ...j,
+                    ...response.data.job,
                   }
-                : job,
+                : j,
             )
-          : prev;
-      setJobs(newJobs);
+          : prev,
+      );
     }
+
     return response.data;
   };
 
   const deleteJob = async (jobId) => {
     const response = await http.delete(`/jobs/${jobId}`);
     if (response.data && response.data.success) {
-      const newJobs = (prev) =>
-        prev ? prev.filter((job) => job._id !== jobId) : prev;
+      const newJobs = (prev) => (prev ? prev.filter((job) => job._id !== jobId) : prev);
       setJobs(newJobs);
     }
-    return response.data;
-  };
-
-  const fetchJobViaId = async (jobId) => {
-    const job = jobs.find((j) => j._id === jobId);
-
-    const response = await http.get(`/jobs/${job._id}`);
     return response.data;
   };
 
