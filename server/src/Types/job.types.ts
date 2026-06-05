@@ -1,23 +1,30 @@
-import { Types } from 'mongoose';
-import { JobDocument } from '../Model/job.Model';
+import { HydratedDocument, Types } from 'mongoose';
 
-export interface IImportantDate {
+// Base Values
+export type IJobType = 'full time' | 'internship' | 'contract' | 'freelancing' | 'part time';
+
+export type IJobLocation = 'remote' | 'onSite' | 'hybrid';
+
+export type IJobStatusTypes = 'wishlist' | 'applied' | 'oa' | 'interview' | 'offer' | 'rejected';
+
+export type IImportantDate = {
   label: string;
   date: Date;
-}
+};
 
-export interface IStatusHistoryItem {
-  label: string;
+export type IStatusHistoryItem = {
+  label: IJobStatusTypes;
   date: Date;
-}
+};
 
-export interface IJob {
+// Complete Structure
+export type IJob = {
   companyName: string;
   officeAddress?: string;
   jobRole: string;
   description?: string;
-  jobType: 'full time' | 'internship' | 'contract' | 'freelancing' | 'part time';
-  location: 'remote' | 'onSite' | 'hybrid';
+  jobType: IJobType;
+  location: IJobLocation;
   ctc: number;
   basePay: number;
   monthlySalary: number;
@@ -28,9 +35,17 @@ export interface IJob {
   isActive: boolean;
   importantDates: IImportantDate[];
   userId: Types.ObjectId;
-  status: 'wishlist' | 'applied' | 'oa' | 'interview' | 'offer' | 'rejected';
+  status: IJobStatusTypes;
   statusHistory: IStatusHistoryItem[];
   notes: string;
-}
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-export type JobSummary = Pick<JobDocument, 'companyName' | 'jobType' | 'jobRole' | 'importantDates' | 'status'>;
+// Updates
+export type IJobUpdateBody = Partial<IJob>;
+
+// Mongoose Hydrated Document
+export type JobDocument = HydratedDocument<IJob>;
+
+export type JobSummaryDocument = HydratedDocument<Pick<IJob, 'companyName' | 'jobType' | 'jobRole' | 'importantDates' | 'status'>>;

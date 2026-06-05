@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { authService } from '../Services/auth.Services';
 import { asyncHander } from '../Utils/asyncHandler';
 
@@ -17,7 +18,7 @@ export const registerOrLogin = asyncHander(async (req, res) => {
 });
 
 export const changePassword = asyncHander(async (req, res) => {
-  const { userId } = req.user;
+  const userId = new Types.ObjectId(req.user.userId);
   const { oldPassword, newPassword } = req.body;
 
   await authService.changeUserPassword(userId, oldPassword, newPassword);

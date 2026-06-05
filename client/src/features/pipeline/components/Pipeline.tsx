@@ -46,10 +46,7 @@ const Pipeline = () => {
   };
 
   return (
-    <JobDragDropProvider
-      onDragEnd={handleDragEvent}
-      onDragStart={() => setShowDeleteModal(true)}
-    >
+    <JobDragDropProvider onDragEnd={handleDragEvent} onDragStart={() => setShowDeleteModal(true)}>
       <div className="grid overflow-auto">
         <div className="flex gap-2">
           {statusOptions.map((status) => (

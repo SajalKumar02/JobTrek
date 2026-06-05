@@ -9,12 +9,12 @@ import UserModel from '../Model/user.Model';
 import { ApiError } from '../Utils/ApiError.Util';
 
 export const authService = {
-  registerOrLoginUser: async (email, password) => {
+  registerOrLoginUser: async (email: string, password: string) => {
     if (!email || !password) {
       throw new ApiError('Email and Password are required', 400);
     }
 
-    let isNewUser;
+    let isNewUser: boolean;
     let user = await UserModel.findOne({ email }).select('+password');
 
     if (user) {

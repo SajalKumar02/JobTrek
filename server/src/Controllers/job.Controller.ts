@@ -3,14 +3,14 @@ import { Types } from 'mongoose';
 
 import { jobService } from '../Services/job.Services';
 
-import { IJob, IStatusHistoryItem, ProtectedRequest } from '../Types';
-import { JobDocument } from '../Model/job.Model';
+import { IJob, IJobStatusTypes, IJobUpdateBody, IStatusHistoryItem, JobDocument, JobRequest } from '../Types';
 
 import { JobStatusType } from '../Constants/job.Constants';
-import { asyncHander } from '../Utils/asyncHandler';
-import { ApiError } from '../Utils/ApiError.Util';
 
-export const addAJob = asyncHander(async (req: ProtectedRequest, res: Response) => {
+import { ApiError } from '../Utils/ApiError.Util';
+import { asyncHander } from '../Utils/asyncHandler';
+
+export const addAJob = asyncHander(async (req: JobRequest, res: Response) => {
   const { userId: _omit, ...restUpdates } = req.body;
 
   const userId = new Types.ObjectId(req.user.userId);
@@ -40,7 +40,7 @@ export const addAJob = asyncHander(async (req: ProtectedRequest, res: Response) 
   });
 });
 
-export const getAJob = asyncHander(async (req: ProtectedRequest, res: Response) => {
+export const getAJob = asyncHander(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
@@ -57,7 +57,7 @@ export const getAJob = asyncHander(async (req: ProtectedRequest, res: Response) 
   });
 });
 
-export const getAllJob = asyncHander(async (req: ProtectedRequest, res: Response) => {
+export const getAllJob = asyncHander(async (req: JobRequest, res: Response) => {
   const userId = new Types.ObjectId(req.user.userId);
   const jobs = await jobService.getAllJob(userId);
 
@@ -68,12 +68,12 @@ export const getAllJob = asyncHander(async (req: ProtectedRequest, res: Response
   });
 });
 
-export const editAJob = asyncHander(async (req: ProtectedRequest, res: Response) => {
+export const editAJob = asyncHander(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
   const { userId: _omit, ...restUpdates } = req.body;
-  const updates: Partial<IJob> = restUpdates;
+  const updates: IJobUpdateBody = restUpdates;
 
   const job: JobDocument | null = await jobService.editJob(jobId, userId, updates);
 
@@ -88,11 +88,11 @@ export const editAJob = asyncHander(async (req: ProtectedRequest, res: Response)
   });
 });
 
-export const changeJobStatus = asyncHander(async (req: ProtectedRequest, res: Response) => {
+export const changeJobStatus = asyncHander(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
-  const { status } = req.body;
+  const status = req.body.status as IJobStatusTypes;
 
   if (!status) {
     throw new ApiError('Status is required', 400);
@@ -102,9 +102,7 @@ export const changeJobStatus = asyncHander(async (req: ProtectedRequest, res: Re
     throw new ApiError('Invalid status value', 400);
   }
 
-  const updates: Pick<IJob, 'status'> = { status };
-
-  const job: JobDocument | null = await jobService.changeJobStatus(jobId, userId, updates);
+  const job: JobDocument | null = await jobService.changeJobStatus(jobId, userId, status);
 
   res.status(200).json({
     success: true,
@@ -113,7 +111,7 @@ export const changeJobStatus = asyncHander(async (req: ProtectedRequest, res: Re
   });
 });
 
-export const deleteAJob = asyncHander(async (req: ProtectedRequest, res: Response) => {
+export const deleteAJob = asyncHander(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 

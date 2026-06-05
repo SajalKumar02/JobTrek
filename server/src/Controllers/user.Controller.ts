@@ -1,16 +1,14 @@
 import { Response } from 'express';
 import { Types } from 'mongoose';
 
-import { UserDocument } from '../Model/user.Model';
-
 import { userService } from '../Services/user.Services';
 
-import { IUserUpdatePayload, ProtectedRequest } from '../Types';
+import { IUserUpdatePayload, UserDocument, UserRequest } from '../Types';
 
 import { asyncHander } from '../Utils/asyncHandler';
 import { ApiError } from '../Utils/ApiError.Util';
 
-export const getUser = asyncHander(async (req: ProtectedRequest, res: Response) => {
+export const getUser = asyncHander(async (req: UserRequest, res: Response) => {
   const userId = new Types.ObjectId(req.user.userId);
 
   const user = await userService.getUserByID(userId);
@@ -26,7 +24,7 @@ export const getUser = asyncHander(async (req: ProtectedRequest, res: Response) 
   });
 });
 
-export const editUserUsername = asyncHander(async (req: ProtectedRequest<IUserUpdatePayload>, res: Response) => {
+export const editUserUsername = asyncHander(async (req: UserRequest, res: Response) => {
   const userId = req.user.userId;
 
   const updates: IUserUpdatePayload = {

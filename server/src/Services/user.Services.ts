@@ -1,18 +1,18 @@
 import { Types } from 'mongoose';
 
-import UserModel, { UserDocument } from '../Model/user.Model';
+import UserModel from '../Model/user.Model';
 
-import { IUser } from '../Types';
+import { IUser, UserDocument } from '../Types';
 
 export const userService = {
-  getUserByID: async (userId: Types.ObjectId): Promise<UserDocument | null> => {
-    const user = await UserModel.findById(userId);
+  getUserByID: async (userId: Types.ObjectId) => {
+    const user: UserDocument = await UserModel.findById(userId);
 
     return user;
   },
 
-  editUserViaId: async (userId: Types.ObjectId, updates: Pick<IUser, "username">): Promise<UserDocument | null> => {
-    const user = await UserModel.findOneAndUpdate({ _id: userId }, updates, { returnDocument: 'after' });
+  editUserViaId: async (userId: Types.ObjectId, updates: Pick<IUser, 'username'>) => {
+    const user: UserDocument = await UserModel.findOneAndUpdate({ _id: userId }, updates, { returnDocument: 'after' });
 
     return user;
   },
