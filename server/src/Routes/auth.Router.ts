@@ -14,6 +14,7 @@ const loginLimiter = rateLimit({
 
 const AuthRouter = Router();
 
+// prettier-ignore
 AuthRouter
   // User login or registration
   .post('/login', loginLimiter, registerOrLogin)

@@ -3,12 +3,12 @@ import { Types } from 'mongoose';
 
 import { userService } from '../Services/user.Services';
 
-import { IUserUpdatePayload, UserDocument, UserRequest } from '../Types';
+import { BaseResponse, IUserUpdatePayload, UserDocument, UserRequest, UserResponse } from '../Types';
 
 import { asyncHander } from '../Utils/asyncHandler';
 import { ApiError } from '../Utils/ApiError.Util';
 
-export const getUser = asyncHander(async (req: UserRequest, res: Response) => {
+export const getUser = asyncHander(async (req: UserRequest, res: UserResponse) => {
   const userId = new Types.ObjectId(req.user.userId);
 
   const user = await userService.getUserByID(userId);
@@ -24,8 +24,8 @@ export const getUser = asyncHander(async (req: UserRequest, res: Response) => {
   });
 });
 
-export const editUserUsername = asyncHander(async (req: UserRequest, res: Response) => {
-  const userId = req.user.userId;
+export const editUserUsername = asyncHander(async (req: UserRequest, res: UserResponse) => {
+  const userId = new Types.ObjectId(req.user.userId);
 
   const updates: IUserUpdatePayload = {
     username: req.body.username,

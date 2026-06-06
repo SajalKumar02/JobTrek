@@ -1,4 +1,7 @@
-export const asyncHander = (fn) => async (req, res, next) => {
+import { NextFunction } from 'express';
+import { BaseResponse } from '../Types';
+
+export const asyncHander = (fn: (req: Request, res: BaseResponse, next: NextFunction) => Promise<any>) => async (req: Request, res: BaseResponse, next: NextFunction) => {
   try {
     await fn(req, res, next);
   } catch (error) {

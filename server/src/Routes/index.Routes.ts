@@ -6,6 +6,7 @@ import JobRouter from './job.Router';
 
 const IndexRouter = Router();
 
+// prettier-ignore
 IndexRouter
     .use('/auth', AuthRouter)
     .use('/user', UserRouter)

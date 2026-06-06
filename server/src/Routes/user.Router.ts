@@ -6,7 +6,11 @@ import { authMiddleware } from '../Middleware/auth.Middleware';
 
 const UserRouter = Router();
 
-UserRouter.use(authMiddleware).get('/me', getUser).patch('/username', editUserUsername);
+// prettier-ignore
+UserRouter
+    .use(authMiddleware)
+    .get('/me', getUser)
+    .patch('/username', editUserUsername);
 
 // Resume/Application Related
 // POST   /api/user/resume            // Upload resume

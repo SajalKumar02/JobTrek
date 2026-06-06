@@ -53,11 +53,11 @@ export const jobService = {
       ],
     };
 
-    const updatedJob: JobDocument = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, jobUpdates, {
+    const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, jobUpdates, {
       new: true,
     });
 
-    return updatedJob;
+    return updatedJob as JobDocument;
   },
 
   deleteJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {

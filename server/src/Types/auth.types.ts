@@ -1,30 +1,28 @@
-// Who is making the request
-// How do we verify them
+import { Request, Response } from 'express';
 
-import { Types } from 'mongoose';
-import { Request } from 'express';
-
-export interface AuthRequest extends Request {
-  user?: {
-    userId: Types.ObjectId;
-  };
+// Request interface with optional access token cookie
+export interface AccessTokenRequest extends Request {
   cookies: {
     accessToken?: string;
   };
 }
 
-export interface AuthServiceResponse {
-  accessToken: string;
-  isNewUser: boolean;
+// Authenticated request with user information attached
+export interface AuthenticatedRequest extends AccessTokenRequest {
+  user: {
+    userId: string;
+  };
 }
 
-export interface ProtectedRequest<T = Record<string, any>> extends AuthRequest {
-  user: {
-    userId: Types.ObjectId;
-  };
+// Standard authenticated request type for user update operations (e.g., password, username change)
+export interface UserUpdateRequest<T = Record<string, string>> extends AuthenticatedRequest {
   body: T;
-  params: {
-    jobId?: string;
-    userId?: string;
-  };
 }
+
+// Request interface for login operations
+export interface LoginRequest<T = Record<string, string>> extends Request {
+  body: T;
+}
+
+// -----------------------
+// Responses

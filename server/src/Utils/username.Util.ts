@@ -1,5 +1,5 @@
-import { generateUsername, generateFromEmail } from "unique-username-generator";
+import { generateUsername } from 'unique-username-generator';
 
 export const generateUsernameForUser = (): string => {
-    return generateUsername();
+  return generateUsername();
 };

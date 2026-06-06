@@ -47,7 +47,7 @@ export const authService = {
     };
   },
 
-  changeUserPassword: async (userId, oldPassword, newPassword) => {
+  changeUserPassword: async (userId: Types.ObjectId, oldPassword: string, newPassword: string) => {
     let user = await UserModel.findById(userId).select('+password');
     if (!user) {
       throw new ApiError('User not found', 404);
