@@ -1,10 +1,10 @@
 // Database connection string
 import mongoose from 'mongoose';
 
-import { MONGO_URI } from '../constants';
+import { MONGO_URI } from '../Constants/constants';
 
 export const connectDb = async () => {
-  if (!MONGO_URI) throw new Error("MONGO_URI not defined");
+  if (!MONGO_URI) throw new Error('MONGO_URI not defined');
   try {
     await mongoose.connect(MONGO_URI);
     console.log('Connected to MongoDB');

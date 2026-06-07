@@ -4,7 +4,7 @@ import cors from 'cors';
 
 import { connectDb } from './Config/database';
 
-import { PORT, FRONTEND_URL } from './constants';
+import { PORT, FRONTEND_URL } from './Constants/constants';
 
 // Call Routes
 import IndexRouter from './Routes/index.Routes';

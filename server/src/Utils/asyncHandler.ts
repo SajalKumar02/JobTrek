@@ -1,16 +1,17 @@
-import { NextFunction } from 'express';
-import { BaseResponse } from '../Types';
+import { Request, Response, NextFunction } from 'express';
 
-export const asyncHander = (fn: (req: Request, res: BaseResponse, next: NextFunction) => Promise<any>) => async (req: Request, res: BaseResponse, next: NextFunction) => {
-  try {
-    await fn(req, res, next);
-  } catch (error) {
-    const status = (error as { status?: number }).status || 500;
-    const message = (error as Error).message || 'Internal server error';
+type AsyncHandlerFn<T extends Request = Request> = (req: T, res: any, next: NextFunction) => Promise<void | any> | void | any;
 
-    res.status(status).json({
-      success: false,
-      message: message,
+export const asyncHandler =
+  <T extends Request = Request>(fn: AsyncHandlerFn<T>) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req as T, res, next)).catch((error) => {
+      const status = (error as { status?: number }).status || 500;
+      const message = (error as Error).message || 'Internal server error';
+
+      res.status(status).json({
+        success: false,
+        message,
+      });
     });
-  }
-};
+  };

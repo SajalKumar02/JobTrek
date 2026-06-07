@@ -8,9 +8,9 @@ import { IJob, IJobStatusTypes, IJobUpdateBody, IStatusHistoryItem, JobDocument,
 import { JobStatusType } from '../Constants/job.Constants';
 
 import { ApiError } from '../Utils/ApiError.Util';
-import { asyncHander } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler';
 
-export const addAJob = asyncHander(async (req: JobRequest, res: Response) => {
+export const addAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const { userId: _omit, ...restUpdates } = req.body;
 
   const userId = new Types.ObjectId(req.user.userId);
@@ -40,7 +40,7 @@ export const addAJob = asyncHander(async (req: JobRequest, res: Response) => {
   });
 });
 
-export const getAJob = asyncHander(async (req: JobRequest, res: Response) => {
+export const getAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
@@ -57,7 +57,7 @@ export const getAJob = asyncHander(async (req: JobRequest, res: Response) => {
   });
 });
 
-export const getAllJob = asyncHander(async (req: JobRequest, res: Response) => {
+export const getAllJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const userId = new Types.ObjectId(req.user.userId);
   const jobs = await jobService.getAllJob(userId);
 
@@ -68,7 +68,7 @@ export const getAllJob = asyncHander(async (req: JobRequest, res: Response) => {
   });
 });
 
-export const editAJob = asyncHander(async (req: JobRequest, res: Response) => {
+export const editAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
@@ -88,7 +88,7 @@ export const editAJob = asyncHander(async (req: JobRequest, res: Response) => {
   });
 });
 
-export const changeJobStatus = asyncHander(async (req: JobRequest, res: Response) => {
+export const changeJobStatus = asyncHandler(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
@@ -111,7 +111,7 @@ export const changeJobStatus = asyncHander(async (req: JobRequest, res: Response
   });
 });
 
-export const deleteAJob = asyncHander(async (req: JobRequest, res: Response) => {
+export const deleteAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 

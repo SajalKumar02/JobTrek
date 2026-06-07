@@ -11,8 +11,8 @@ JobRouter.use(authMiddleware)
   .post('/', addAJob)
   .get('/', getAllJob)
   .get('/:jobId', getAJob)
-  .patch('/:jobId', editAJob)
   .patch('/status/:jobId', changeJobStatus)
+  .patch('/:jobId', editAJob)
   .delete('/:jobId', deleteAJob);
 
 export default JobRouter;

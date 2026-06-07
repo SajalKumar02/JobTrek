@@ -1,11 +1,11 @@
 import { Types } from 'mongoose';
 import { authService } from '../Services/auth.Services';
-import { asyncHander } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler';
 
 import { mountTokenToResponse } from '../Utils/token.Util';
 import { AccessTokenRequest, BaseResponse, LoginRequest, UserUpdateRequest } from '../Types';
 
-export const registerOrLogin = asyncHander(async (req: LoginRequest, res: BaseResponse) => {
+export const registerOrLogin = asyncHandler(async (req: LoginRequest, res: BaseResponse) => {
   const { email, password } = req.body;
 
   const result = await authService.registerOrLoginUser(email, password);
@@ -18,7 +18,7 @@ export const registerOrLogin = asyncHander(async (req: LoginRequest, res: BaseRe
   });
 });
 
-export const changePassword = asyncHander(async (req: UserUpdateRequest, res: BaseResponse) => {
+export const changePassword = asyncHandler(async (req: UserUpdateRequest, res: BaseResponse) => {
   const userId = new Types.ObjectId(req.user.userId);
   const { oldPassword, newPassword } = req.body;
 
@@ -30,7 +30,7 @@ export const changePassword = asyncHander(async (req: UserUpdateRequest, res: Ba
   });
 });
 
-export const logout = asyncHander(async (req: AccessTokenRequest, res: BaseResponse) => {
+export const logout = asyncHandler(async (req: AccessTokenRequest, res: BaseResponse) => {
   res.clearCookie('accessToken');
   res.json({ success: true, message: 'Logged out' });
 });
