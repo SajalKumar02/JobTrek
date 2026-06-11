@@ -19,12 +19,15 @@ export type IStatusHistoryItem = {
 
 // Complete Structure
 export type IJob = {
+  // About Company
   companyName: string;
   officeAddress?: string;
+  // ABout Job
   jobRole: string;
   description?: string;
   jobType: IJobType;
   location: IJobLocation;
+  // Miscellaneous
   ctc: number;
   basePay: number;
   monthlySalary: number;
@@ -34,10 +37,11 @@ export type IJob = {
   benefitsDetails?: string[];
   isActive: boolean;
   importantDates: IImportantDate[];
+  // User Settings
   userId: Types.ObjectId;
   status: IJobStatusTypes;
   statusHistory: IStatusHistoryItem[];
-  notes: string;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 };

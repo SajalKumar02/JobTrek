@@ -4,9 +4,16 @@ import { asyncHandler } from '../Utils/asyncHandler';
 
 import { mountTokenToResponse } from '../Utils/token.Util';
 import { AccessTokenRequest, BaseResponse, LoginRequest, UserUpdateRequest } from '../Types';
+import { ChangePasswordValidator, RegisterOrLoginValidator } from '../Validators/auth.Validator';
+import { ApiError } from '../Utils/ApiError.Util';
 
 export const registerOrLogin = asyncHandler(async (req: LoginRequest, res: BaseResponse) => {
   const { email, password } = req.body;
+
+  const validatorResult = RegisterOrLoginValidator.safeParse({ email, password });
+  if (!validatorResult.success) {
+    throw new ApiError(validatorResult.error.issues[0].message, 400);
+  }
 
   const result = await authService.registerOrLoginUser(email, password);
 
@@ -21,6 +28,11 @@ export const registerOrLogin = asyncHandler(async (req: LoginRequest, res: BaseR
 export const changePassword = asyncHandler(async (req: UserUpdateRequest, res: BaseResponse) => {
   const userId = new Types.ObjectId(req.user.userId);
   const { oldPassword, newPassword } = req.body;
+
+  const validatorResult = ChangePasswordValidator.safeParse({ oldPassword, newPassword });
+  if (!validatorResult.success) {
+    throw new ApiError(validatorResult.error.issues[0].message, 400);
+  }
 
   await authService.changeUserPassword(userId, oldPassword, newPassword);
 

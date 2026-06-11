@@ -23,8 +23,8 @@ const JobView = () => {
         return;
       }
       try {
-        const data = await fetchJobViaId(jobId);
-        setForm(data.job);
+        const response = await fetchJobViaId(jobId);
+        setForm(response.job);
       } catch (error) {
         showToast('error', error.response.data.message);
         setForm(initialStateJob);

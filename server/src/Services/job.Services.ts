@@ -37,25 +37,25 @@ export const jobService = {
     return updatedJob;
   },
 
-  changeJobStatus: async (jobId: Types.ObjectId, userId: Types.ObjectId, status: IJobStatusTypes) => {
+  changeJobStatus: async (jobId: Types.ObjectId, userId: Types.ObjectId, jobUpdates: IJobUpdateBody) => {
     const result: JobDocument | null = await JobModel.findOne({ _id: jobId, userId: userId });
 
     if (!result) return null;
 
-    const jobUpdates = {
-      status: status,
+    const updates = {
+      ...jobUpdates,
       statusHistory: [
         ...result.statusHistory,
         {
-          label: status,
+          label: jobUpdates.status,
           date: new Date(),
         },
       ],
     };
 
-    const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, jobUpdates, {
-      new: true,
-    });
+    const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, updates, {
+      after: true,
+    }).select('companyName jobType jobRole importantDates status statusHistory updatedAt');
 
     return updatedJob as JobDocument;
   },

@@ -3,10 +3,11 @@ import { Types } from 'mongoose';
 
 import { userService } from '../Services/user.Services';
 
-import { BaseResponse, IUserUpdatePayload, UserDocument, UserRequest, UserResponse } from '../Types';
+import { IUserUpdatePayload, UserDocument, UserRequest, UserResponse } from '../Types';
 
 import { asyncHandler } from '../Utils/asyncHandler';
 import { ApiError } from '../Utils/ApiError.Util';
+import { UpdateUserEmailValidator } from '../Validators/user.Validator';
 
 export const getUser = asyncHandler(async (req: UserRequest, res: UserResponse) => {
   const userId = new Types.ObjectId(req.user.userId);
@@ -30,6 +31,11 @@ export const editUserUsername = asyncHandler(async (req: UserRequest, res: UserR
   const updates: IUserUpdatePayload = {
     username: req.body.username,
   };
+
+  const validatorResult = UpdateUserEmailValidator.safeParse(updates);
+  if (!validatorResult.success) {
+    throw new ApiError(validatorResult.error.issues[0].message, 400);
+  }
 
   const user: UserDocument | null = await userService.editUserViaId(userId, updates);
 

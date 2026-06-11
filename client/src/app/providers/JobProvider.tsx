@@ -43,9 +43,7 @@ const JobProvider = ({ children }) => {
     const response = await http.patch(`/jobs/${jobId}`, updateData);
 
     if (response.data && response.data.success && response.data.job) {
-      setJobs((prev) =>
-        prev ? prev.map((job) => (job._id === jobId ? { ...job, ...response.data.job } : job)) : prev,
-      );
+      setJobs((prev) => (prev ? prev.map((job) => (job._id === jobId ? { ...job, ...response.data.job } : job)) : prev));
     }
 
     const newResponse = await fetchJobViaId(jobId);
@@ -67,18 +65,7 @@ const JobProvider = ({ children }) => {
     });
 
     if (response.data && response.data.success && response.data.job) {
-      setJobs((prev) =>
-        prev
-          ? prev.map((j) =>
-              j._id === jobId
-                ? {
-                    ...j,
-                    ...response.data.job,
-                  }
-                : j,
-            )
-          : prev,
-      );
+      setJobs((prev) => (prev ? prev.map((j) => (j._id === jobId ? response.data.job : j)) : prev));
     }
 
     return response.data;
