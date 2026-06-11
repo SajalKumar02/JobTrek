@@ -1,11 +1,12 @@
 import ReactDOM from 'react-dom/client';
-import App from './app/routes';
-import AuthProvider from './app/providers/AuthProvider';
-
 import './index.css';
 
+import App from './app/routes';
+
 import ToastContainer from './features/toast/components/ToastContainer';
-import ToastProvider from './app/providers/ToastProvider';
+
+import ToastProvider from './features/toast/contextProvider/ToastProvider';
+import AuthProvider from './features/auth/contextProvider/AuthProvider';
 
 const root = document.getElementById('root');
 

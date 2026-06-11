@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import http from '../../features/api/api';
+import JobContext from './JobContext';
 
-const JobContext = createContext(null);
+import http from '../../api/api';
 
 const JobProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);

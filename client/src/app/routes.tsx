@@ -12,11 +12,10 @@ import ProtectedRoute from '../features/auth/ProtectedRoute';
 import AppLayout from '../shared/layouts/AppLayout';
 
 // Provider
-import JobProvider from './providers/JobProvider';
+import JobProvider from '../features/jobs/contextProvider/JobProvider';
 
 // Specific Use Cases Pages
 import JobView from '../features/jobs/components/JobView';
-
 import PageNotFound from '../pages/PageNotFound';
 
 const App = () => {
@@ -42,10 +41,7 @@ const App = () => {
           </Route>
         </Route>
         {/* <Route element={<ProtectedRoute />}></Route> */}
-        <Route
-          path="*"
-          element={<PageNotFound statusCode="404" message="Page Not Found" />}
-        />
+        <Route path="*" element={<PageNotFound statusCode="404" message="Page Not Found" />} />
       </Routes>
     </BrowserRouter>
   );

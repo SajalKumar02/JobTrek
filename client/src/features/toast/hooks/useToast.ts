@@ -1,17 +1,13 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import {
-    ToastContext
-} from "../../../app/providers/ToastProvider";
+import ToastContext from '../contextProvider/ToastContext';
 
 export const useToast = () => {
-    const {
-        toasts,
-        showToast
-    } = useContext(ToastContext);
+  const context = useContext(ToastContext);
 
-    return {
-        toasts,
-        showToast
-    }
-}
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
+};

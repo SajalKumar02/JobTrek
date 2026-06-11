@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import http from '../../features/api/api';
+import http from '../../api/api';
 
-const AuthContext = createContext(null);
+import AuthContext from './AuthContext';
 
 const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
