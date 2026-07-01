@@ -44,6 +44,7 @@ export const authService = {
     return {
       accessToken,
       isNewUser,
+      user,
     };
   },
 

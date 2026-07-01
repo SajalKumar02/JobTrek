@@ -22,7 +22,7 @@ export interface JobRequest<T = Record<string, any>> extends AuthenticatedReques
 // --------------------------------------
 // RESPONSES
 export interface BaseResponse extends Response {
-  json: (body: { success: boolean; message: string }) => this;
+  json: (body: { success: boolean; message: string; user?: UserDocument }) => this;
 }
 
 export interface UserResponse extends Response {

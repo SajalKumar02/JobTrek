@@ -22,6 +22,7 @@ export const registerOrLogin = asyncHandler(async (req: LoginRequest, res: BaseR
   res.status(result.isNewUser ? 201 : 200).json({
     success: true,
     message: result.isNewUser ? 'User Registered' : 'User Logged In',
+    user: result.user,
   });
 });
 

@@ -28,6 +28,7 @@ export const addAJob = asyncHandler(async (req: JobRequest, res: Response) => {
 
   const validatorResult = addJobValidator.safeParse(updates);
   if (!validatorResult.success) {
+    console.log(validatorResult.error);
     throw new ApiError(validatorResult.error.issues[0].message, 400);
   }
 

@@ -65,8 +65,6 @@ export const addJobValidator = z.object({
       date: z.coerce.date(),
     }),
   ),
-  // User Settings
-  userId: z.uuid(),
   status: z.enum(JobStatusType),
   statusHistory: z.array(
     z.object({
