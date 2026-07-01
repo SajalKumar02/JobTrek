@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { useJobs } from '../hooks/useJobs';
-
-import { jobTypeOptions, locationOptions, statusOptions } from '../constants';
-
 import { X } from 'lucide-react';
-import { useToast } from '../../toast/hooks/useToast';
+
+import { useJobs } from '@/features/jobs/context/useJobs';
+
+import { jobTypeOptions, locationOptions, statusOptions } from '@/features/jobs/constants';
+
+import { useToast } from '@/features/toast';
 
 const initialForm = {
   companyName: '',

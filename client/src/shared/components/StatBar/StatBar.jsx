@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { getJobsForSearch, getJobsViaJobType, getStatCountByStatus } from '../../../features/pipeline/utils/pipeline.utils';
+import { getJobsForSearch, getJobsViaJobType, getStatCountByStatus } from '@/features/jobs/components/pipeline/utils';
 
-import StatPill from './StatPill';
+import StatPill from '@/shared/components/StatBar/StatPill';
 
-import { useJobs } from '../../../features/jobs/hooks/useJobs';
+import { useJobs } from '@/features/jobs';
 
 const StatBar = () => {
   const { jobs, filterString, searchString } = useJobs();

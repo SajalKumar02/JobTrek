@@ -1,4 +1,4 @@
-import AuthProvider from '@/features/auth/contextProvider/AuthProvider';
+import AuthProvider from '@/features/auth/context/provider';
 import { ToastContainer } from '@/features/toast';
 import { ToastProvider } from '@/features/toast';
 

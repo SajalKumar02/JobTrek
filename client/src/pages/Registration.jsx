@@ -1,7 +1,8 @@
-import { useAuth } from '../features/auth/hooks/useAuth';
-import { useNavigate } from 'react-router';
-import { useToast } from '../features/toast/hooks/useToast';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+
+import { useAuth } from '@/features/auth';
+import { useToast } from '@/features/toast';
 
 const Registration = () => {
   const { authenticated, handleAuth } = useAuth();

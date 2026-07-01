@@ -1,4 +1,4 @@
-import { useToast } from '@/features/toast/hooks/useToast';
+import { useToast } from '@/features/toast/context/useToast';
 
 const ToastContainer = () => {
   const { toasts } = useToast();

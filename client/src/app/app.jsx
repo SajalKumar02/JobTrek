@@ -1,21 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 
-import Home from '../pages/Home';
-import Dashboard from '../pages/Dashboard';
-import Registration from '../pages/Registration';
-import Settings from '../pages/Settings';
-import Jobs from '../pages/Jobs';
+import Home from '@/pages/Home';
+import Dashboard from '@/pages/Dashboard';
+import Registration from '@/pages/Registration';
+import Settings from '@/pages/Settings';
+import Jobs from '@/pages/Jobs';
+import PageNotFound from '@/pages/PageNotFound';
 
-import ProtectedRoute from '../features/auth/component/ProtectedRoute';
+import AppLayout from '@/layout/AppLayout';
 
-import AppLayout from '../shared/layouts/AppLayout';
-
-// Provider
-import JobProvider from '../features/jobs/contextProvider/JobProvider';
-
-// Specific Use Cases Pages
-import JobView from '../features/jobs/components/JobView';
-import PageNotFound from '../pages/PageNotFound';
+import { ProtectedRoute } from '@/features/auth';
+import { JobView } from '@/features/jobs';
+import { JobProvider } from '@/features/jobs';
 
 const App = () => {
   return (

@@ -1,5 +1,5 @@
 export { default as ToastContainer } from '@/features/toast/components/ToastContainer';
 
-export { useToast } from '@/features/toast/hooks/useToast';
+export { useToast } from '@/features/toast/context/useToast';
 
-export { default as ToastProvider } from '@/features/toast/contextProvider/ToastProvider';
+export { default as ToastProvider } from '@/features/toast/context/provider';

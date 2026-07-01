@@ -1,7 +1,7 @@
-import JobTypesFilterPills from '../features/jobs/components/JobTypesFilterPills';
-import Pipeline from '../features/pipeline/components/Pipeline';
+import JobTypesFilterPills from '@/features/jobs/components/JobTypesFilterPills';
+import Pipeline from '@/features/jobs/components/pipeline/components/Pipeline';
 
-import StatBar from '../shared/components/StatBar/StatBar';
+import StatBar from '@/shared/components/StatBar/StatBar';
 
 const Jobs = () => {
   return (

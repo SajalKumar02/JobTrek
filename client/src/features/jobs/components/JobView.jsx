@@ -3,10 +3,10 @@ import { useParams } from 'react-router';
 
 import { ArrowLeft, Pencil, Save } from 'lucide-react';
 
-import { jobTypeOptions, locationOptions, statusOptions, initialStateJob } from '../constants';
+import { jobTypeOptions, locationOptions, statusOptions, initialStateJob } from '@/features/jobs/constants';
 
-import { useJobs } from '../hooks/useJobs';
-import { useToast } from '../../toast/hooks/useToast';
+import { useJobs } from '@/features/jobs/context/useJobs';
+import { useToast } from '@/features/toast';
 
 const JobView = () => {
   const { jobId } = useParams();

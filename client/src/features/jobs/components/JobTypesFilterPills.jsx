@@ -1,5 +1,5 @@
-import { filterOptions } from '../constants';
-import { useJobs } from '../hooks/useJobs';
+import { filterOptions } from '@/features/jobs/constants';
+import { useJobs } from '@/features/jobs/context/useJobs';
 
 const JobTypesFilterPills = () => {
   const { filterString, handleSetFilter } = useJobs();
