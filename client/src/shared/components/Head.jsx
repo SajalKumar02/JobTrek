@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 
-import { Search } from 'lucide-react';
+import { Menu, Search } from 'lucide-react';
 
 import { useJobs } from '@/features/jobs';
 import AddApplicationButton from './AddApplicationButton';
 
 import { useBreadcrumb } from '@/shared/utils/breadcrumbs.utils';
 
-const Head = () => {
+const Head = ({ toggleSidebar }) => {
   const location = useLocation();
   const { jobId } = useParams();
 
@@ -16,6 +16,7 @@ const Head = () => {
 
   const [searchInput, setSearchInput] = useState(searchString);
   const breadcrumb = useBreadcrumb(location, jobId);
+  const Icon = breadcrumb.icon;
 
   const handleChangeSearchInput = useCallback((newStringInput) => setSearchInput(newStringInput), []);
 
@@ -30,10 +31,16 @@ const Head = () => {
   }, [searchInput, handleSetSearchString]);
 
   return (
-    <header className="bg-white grid grid-cols-[3fr_2fr] border-b border-slate-200 px-5 py-2">
+    <header className="bg-white/ flex flex-row justify-between border-b border-slate-200 px-5 py-2">
       <div className="flex flex-row items-center gap-2 text-gray-400">
-        <breadcrumb.Icon size={22} />
-        <span className="text-md">{breadcrumb.label}</span>
+        <div className="flex flex-row items-center gap-2 text-gray-400">
+          <button onClick={toggleSidebar} className="p-2 rounded hover:bg-gray-100 hover:text-gray-600 transition">
+            <Menu size={22} />
+          </button>
+
+          <Icon size={22} />
+          <span className="text-md">{breadcrumb.label}</span>
+        </div>
       </div>
       <div className="flex flex-row gap-3">
         <div className="relative flex-1">

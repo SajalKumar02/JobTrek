@@ -7,7 +7,7 @@ import StageConversionFunnel from '@/pages/Dashboard/components/StageConversionF
 
 const Dashboard = () => {
   return (
-    <div className="grid grid-rows-[1fr_1fr_2fr_1fr] h-full gap-2 px-2 pb-4">
+    <div className="grid grid-rows-[auto_auto_auto_auto] h-full gap-2 p-2">
       {/* Dashboard Top */}
       <DashboardHeader />
       {/* StatBar */}

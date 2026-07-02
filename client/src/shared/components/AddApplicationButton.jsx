@@ -7,8 +7,9 @@ const AddApplicationButton = () => {
 
   return (
     <button
-      className="flex flex-row px-4 py-2 gap-1 rounded-lg border border-gray-400 hover:bg-gray-100 hover:border-black hover:shadow-md cursor-pointer shadow transition"
+      className="flex flex-row items-center gap-2 px-4 py-2 rounded-lg border border-slate-400 bg-slate-800 hover:bg-slate-900 text-slate-100 hover:border-slate-600 hover:shadow-md cursor-pointer shadow transition"
       onClick={() => setShowCreateModal()}
+      type="button"
     >
       <Plus size={20} />
       <span className="text-sm font-semibold">Add application</span>

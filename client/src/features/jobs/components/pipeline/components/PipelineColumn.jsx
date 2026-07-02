@@ -48,9 +48,20 @@ const PipelineColumn = ({ title = '' }) => {
       <Droppable title={title}>
         <div className="flex-1 flex flex-col bg-white border-b border-x border-gray-200 rounded-b-lg h-full p-2 gap-2">
           {filteredJobs.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center py-6 text-gray-400 text-sm h-full">No jobs in this stage.</div>
+            <div className="flex-1 flex items-center justify-center py-6 text-gray-400 text-sm h-full">
+              No jobs in this stage.
+            </div>
           ) : (
-            filteredJobs.map((job) => <JobCard key={job._id} companyName={job.companyName} jobRole={job.jobRole} jobType={job.jobType} importantDates={job.importantDates} _id={job._id} />)
+            filteredJobs.map((job) => (
+              <JobCard
+                key={job._id}
+                companyName={job.companyName}
+                jobRole={job.jobRole}
+                jobType={job.jobType}
+                importantDates={job.importantDates}
+                _id={job._id}
+              />
+            ))
           )}
         </div>
       </Droppable>

@@ -5,7 +5,7 @@ import StatBar from '@/shared/components/StatBar/StatBar';
 
 const Jobs = () => {
   return (
-    <div className="grid grid-rows-[1fr_auto_auto] gap-2 px-2 pb-4">
+    <div className="flex flex-col gap-2 p-2 h-full overflow-hidden">
       <StatBar />
 
       <JobTypesFilterPills />

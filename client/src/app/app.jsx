@@ -28,9 +28,9 @@ const App = () => {
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/jobs/:jobId" element={<JobView />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Route>
         <Route path="*" element={<PageNotFound statusCode="404" message="Page Not Found" />} />

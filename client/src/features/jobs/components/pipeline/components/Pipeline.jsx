@@ -6,7 +6,7 @@ import { useToast } from '@/features/toast';
 import JobDragDropProvider from '@/features/dragAndDrop/JobDragDropProvider';
 
 import PipelineColumn from '@/features/jobs/components/pipeline/components/PipelineColumn';
-import DeleteJobModal from '@/features/jobs/modals/DeleteJobModal';
+import DeleteJobModal from '@/features/jobs/components/modals/DeleteJobModal';
 
 import { statusOptions } from '@/features/jobs/constants';
 
@@ -47,7 +47,7 @@ const Pipeline = () => {
 
   return (
     <JobDragDropProvider onDragEnd={handleDragEvent} onDragStart={() => setShowDeleteModal(true)}>
-      <div className="grid overflow-auto">
+      <div className="grid overflow-auto scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-slate-200">
         <div className="flex gap-2">
           {statusOptions.map((status) => (
             <PipelineColumn key={status.value} title={status.label} />
