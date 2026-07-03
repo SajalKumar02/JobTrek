@@ -31,7 +31,7 @@ const Head = ({ toggleSidebar }) => {
   }, [searchInput, handleSetSearchString]);
 
   return (
-    <header className="bg-white/ flex flex-row justify-between border-b border-slate-200 px-5 py-2">
+    <header className="bg-white flex flex-row gap-2 justify-between border-b border-slate-200 px-2 md:px-4 py-2">
       <div className="flex flex-row items-center gap-2 text-gray-400">
         <div className="flex flex-row items-center gap-2 text-gray-400">
           <button onClick={toggleSidebar} className="p-2 rounded hover:bg-gray-100 hover:text-gray-600 transition">
@@ -43,7 +43,7 @@ const Head = ({ toggleSidebar }) => {
         </div>
       </div>
       <div className="flex flex-row gap-3">
-        <div className="relative flex-1">
+        <div className="relative flex-1 hidden md:inline">
           <Search size={16} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           <input
             type="text"

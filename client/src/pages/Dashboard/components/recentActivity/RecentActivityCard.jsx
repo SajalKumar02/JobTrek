@@ -8,13 +8,11 @@ const RecentActivityCard = ({ activity, id }) => {
   const navigate = useNavigate();
 
   function getDaysBehind(date) {
-    // const today = new Date();
-
     return getCustomDate(date);
   }
 
   return (
-    <div className="flex flex-col rounded-md px-3 py-3 border border-gray-200 flex-1 bg-white cursor-pointer transition-colors duration-200 hover:bg-gray-50 hover:border-gray-300" onClick={() => navigate(`/jobs/${id}`)}>
+    <div className="app-card" onClick={() => navigate(`/jobs/${id}`)}>
       <div className="flex items-center justify-between mb-1">
         <div>
           <div className="font-semibold leading-tight text-sm">{activity.companyName}</div>

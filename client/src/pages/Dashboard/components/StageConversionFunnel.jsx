@@ -31,7 +31,7 @@ const StageConversionFunnel = () => {
   const funnelStages = useMemo(() => getStageConversionData(jobs), [jobs]);
 
   return (
-    <div className="dashboard-card p-4 text-gray-900">
+    <div className="app-card">
       <div className="h-full flex flex-col gap-3">
         <div className="flex justify-between items-start">
           <span className="font-semibold text-sm">Stage conversion funnel</span>

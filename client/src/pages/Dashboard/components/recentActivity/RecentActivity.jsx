@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router';
 
 import { useJobs } from '@/features/jobs';
 
 import RecentActivityCard from '@/pages/Dashboard/components/recentActivity/RecentActivityCard';
+
+import { ArrowRight } from 'lucide-react';
 
 const RecentActivity = () => {
   const { jobs } = useJobs();
@@ -19,14 +22,15 @@ const RecentActivity = () => {
   }, [jobs]);
 
   return (
-    <div className="dashboard-card">
-      <div className="flex items-center justify-between mb-3">
-        <div className="text-[1.08rem] font-semibold">Recent activity</div>
-        <a href="#" className="text-sm font-medium underline underline-offset-2 cursor-pointer">
-          View all &rarr;
-        </a>
+    <div className="app-card flex flex-col gap-2">
+      <div className="flex flex-row justify-between">
+        <span className="text-sm font-semibold">Recent activity</span>
+        <Link to="/jobs" className="flex flex-row cursor-pointer align-middle">
+          <span>View all</span>
+          <ArrowRight />
+        </Link>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         {recentActivities.map((activity) => (
           <RecentActivityCard activity={activity} id={activity._id} key={activity._id} />
         ))}

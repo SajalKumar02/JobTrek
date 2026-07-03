@@ -1,10 +1,8 @@
 const StatPill = ({ label, value, sub }) => (
-  <div className="dashboard-card flex flex-col items-start transition">
-    <div className="text-[0.85rem] text-gray-600 uppercase tracking-wider font-semibold mb-1">
-      {label}
-    </div>
-    <div className="text-2xl mb-1 drop-shadow-sm ">{value}</div>
-    <div className="text-sm text-gray-900 font-normal tracking-wide">{sub}</div>
+  <div className="flex flex-col border border-gray-300 shadow-sm rounded-lg items-start transition p-4">
+    <span className="text-sm text-gray-600 uppercase tracking-wider font-semibold">{label}</span>
+    <span className="text-2xl">{value}</span>
+    <span className="text-sm text-gray-900 font-normal tracking-wide">{sub}</span>
   </div>
 );
 

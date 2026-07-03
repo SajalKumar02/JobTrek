@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 
 import Head from '@/shared/components/Head';
 import CreateJobModal from '@/features/jobs/components/modals/CreateJobModal';
 import SideBar from '@/features/jobs/components/sidebar/component/SideBar';
-import { useEffect, useState } from 'react';
 
 const AppLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -24,7 +24,7 @@ const AppLayout = () => {
 
   return (
     <>
-      <div className="flex flex-row bg-stone-50 h-screen w-screen">
+      <div className="flex flex-row bg-stone-100">
         <aside
           className={`
             bg-slate-900 border-r border-slate-700

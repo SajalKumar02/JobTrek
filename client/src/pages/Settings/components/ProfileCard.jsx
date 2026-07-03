@@ -37,7 +37,7 @@ const ProfileCard = () => {
   };
 
   return (
-    <div className="dashboard-card flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
       <div className="text-gray-700 flex items-center gap-2">
         <User className="w-5 h-5 inline-block mt-0.5" />
         <span className="font-medium text-sm text-gray-900">Profile</span>
@@ -50,7 +50,12 @@ const ProfileCard = () => {
           <div className="flex flex-col my-auto">
             {isEditable ? (
               <>
-                <input className="font-medium text-base text-gray-900 border p-1 rounded mb-1" value={username} onChange={(e) => handleUsernameChange(e.target.value)} placeholder="Username" />
+                <input
+                  className="font-medium text-base text-gray-900 border p-1 rounded mb-1"
+                  value={username}
+                  onChange={(e) => handleUsernameChange(e.target.value)}
+                  placeholder="Username"
+                />
                 <span className="text-sm text-gray-700">{user.email}</span>
               </>
             ) : (
@@ -63,15 +68,24 @@ const ProfileCard = () => {
         </div>
         {isEditable ? (
           <div className="flex gap-2 my-auto">
-            <button className="border border-green-500 rounded px-4 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-sm transition-colors" onClick={handleSave}>
+            <button
+              className="border border-green-500 rounded px-4 py-1 bg-green-100 hover:bg-green-200 text-green-700 text-sm transition-colors"
+              onClick={handleSave}
+            >
               Save
             </button>
-            <button className="border border-gray-300 rounded px-4 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm transition-colors" onClick={() => handleCancel()}>
+            <button
+              className="border border-gray-300 rounded px-4 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm transition-colors"
+              onClick={() => handleCancel()}
+            >
               Cancel
             </button>
           </div>
         ) : (
-          <button className="border border-gray-500 rounded px-4 py-1 bg-[#f7f7f7] hover:bg-[#e5e5e5] text-gray-900 text-sm transition-colors my-auto" onClick={() => setIsEditable(true)}>
+          <button
+            className="border border-gray-500 rounded px-4 py-1 bg-[#f7f7f7] hover:bg-[#e5e5e5] text-gray-900 text-sm transition-colors my-auto"
+            onClick={() => setIsEditable(true)}
+          >
             Edit Profile
           </button>
         )}
