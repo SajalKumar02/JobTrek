@@ -1,6 +1,7 @@
 import DashboardHeader from '@/pages/Dashboard/components/DashboardHeader';
 import UpcomingDeadlines from '@/pages/Dashboard/components/UpcomingDeadlines';
 // import PipeLineSnapshot from '@/features/jobs/components/pipeline/PipeLineSnapshot';
+// Corrected
 import RecentActivity from '@/pages/Dashboard/components/RecentActivity/RecentActivity';
 import StatBar from '@/shared/components/StatBar/StatBar';
 import StageConversionFunnel from '@/pages/Dashboard/components/StageConversionFunnel';
