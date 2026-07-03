@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { useJobs } from '@/features/jobs';
 
-import RecentActivityCard from '@/pages/Dashboard/components/recentActivity/RecentActivityCard';
+import RecentActivityCard from '@/pages/Dashboard/components/RecentActivity/RecentActivityCard';
 
 import { ArrowRight, File } from 'lucide-react';
 
