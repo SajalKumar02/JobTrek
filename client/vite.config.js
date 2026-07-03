@@ -12,6 +12,9 @@ export default defineConfig({
   plugins: [tailwindcss(), react()],
   server: {
     allowedHosts: ['all'],
+    watch: {
+      usePolling: true,
+    },
   },
   resolve: {
     alias: {
