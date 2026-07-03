@@ -1,7 +1,7 @@
-import DashboardHeader from '@/pages/dashboard/components/DashboardHeader';
-import UpcomingDeadlines from '@/pages/dashboard/components/UpcomingDeadlines';
+import DashboardHeader from '@/pages/Dashboard/components/DashboardHeader';
+import UpcomingDeadlines from '@/pages/Dashboard/components/UpcomingDeadlines';
 // import PipeLineSnapshot from '@/features/jobs/components/pipeline/PipeLineSnapshot';
-import RecentActivity from '@/pages/dashboard/components/RecentActivity/RecentActivity';
+import RecentActivity from '@/pages/Dashboard/components/RecentActivity/RecentActivity';
 import StatBar from '@/shared/components/StatBar/StatBar';
 import StageConversionFunnel from '@/pages/Dashboard/components/StageConversionFunnel';
 
