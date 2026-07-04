@@ -29,10 +29,10 @@ connectDb()
   .then(() => {
     app.listen(port, () => {
       if (NODE_ENV === 'production') {
-        console.log(`✅ Server running on port ${port}`);
-      } else {
         console.log(`🔗 Frontend URL: ${FRONTEND_URL}`);
         console.log(`🔗 Backend URL: ${BACKEND_URL}`);
+      } else {
+        console.log(`✅ Server running on port ${port}`);
       }
     });
   })
