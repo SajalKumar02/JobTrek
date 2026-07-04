@@ -12,6 +12,8 @@ import IndexRouter from './Routes/index.Routes';
 const app = express();
 const port = PORT;
 
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
