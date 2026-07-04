@@ -4,7 +4,7 @@ import cors from 'cors';
 
 import { connectDb } from './Config/database';
 
-import { PORT, FRONTEND_URL } from './Constants/constants';
+import { PORT, NODE_ENV, FRONTEND_URL, BACKEND_URL } from './Constants/constants';
 
 // Call Routes
 import IndexRouter from './Routes/index.Routes';
@@ -28,8 +28,12 @@ app.use('/api/v1', IndexRouter);
 connectDb()
   .then(() => {
     app.listen(port, () => {
-      console.log(`✅ Server running on port ${port}`);
-      console.log(`🔗 Backend URL: http://localhost:${port}`);
+      if (NODE_ENV === 'production') {
+        console.log(`✅ Server running on port ${port}`);
+      } else {
+        console.log(`🔗 Frontend URL: ${FRONTEND_URL}`);
+        console.log(`🔗 Backend URL: ${BACKEND_URL}`);
+      }
     });
   })
   .catch((error) => {
