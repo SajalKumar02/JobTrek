@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
-type AsyncHandlerFn<T extends Request = Request> = (req: T, res: any, next: NextFunction) => Promise<void | any> | void | any;
+type AsyncHandlerFn<T extends Request = Request> = (
+  req: T,
+  res: any,
+  next: NextFunction
+) => Promise<void | any> | void | any;
 
 export const asyncHandler =
   <T extends Request = Request>(fn: AsyncHandlerFn<T>) =>

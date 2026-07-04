@@ -24,6 +24,7 @@ export const mountTokenToResponse = (res: BaseResponse, accessToken: string) => 
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
+    sameSite: 'none',
     maxAge: accessMaxAge,
   });
 

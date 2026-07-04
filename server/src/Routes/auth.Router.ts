@@ -16,6 +16,7 @@ const AuthRouter = Router();
 
 // prettier-ignore
 AuthRouter
+
   // User login or registration
   .post('/login', loginLimiter, registerOrLogin)
   // Change user's password; protected route
