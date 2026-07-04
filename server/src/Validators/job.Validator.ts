@@ -25,7 +25,7 @@ export const JobValidator = z.object({
     z.object({
       label: z.string(),
       date: z.coerce.date(),
-    }),
+    })
   ),
   // User Settings
   userId: z.uuid(),
@@ -34,7 +34,7 @@ export const JobValidator = z.object({
     z.object({
       label: z.enum(JobStatusType),
       date: z.coerce.date(),
-    }),
+    })
   ),
   notes: z.string().optional(),
 });
@@ -43,34 +43,33 @@ export const addJobValidator = z.object({
   // About Company
   companyName: z.string(),
   officeAddress: z.string().optional(),
-
   // About Job
   jobRole: z.string(),
   description: z.string().optional(),
   jobType: z.enum(JobType),
-  location: z.enum(JobLocation),
-
+  location: z.enum(JobLocation).optional(),
   // Miscellaneous
-  ctc: z.number(),
-  basePay: z.number(),
-  monthlySalary: z.number(),
-  bonusIncluded: z.boolean(),
+  ctc: z.number().optional(),
+  basePay: z.number().optional(),
+  monthlySalary: z.number().optional(),
+  bonusIncluded: z.boolean().optional(),
   bonusDescription: z.string().optional(),
-  benefits: z.boolean(),
+  benefits: z.boolean().optional(),
   benefitsDetails: z.array(z.string()).optional(),
   isActive: z.boolean(),
   importantDates: z.array(
     z.object({
       label: z.string(),
       date: z.coerce.date(),
-    }),
+    })
   ),
+  // More on Job Details
   status: z.enum(JobStatusType),
   statusHistory: z.array(
     z.object({
       label: z.enum(JobStatusType),
       date: z.coerce.date(),
-    }),
+    })
   ),
   notes: z.string().optional(),
 });

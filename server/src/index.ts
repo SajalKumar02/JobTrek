@@ -18,9 +18,9 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [FRONTEND_URL as string, 'http://localhost:5173'],
+    origin: FRONTEND_URL as string,
     credentials: true,
-  }),
+  })
 );
 
 app.use('/api/v1', IndexRouter);

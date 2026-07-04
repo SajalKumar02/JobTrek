@@ -45,6 +45,7 @@ const jobSchema = new Schema<IJob>(
       ref: 'User',
       required: true,
     },
+    // More on Job Details
     status: {
       type: String,
       enum: JobStatusType,
@@ -64,7 +65,7 @@ const jobSchema = new Schema<IJob>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const JobModel = model<IJob>('Job', jobSchema);
