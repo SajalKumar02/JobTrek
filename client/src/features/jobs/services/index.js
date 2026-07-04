@@ -48,7 +48,7 @@ const jobServices = {
   },
   switchJobStatus: async (jobId, newStatus) => {
     try {
-      const response = await http.patch(`/jobs/${jobId}/status`, { status: newStatus });
+      const response = await http.patch(`/jobs/${jobId}`, { status: newStatus });
       return response;
     } catch (error) {
       console.error(error);
