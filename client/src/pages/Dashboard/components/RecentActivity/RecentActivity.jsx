@@ -30,20 +30,19 @@ const RecentActivity = () => {
           <ArrowRight />
         </Link>
       </div>
+
       <div className="flex flex-col md:flex-row gap-2">
         {recentActivities.length > 0 ? (
           recentActivities.map((activity) => (
             <RecentActivityCard activity={activity} id={activity._id} key={activity._id} />
           ))
         ) : (
-          <>
-            <div className="flex flex-col items-center text-gray-500 text-sm p-4 w-full text-center">
-              <span className="mb-2 flex justify-center">
-                <File className="h-6 w-6 text-gray-400" />
-              </span>
-              No recent activity to show.
-            </div>
-          </>
+          <div className="flex flex-col items-center text-gray-500 text-sm p-4 w-full text-center">
+            <span className="mb-2 flex justify-center">
+              <File className="h-6 w-6 text-gray-400" />
+            </span>
+            No recent activity to show.
+          </div>
         )}
       </div>
     </div>

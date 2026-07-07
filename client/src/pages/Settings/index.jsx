@@ -21,7 +21,7 @@ const ToggleButton = ({ buttonTitle, buttonSubtitle, checked }) => {
 
 const Settings = () => {
   return (
-    <div className="grid grid-rows-[auto_4fr] gap-2 px-4 pb-4">
+    <div className="grid grid-rows-[auto_4fr] gap-3 p-3">
       {/*  */}
       <div className="">
         <span className="text-gray-500">Manage your account and preferences</span>
@@ -31,18 +31,26 @@ const Settings = () => {
         {/* ProfileCard */}
         <ProfileCard />
 
-        <div className="text-lg font-semibold text-neutral-900">Experimental Features</div>
+        <span className="text-lg font-semibold text-neutral-900">Experimental Features</span>
 
         {/* App Appearence Card */}
         <div className="setting-card overflow-hidden text-neutral-900">
           <SettingCardHeader title="Appearence" icon={Palette} />
-          <ToggleButton buttonTitle="Dark Mode" buttonSubtitle="Switch to dark theme" checked={true} />
+          <ToggleButton
+            buttonTitle="Dark Mode"
+            buttonSubtitle="Switch to dark theme"
+            checked={true}
+          />
         </div>
 
         {/* Notifications Card */}
         <div className="setting-card">
           <SettingCardHeader title="Notifications" icon={Bell} />
-          <ToggleButton buttonTitle="Email Notifications" buttonSubtitle="Get notified about upcoming deadlines" checked={true} />
+          <ToggleButton
+            buttonTitle="Email Notifications"
+            buttonSubtitle="Get notified about upcoming deadlines"
+            checked={true}
+          />
         </div>
       </div>
     </div>

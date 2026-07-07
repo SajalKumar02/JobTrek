@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 .setting-card {
   @apply bg-white border border-gray-300 shadow-sm rounded-lg p-2;
 }

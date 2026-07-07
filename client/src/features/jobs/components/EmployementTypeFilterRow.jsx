@@ -5,7 +5,7 @@ const EmployementTypeFilterRow = () => {
   const { filterString, handleSetFilter } = useJobs();
 
   return (
-    <div className="flex flex-row overflow-x-auto gap-2 p-1">
+    <div className="flex flex-row gap-2 overflow-x-auto scrollbar-none p-1 min-h-16 md:min-h-10">
       {filterOptions.map((filter) => (
         <button
           key={filter.value}

@@ -47,7 +47,7 @@ const Pipeline = () => {
 
   return (
     <JobDragDropProvider onDragEnd={handleDragEvent} onDragStart={() => setShowDeleteModal(true)}>
-      <div className="grid overflow-auto scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-slate-200">
+      <div className="grid overflow-auto scrollbar-none">
         <div className="flex gap-2">
           {statusOptions.map((status) => (
             <PipelineColumn key={status.value} title={status.label} />

@@ -30,7 +30,7 @@ const SideBar = ({ toggleSidebar }) => {
   };
 
   return (
-    <div className={`bg-slate-900 h-full w-55 flex flex-col`}>
+    <div className={`bg-slate-900 h-full w-60 flex flex-col`}>
       {/* Header */}
       <div className="flex flex-col gap-2 px-4 py-3 border-b border-slate-700 cursor-pointer">
         <div className="flex flex-row gap-2 justify-between">

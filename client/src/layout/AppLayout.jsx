@@ -29,17 +29,17 @@ const AppLayout = () => {
         <aside
           className={`
             bg-slate-900 border-r border-slate-700
-            fixed z-30 top-0 left-0 h-screen
+            fixed z-30 top-0 left-0 h-full
             ${showSidebar ? 'translate-x-0 md:relative md:z-0' : '-translate-x-full'}
-            transition-transform duration-200 
+            transition-transform duration-200
           `}
         >
           <SideBar toggleSidebar={toggleSidebar} />
         </aside>
-        <div className="flex-1 grid grid-rows-[auto_1fr]">
+        <main className="flex-1 overflow-y-auto grid grid-rows-[auto_1fr]">
           <Head toggleSidebar={toggleSidebar} />
           <Outlet />
-        </div>
+        </main>
       </div>
 
       <CreateJobModal />
