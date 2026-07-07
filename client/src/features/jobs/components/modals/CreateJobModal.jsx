@@ -4,25 +4,30 @@ import { X } from 'lucide-react';
 
 import { useJobs } from '@/features/jobs/context/useJobs';
 
-import { jobTypeOptions, locationOptions, statusOptions } from '@/features/jobs/constants';
+// prettier-ignore
+import {
+  employementTypeOptions,
+  workModeOptions,
+  statusOptions
+} from '@/features/jobs/constants';
 
 import { useToast } from '@/features/toast';
 
 const initialForm = {
   companyName: '',
   officeAddress: '',
-  jobRole: '',
+  jobTitle: '',
   description: '',
-  jobType: 'full time',
-  location: 'onSite',
-  ctc: '',
+  employementType: 'full time',
+  workMode: 'onSite',
+  annualCTC: '',
   basePay: '',
   monthlySalary: '',
-  bonusIncluded: false,
+  hasBonus: false,
   bonusDescription: '',
-  benefits: false,
+  hasBenefits: false,
   benefitsDetails: '',
-  isActive: true,
+  isListingOpen: true,
   status: 'wishlist',
   notes: '',
 };
@@ -86,16 +91,16 @@ const CreateJobModal = () => {
       const jobBody = {
         companyName: form.companyName,
         officeAddress: form.officeAddress,
-        jobRole: form.jobRole,
-        jobType: form.jobType,
+        jobTitle: form.jobTitle,
+        employementType: form.employementType,
         description: form.description,
-        location: form.location,
-        ctc: Number(form.ctc),
+        workMode: form.workMode,
+        annualCTC: Number(form.annualCTC),
         basePay: Number(form.basePay),
         monthlySalary: Number(form.monthlySalary),
-        bonusIncluded: form.bonusIncluded,
+        hasBonus: form.hasBonus,
         benefits: form.benefits,
-        isActive: form.isActive,
+        isListingOpen: form.isListingOpen,
         bonusDescription: form.bonusDescription,
         benefitsDetails: form.benefitsDetails.split(','),
         status: form.status,
@@ -157,11 +162,11 @@ const CreateJobModal = () => {
 
           {/* About Job */}
           <div className="mb-4">
-            <label className="block mb-1 font-medium">Job Role *</label>
+            <label className="block mb-1 font-medium">Job Title *</label>
             <input
               type="text"
-              name="jobRole"
-              value={form.jobRole}
+              name="jobTitle"
+              value={form.jobTitle}
               onChange={handleChange}
               required
               className="w-full border p-2 rounded"
@@ -177,15 +182,15 @@ const CreateJobModal = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1 font-medium">Job Type *</label>
+            <label className="block mb-1 font-medium">Employement Type *</label>
             <select
-              name="jobType"
-              value={form.jobType}
+              name="employementType"
+              value={form.employementType}
               onChange={handleChange}
               required
               className="w-full border p-2 rounded"
             >
-              {jobTypeOptions.map((option) => (
+              {employementTypeOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -193,15 +198,15 @@ const CreateJobModal = () => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block mb-1 font-medium">Location *</label>
+            <label className="block mb-1 font-medium">Work Mode *</label>
             <select
-              name="location"
-              value={form.location}
+              name="workMode"
+              value={form.workMode}
               onChange={handleChange}
               required
               className="w-full border p-2 rounded"
             >
-              {locationOptions.map((option) => (
+              {workModeOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -212,12 +217,12 @@ const CreateJobModal = () => {
           {/* Miscellaneous */}
           <div className="mb-4 flex gap-4">
             <div>
-              <label className="block mb-1 font-medium">CTC</label>
+              <label className="block mb-1 font-medium">Annual CTC</label>
               <input
                 type="number"
                 min="0"
-                name="ctc"
-                value={form.ctc}
+                name="annualCTC"
+                value={form.annualCTC}
                 onChange={handleChange}
                 className="w-full border p-2 rounded"
               />
@@ -249,22 +254,22 @@ const CreateJobModal = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                name="bonusIncluded"
-                checked={form.bonusIncluded}
+                name="hasBonus"
+                checked={form.hasBonus}
                 onChange={handleChange}
-                id="bonusIncluded"
+                id="hasBonus"
               />
-              <label htmlFor="bonusIncluded" className="ml-2">
+              <label htmlFor="hasBonus" className="ml-2">
                 Bonus Included
               </label>
             </div>
             <div className="flex items-center">
               <input
                 type="checkbox"
-                name="benefits"
-                checked={form.benefits}
+                name="hasBenefits"
+                checked={form.hasBenefits}
                 onChange={handleChange}
-                id="benefits"
+                id="hasBenefits"
               />
               <label htmlFor="benefits" className="ml-2">
                 Benefits Included
@@ -273,18 +278,18 @@ const CreateJobModal = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                name="isActive"
-                checked={form.isActive}
+                name="isListingOpen"
+                checked={form.isListingOpen}
                 onChange={handleChange}
-                id="isActive"
+                id="isListingOpen"
               />
-              <label htmlFor="isActive" className="ml-2">
+              <label htmlFor="isListingOpen" className="ml-2">
                 Active
               </label>
             </div>
           </div>
 
-          {form.bonusIncluded && (
+          {form.hasBonus && (
             <div className="mb-4">
               <label className="block mb-1 font-medium">Bonus Description</label>
               <input
@@ -297,7 +302,7 @@ const CreateJobModal = () => {
             </div>
           )}
 
-          {form.benefits && (
+          {form.hasBenefits && (
             <div className="mb-4">
               <label className="block mb-1 font-medium">Benefits Details (comma separated)</label>
               <input

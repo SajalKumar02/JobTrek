@@ -3,11 +3,22 @@ import { Types } from 'mongoose';
 
 import { jobService } from '../Services/job.Services';
 
-import { IJob, IJobStatusTypes, IJobUpdateBody, IStatusHistoryItem, JobDocument, JobRequest } from '../Types';
+import {
+  IJob,
+  IJobStatusTypes,
+  IJobUpdateBody,
+  IStatusHistoryItem,
+  JobDocument,
+  JobRequest,
+} from '../Types';
 
 import { ApiError } from '../Utils/ApiError.Util';
 import { asyncHandler } from '../Utils/asyncHandler';
-import { addJobValidator, changeJobStatusValidator, editJobValidator } from '../Validators/job.Validator';
+import {
+  addJobValidator,
+  changeJobStatusValidator,
+  editJobValidator,
+} from '../Validators/job.Validator';
 
 export const addAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const { userId: _omit, ...restUpdates } = req.body;
@@ -28,7 +39,7 @@ export const addAJob = asyncHandler(async (req: JobRequest, res: Response) => {
 
   const validatorResult = addJobValidator.safeParse(updates);
   if (!validatorResult.success) {
-    console.log(validatorResult.error);
+    // console.log(validatorResult.error);
     throw new ApiError(validatorResult.error.issues[0].message, 400);
   }
 
@@ -82,6 +93,7 @@ export const editAJob = asyncHandler(async (req: JobRequest, res: Response) => {
 
   const validatorResult = editJobValidator.safeParse(jobUpdates);
   if (!validatorResult.success) {
+    console.log(validatorResult.error);
     throw new ApiError(validatorResult.error.issues[0].message, 400);
   }
 

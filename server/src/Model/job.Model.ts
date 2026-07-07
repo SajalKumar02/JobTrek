@@ -2,50 +2,63 @@ import { Schema, model } from 'mongoose';
 
 import { IJob } from '../Types/index';
 
-import { JobLocation, JobStatusType, JobType } from '../Constants/job.Constants';
+import { WorkMode, JobStatusType, EmployementType } from '../Constants/job.Constants';
 
 const jobSchema = new Schema<IJob>(
   {
     // About Company
     companyName: { type: String, required: true },
     officeAddress: { type: String },
+
     // About Job
-    jobRole: { type: String, required: true },
+    jobTitle: { type: String, required: true },
     description: { type: String },
-    jobType: {
+    employementType: {
       type: String,
-      enum: JobType,
+      enum: EmployementType,
       lowercase: true,
       required: true,
     },
-    location: {
+    workMode: {
       type: String,
-      enum: JobLocation,
+      enum: WorkMode,
       default: 'onSite',
       required: true,
     },
-    // Miscellaneous
-    ctc: { type: Number, min: 0 },
+
+    // Compensation Details
+    annualCTC: { type: Number, min: 0 },
     basePay: { type: Number, min: 0 },
     monthlySalary: { type: Number, min: 0 },
-    bonusIncluded: { type: Boolean, default: false },
+
+    // Compensation Extras
+    hasBonus: { type: Boolean, default: false },
     bonusDescription: { type: String },
-    benefits: { type: Boolean, default: false },
+    hasBenefits: { type: Boolean, default: false },
     benefitsDetails: { type: [String] },
-    isActive: { type: Boolean, default: true },
+
+    // Listing Status
+    isListingOpen: { type: Boolean, default: true },
+
+    // Important Dates
     importantDates: [
       {
         label: { type: String },
         date: { type: Date },
       },
     ],
+
     // User Setting
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    // More on Job Details
+    notes: {
+      type: String,
+    },
+
+    // Job Status
     status: {
       type: String,
       enum: JobStatusType,
@@ -59,9 +72,6 @@ const jobSchema = new Schema<IJob>(
         date: { type: Date },
       },
     ],
-    notes: {
-      type: String,
-    },
   },
   {
     timestamps: true,

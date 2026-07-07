@@ -54,9 +54,11 @@ export const getJobsThroughStatus = (jobs, status) => {
   return jobs.filter((job) => String(job?.status || '').toLowerCase() === normalizedStatus);
 };
 
-export const getJobsViaJobType = (jobs, status) => {
+export const getJobsViaEmployementType = (jobs, status) => {
   const normalizedStatus = status.toLowerCase();
-  return jobs.filter((job) => String(job?.jobType || '').toLowerCase() === normalizedStatus);
+  return jobs.filter(
+    (job) => String(job?.employementType || '').toLowerCase() === normalizedStatus
+  );
 };
 
 export const getJobsForSearch = (jobs, search) => {
@@ -65,8 +67,12 @@ export const getJobsForSearch = (jobs, search) => {
   return jobs.filter((job) => {
     if (!job) return false;
     const companyName = String(job.companyName || '').toLowerCase();
-    const jobRole = String(job.jobRole || '').toLowerCase();
-    const jobType = String(job.jobType || '').toLowerCase();
-    return companyName.includes(normalizedSearch) || jobRole.includes(normalizedSearch) || jobType.includes(normalizedSearch);
+    const jobTitle = String(job.jobTitle || '').toLowerCase();
+    const employementType = String(job.employementType || '').toLowerCase();
+    return (
+      companyName.includes(normalizedSearch) ||
+      jobTitle.includes(normalizedSearch) ||
+      employementType.includes(normalizedSearch)
+    );
   });
 };

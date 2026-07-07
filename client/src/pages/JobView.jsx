@@ -3,9 +3,14 @@ import { useParams } from 'react-router';
 
 import { ArrowLeft, Pencil, Save } from 'lucide-react';
 
-import { jobTypeOptions, locationOptions, statusOptions, initialStateJob } from '@/features/jobs/constants';
+import {
+  employementTypeOptions,
+  workModeOptions,
+  statusOptions,
+  initialStateJob,
+} from '@/features/jobs';
 
-import { useJobs } from '@/features/jobs/context/useJobs';
+import { useJobs } from '@/features/jobs';
 import { useToast } from '@/features/toast';
 
 const JobView = () => {
@@ -24,7 +29,10 @@ const JobView = () => {
       }
       try {
         const response = await fetchJobByID(jobId);
-        setForm(response.job);
+        setForm({
+          ...initialStateJob,
+          ...response.job,
+        });
       } catch (error) {
         showToast('error', error.response.data.message);
         setForm(initialStateJob);
@@ -49,9 +57,15 @@ const JobView = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    // prettier-ignore
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]:
+      type === "checkbox"
+        ? checked
+        : type === "number"
+          ? (value === "" ? "" : Number(value))
+          : value
     }));
   };
 
@@ -64,7 +78,9 @@ const JobView = () => {
 
   const handleImportantDateChange = (idx, field, value) => {
     setForm((prev) => {
-      const updatedDates = (prev.importantDates || []).map((d, i) => (i === idx ? { ...d, [field]: value } : d));
+      const updatedDates = (prev.importantDates || []).map((d, i) =>
+        i === idx ? { ...d, [field]: value } : d
+      );
       return { ...prev, importantDates: updatedDates };
     });
   };
@@ -127,10 +143,10 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Job Role:</label>
+            <label className="font-semibold text-gray-700 block">Job Title:</label>
             <input
-              name="jobRole"
-              value={form.jobRole || ''}
+              name="jobTitle"
+              value={form.jobTitle || ''}
               onChange={handleChange}
               className="border rounded px-2 py-1 w-full"
               required
@@ -149,10 +165,10 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Job Type:</label>
+            <label className="font-semibold text-gray-700 block">Employement Type:</label>
             <select
-              name="jobType"
-              value={form.jobType || ''}
+              name="employementType"
+              value={form.employementType || ''}
               onChange={handleChange}
               className="border rounded px-2 py-1 w-full"
               required
@@ -161,7 +177,7 @@ const JobView = () => {
               <option value="" disabled>
                 Select job type
               </option>
-              {jobTypeOptions.map((option) => (
+              {employementTypeOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -169,19 +185,19 @@ const JobView = () => {
             </select>
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Location:</label>
+            <label className="font-semibold text-gray-700 block">Work Mode:</label>
             <select
-              name="location"
-              value={form.location || ''}
+              name="workMode"
+              value={form.workMode || ''}
               onChange={handleChange}
               className="border rounded px-2 py-1 w-full"
               required
               disabled={!editing}
             >
               <option value="" disabled>
-                Select location
+                Select workMode
               </option>
-              {locationOptions.map((option) => (
+              {workModeOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -236,7 +252,7 @@ const JobView = () => {
             <input
               type="number"
               name="monthlySalary"
-              value={form.monthlySalary ?? ''}
+              value={form.monthlySalary ?? 0}
               onChange={handleChange}
               className="border rounded px-2 py-1 w-full"
               min={0}
@@ -244,11 +260,11 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">CTC:</label>
+            <label className="font-semibold text-gray-700 block">Annual CTC:</label>
             <input
               type="number"
-              name="ctc"
-              value={form.ctc ?? ''}
+              name="annualCTC"
+              value={form.annualCTC ?? ''}
               onChange={handleChange}
               className="border rounded px-2 py-1 w-full"
               min={0}
@@ -259,14 +275,14 @@ const JobView = () => {
             <label className="font-semibold text-gray-700 block mr-2">Bonus Included:</label>
             <input
               type="checkbox"
-              name="bonusIncluded"
-              checked={!!form.bonusIncluded}
+              name="hasBonus"
+              checked={form.hasBonus}
               onChange={handleChange}
               className="mr-2"
               disabled={!editing}
             />
           </div>
-          {form.bonusIncluded && (
+          {form.hasBonus && (
             <div>
               <label className="font-semibold text-gray-700 block">Bonus Description:</label>
               <input
@@ -282,16 +298,18 @@ const JobView = () => {
             <label className="font-semibold text-gray-700 block mr-2">Benefits:</label>
             <input
               type="checkbox"
-              name="benefits"
-              checked={!!form.benefits}
+              name="hasBenefits"
+              checked={form.hasBenefits}
               onChange={handleChange}
               className="mr-2"
               disabled={!editing}
             />
           </div>
-          {form.benefits && (
+          {form.hasBenefits && (
             <div>
-              <label className="font-semibold text-gray-700 block">Benefits Details (comma separated):</label>
+              <label className="font-semibold text-gray-700 block">
+                Benefits Details (comma separated):
+              </label>
               <input
                 name="benefitsDetails"
                 value={Array.isArray(form.benefitsDetails) ? form.benefitsDetails.join(', ') : ''}
@@ -303,11 +321,11 @@ const JobView = () => {
             </div>
           )}
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">Active:</label>
+            <label className="font-semibold text-gray-700 block mr-2">Is Listing Active:</label>
             <input
               type="checkbox"
-              name="isActive"
-              checked={form.isActive}
+              name="isListingActive"
+              checked={form.isListingActive}
               onChange={handleChange}
               className="mr-2"
               disabled={!editing}

@@ -12,7 +12,7 @@ export const asyncHandler =
     Promise.resolve(fn(req as T, res, next)).catch((error) => {
       const status = (error as { status?: number }).status || 500;
       const message = (error as Error).message || 'Internal server error';
-      console.log(error);
+      console.log(message);
 
       res.status(status).json({
         success: false,

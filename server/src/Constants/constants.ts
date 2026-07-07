@@ -10,6 +10,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 
+// prettier-ignore
 export {
   PORT,
   MONGO_URI,

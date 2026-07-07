@@ -1,5 +1,9 @@
 import { useMemo } from 'react';
-import { getJobsForSearch, getJobsViaJobType, getStatCountByStatus } from '@/features/jobs/components/pipeline/utils';
+import {
+  getJobsForSearch,
+  getJobsViaEmployementType,
+  getStatCountByStatus,
+} from '@/features/jobs/components/pipeline/utils';
 
 import StatPill from '@/shared/components/StatBar/StatPill';
 
@@ -10,8 +14,9 @@ const StatBar = () => {
 
   const filteredJobs = useMemo(() => {
     let jobsByStatus = jobs;
+
     if (filterString !== 'all') {
-      jobsByStatus = getJobsViaJobType(jobsByStatus, filterString);
+      jobsByStatus = getJobsViaEmployementType(jobsByStatus, filterString);
     }
     if (searchString !== '') {
       jobsByStatus = getJobsForSearch(jobsByStatus, searchString);
@@ -51,7 +56,7 @@ const StatBar = () => {
         sub: 'of applied jobs',
       },
     ],
-    [total, active, interview, offers, responseRate],
+    [total, active, interview, offers, responseRate]
   );
 
   return (

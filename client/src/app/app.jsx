@@ -5,12 +5,12 @@ import Dashboard from '@/pages/Dashboard';
 import Registration from '@/pages/Registration';
 import Settings from '@/pages/Settings';
 import Jobs from '@/pages/Jobs';
+import JobView from '@/pages/JobView';
 import PageNotFound from '@/pages/PageNotFound';
 
 import AppLayout from '@/layout/AppLayout';
 
 import { ProtectedRoute } from '@/features/auth';
-import { JobView } from '@/features/jobs';
 import { JobProvider } from '@/features/jobs';
 
 const App = () => {

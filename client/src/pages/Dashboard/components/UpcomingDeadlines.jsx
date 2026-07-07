@@ -25,14 +25,14 @@ const UpcomingDeadlines = () => {
           if (!d.date) return false;
           const date = new Date(d.date);
           return date >= now && date <= sevenDaysFromNow;
-        }),
+        })
     );
 
     const deadlineJobArray = jobsUnderCurrentWeek
       .sort(
         (a, b) =>
           new Date(a.importantDates[a.importantDates.length - 1]?.date).getTime() -
-          new Date(b.importantDates[b.importantDates.length - 1]?.date).getTime(),
+          new Date(b.importantDates[b.importantDates.length - 1]?.date).getTime()
       )
       .slice(0, 3);
 
@@ -67,17 +67,27 @@ const UpcomingDeadlines = () => {
                     d.isPrimary ? 'bg-gray-300' : 'bg-white'
                   }`}
                 >
-                  <CalendarDays size={14} className={d.isPrimary ? 'text-black' : 'text-gray-500'} strokeWidth={2} />
+                  <CalendarDays
+                    size={14}
+                    className={d.isPrimary ? 'text-black' : 'text-gray-500'}
+                    strokeWidth={2}
+                  />
                 </div>
               </div>
               <div className="flex flex-col grow leading-none">
                 <span className="font-semibold text-sm leading-tight truncate">
                   {d.companyName || 'Unknown Company'}
                 </span>
-                <span className="text-xs text-gray-600 truncate">{d.jobRole || 'Unknown Role'}</span>
+                <span className="text-xs text-gray-600 truncate">
+                  {d.jobTitle || 'Unknown Role'}
+                </span>
               </div>
               <div className="flex flex-col items-end">
-                <span className={d.isPrimary ? 'text-black font-medium text-xs' : 'text-gray-600 text-xs'}>
+                <span
+                  className={
+                    d.isPrimary ? 'text-black font-medium text-xs' : 'text-gray-600 text-xs'
+                  }
+                >
                   {latestDate(d.importantDates) || '--'}
                 </span>
               </div>

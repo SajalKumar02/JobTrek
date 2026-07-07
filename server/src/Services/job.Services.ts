@@ -23,7 +23,7 @@ export const jobService = {
 
   getAllJob: async (userId: Types.ObjectId) => {
     const result: JobSummaryDocument[] | null = await JobModel.find({ userId: userId }).select(
-      'companyName jobType jobRole importantDates status statusHistory updatedAt'
+      'companyName employementType jobTitle importantDates status statusHistory updatedAt'
     );
 
     return result;
@@ -65,7 +65,7 @@ export const jobService = {
 
     const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, updates, {
       after: true,
-    }).select('companyName jobType jobRole importantDates status statusHistory updatedAt');
+    }).select('companyName employementType jobTitle importantDates status statusHistory updatedAt');
 
     return updatedJob as JobDocument;
   },

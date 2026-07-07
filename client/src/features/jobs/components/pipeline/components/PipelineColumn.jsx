@@ -1,7 +1,11 @@
 import { useMemo } from 'react';
 import { useDroppable } from '@dnd-kit/react';
 
-import { getJobsThroughStatus, getJobsViaJobType, getJobsForSearch } from '@/features/jobs/components/pipeline/utils';
+import {
+  getJobsThroughStatus,
+  getJobsViaEmployementType,
+  getJobsForSearch,
+} from '@/features/jobs/components/pipeline/utils';
 
 import { useJobs } from '@/features/jobs';
 
@@ -21,7 +25,7 @@ const PipelineColumn = ({ title = '' }) => {
   const filteredJobs = useMemo(() => {
     let jobsByStatus = getJobsThroughStatus(jobs, title);
     if (filterString !== 'all') {
-      jobsByStatus = getJobsViaJobType(jobsByStatus, filterString);
+      jobsByStatus = getJobsViaEmployementType(jobsByStatus, filterString);
     }
     if (searchString !== '') {
       jobsByStatus = getJobsForSearch(jobsByStatus, searchString);
@@ -41,7 +45,9 @@ const PipelineColumn = ({ title = '' }) => {
       >
         <div className="flex items-center justify-between px-3 py-2">
           <span className="font-semibold text-gray-800">{title}</span>
-          <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium ml-2">{count}</span>
+          <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium ml-2">
+            {count}
+          </span>
         </div>
       </div>
       {/* Table Body */}
@@ -56,8 +62,8 @@ const PipelineColumn = ({ title = '' }) => {
               <JobCard
                 key={job._id}
                 companyName={job.companyName}
-                jobRole={job.jobRole}
-                jobType={job.jobType}
+                jobTitle={job.jobTitle}
+                employementType={job.employementType}
                 importantDates={job.importantDates}
                 _id={job._id}
               />

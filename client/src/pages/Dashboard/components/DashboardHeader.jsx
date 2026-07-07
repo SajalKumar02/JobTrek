@@ -18,7 +18,8 @@ const DashboardHeader = () => {
         <h1 className="text-2xl font-bold tracking-tight">JobTrek</h1>
         <p className="text-sm mt-1">
           {todayString}
-          &nbsp;·&nbsp; <span className="font-medium">{applicationsCount} applications tracked</span>
+          &nbsp;·&nbsp;{' '}
+          <span className="font-medium">{applicationsCount} applications tracked</span>
         </p>
       </div>
       <AddApplicationButton />

@@ -100,7 +100,9 @@ const SideBar = ({ toggleSidebar }) => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <div className="text-[13.5px] font-bold text-white truncate">{user && user.username}</div>
+            <div className="text-[13.5px] font-bold text-white truncate">
+              {user && user.username}
+            </div>
             <div className="text-[11px] text-slate-400 truncate">{user && user.email}</div>
           </div>
         </div>

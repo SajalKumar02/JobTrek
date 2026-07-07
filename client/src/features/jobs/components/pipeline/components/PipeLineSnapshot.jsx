@@ -41,7 +41,12 @@ const PipeLineSnapshot = () => {
       </div>
       <div className="grid">
         {statJobCountsArray.map((stage) => (
-          <PipelineBarRow key={stage.label} label={stage.label} value={stage.value} maxValue={maxValue} />
+          <PipelineBarRow
+            key={stage.label}
+            label={stage.label}
+            value={stage.value}
+            maxValue={maxValue}
+          />
         ))}
       </div>
     </div>

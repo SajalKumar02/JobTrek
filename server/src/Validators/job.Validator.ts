@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { JobLocation, JobStatusType, JobType } from '../Constants/job.Constants';
+import { WorkMode, JobStatusType, EmployementType } from '../Constants/job.Constants';
 
 export const JobValidator = z.object({
   // About Company
@@ -7,26 +7,33 @@ export const JobValidator = z.object({
   officeAddress: z.string().optional(),
 
   // About Job
-  jobRole: z.string(),
+  jobTitle: z.string(),
   description: z.string().optional(),
-  jobType: z.enum(JobType),
-  location: z.enum(JobLocation),
+  employementType: z.enum(EmployementType),
+  workMode: z.enum(WorkMode),
 
-  // Miscellaneous
-  ctc: z.number(),
+  // Compensation Details
+  annualCTC: z.number(),
   basePay: z.number(),
   monthlySalary: z.number(),
-  bonusIncluded: z.boolean(),
+
+  // Compensation Extras
+  hasBonus: z.boolean(),
   bonusDescription: z.string().optional(),
-  benefits: z.boolean(),
+  hasBenefits: z.boolean(),
   benefitsDetails: z.array(z.string()).optional(),
-  isActive: z.boolean(),
-  importantDates: z.array(
-    z.object({
-      label: z.string(),
-      date: z.coerce.date(),
-    })
-  ),
+
+  isListingOpen: z.boolean().optional(),
+
+  importantDates: z
+    .array(
+      z.object({
+        label: z.string(),
+        date: z.coerce.date(),
+      })
+    )
+    .optional(),
+
   // User Settings
   userId: z.uuid(),
   status: z.enum(JobStatusType),
@@ -43,26 +50,40 @@ export const addJobValidator = z.object({
   // About Company
   companyName: z.string(),
   officeAddress: z.string().optional(),
+
   // About Job
-  jobRole: z.string(),
+  jobTitle: z.string(),
   description: z.string().optional(),
-  jobType: z.enum(JobType),
-  location: z.enum(JobLocation).optional(),
-  // Miscellaneous
-  ctc: z.number().optional(),
+  employementType: z.enum(EmployementType),
+  workMode: z.enum(WorkMode).optional(),
+
+  // Compensation Details
+  annualCTC: z.number().optional(),
   basePay: z.number().optional(),
   monthlySalary: z.number().optional(),
-  bonusIncluded: z.boolean().optional(),
+
+  // Compensation Extras
+  hasBonus: z.boolean().optional(),
   bonusDescription: z.string().optional(),
-  benefits: z.boolean().optional(),
+  hasBenefits: z.boolean().optional(),
   benefitsDetails: z.array(z.string()).optional(),
-  isActive: z.boolean(),
-  importantDates: z.array(
-    z.object({
-      label: z.string(),
-      date: z.coerce.date(),
-    })
-  ),
+
+  // Listing Status
+  isListingOpen: z.boolean().optional(),
+
+  // Important Dates
+  importantDates: z
+    .array(
+      z.object({
+        label: z.string(),
+        date: z.coerce.date(),
+      })
+    )
+    .optional(),
+
+  // User Settings
+  notes: z.string().optional(),
+
   // More on Job Details
   status: z.enum(JobStatusType),
   statusHistory: z.array(
@@ -71,7 +92,6 @@ export const addJobValidator = z.object({
       date: z.coerce.date(),
     })
   ),
-  notes: z.string().optional(),
 });
 
 export const changeJobStatusValidator = z.object({
@@ -89,20 +109,26 @@ export const editJobValidator = z.object({
     officeAddress: z.string().optional(),
 
     // About Job
-    jobRole: z.string().optional(),
+    jobTitle: z.string().optional(),
     description: z.string().optional(),
-    jobType: z.enum(JobType).optional(),
-    location: z.enum(JobLocation).optional(),
+    employementType: z.enum(EmployementType).optional(),
+    workMode: z.enum(WorkMode).optional(),
 
-    // Miscellaneous
-    ctc: z.number().optional(),
+    // Compensation Details
+    annualCTC: z.number().optional(),
     basePay: z.number().optional(),
     monthlySalary: z.number().optional(),
-    bonusIncluded: z.boolean().optional(),
+
+    // Compensation Extras
+    hasBonus: z.boolean().optional(),
     bonusDescription: z.string().optional(),
-    benefits: z.boolean().optional(),
+    hasBenefits: z.boolean().optional(),
     benefitsDetails: z.array(z.string()).optional(),
-    isActive: z.boolean().optional(),
+
+    // Listing Status
+    isListingOpen: z.boolean().optional(),
+
+    // Important Dates
     importantDates: z
       .array(
         z.object({

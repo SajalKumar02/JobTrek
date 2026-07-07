@@ -11,7 +11,9 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   plugins: [tailwindcss(), react()],
   server: {
-    allowedHosts: ['all'],
+    port: 5173,
+    strictPort: true,
+    // allowedHosts: ['all'],
     watch: {
       usePolling: true,
     },

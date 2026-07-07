@@ -1,4 +1,4 @@
-export const jobTypeOptions = [
+export const employementTypeOptions = [
   { label: 'Full Time', value: 'full time' },
   { label: 'Internship', value: 'internship' },
   { label: 'Contract', value: 'contract' },
@@ -6,7 +6,7 @@ export const jobTypeOptions = [
   { label: 'Part Time', value: 'part time' },
 ];
 
-export const locationOptions = [
+export const workModeOptions = [
   { label: 'Remote', value: 'remote' },
   { label: 'On Site', value: 'onSite' },
   { label: 'Hybrid', value: 'hybrid' },
@@ -21,30 +21,34 @@ export const statusOptions = [
   { order: 6, label: 'Rejected', value: 'rejected' },
 ];
 
-export const filterOptions = [{ label: 'All', value: 'all' }, ...jobTypeOptions];
+export const filterOptions = [{ label: 'All', value: 'all' }, ...employementTypeOptions];
 
 export const initialStateJob = {
   // About Company
   companyName: '',
   officeAddress: '',
   // About Job
-  jobRole: '',
+  jobTitle: '',
   description: '',
-  jobType: 'full time',
-  location: 'onSite',
-
+  employementType: 'full time',
+  workMode: 'onSite',
   // Miscellaneous
-  ctc: '',
-  basePay: '',
-  monthlySalary: '',
-  bonusIncluded: false,
+  annualCTC: 0,
+  basePay: 0,
+  monthlySalary: 0,
+  hasBonus: false,
   bonusDescription: '',
-  benefits: false,
+
+  hasBenefits: false,
   benefitsDetails: [],
-  isActive: true,
+
+  isListingActive: true,
+
   importantDates: [],
 
   // User Setting
   status: 'wishlist',
+  statusHistory: [],
+
   notes: '',
 };

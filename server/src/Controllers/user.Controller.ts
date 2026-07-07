@@ -1,4 +1,3 @@
-import { Response } from 'express';
 import { Types } from 'mongoose';
 
 import { userService } from '../Services/user.Services';

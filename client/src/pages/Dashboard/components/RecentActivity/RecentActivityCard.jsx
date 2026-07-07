@@ -17,9 +17,11 @@ const RecentActivityCard = ({ activity, id }) => {
         <div>
           <div className="font-semibold leading-tight text-sm">{activity.companyName}</div>
         </div>
-        <span className="px-3 py-[2px] rounded-full border text-xs font-medium">{activity.status}</span>
+        <span className="px-3 py-[2px] rounded-full border text-xs font-medium">
+          {activity.status}
+        </span>
       </div>
-      <div className="text-[0.97rem] font-normal mb-4">{activity.jobRole}</div>
+      <div className="text-[0.97rem] font-normal mb-4">{activity.jobTitle}</div>
       <div className="mt-auto text-xs text-gray-500 flex items-center gap-1">
         <span className="inline-block relative top-px">
           <Clock3 size={14} strokeWidth={1.2} />

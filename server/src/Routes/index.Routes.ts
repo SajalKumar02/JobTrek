@@ -10,6 +10,10 @@ const IndexRouter = Router();
 IndexRouter
     .use('/auth', AuthRouter)
     .use('/user', UserRouter)
-    .use('/jobs', JobRouter);
+    .use('/jobs', JobRouter)
+    .get("/", (req,res) =>{
+        const cookie = req.cookies.accessToken ? true : false;
+        return res.json({success: true, message: "Server is running...", cookie})
+    })
 
 export default IndexRouter;

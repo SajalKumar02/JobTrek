@@ -4,7 +4,13 @@ import cors from 'cors';
 
 import { connectDb } from './Config/database';
 
-import { PORT, NODE_ENV, FRONTEND_URL, BACKEND_URL } from './Constants/constants';
+// prettier-ignore
+import {
+  PORT,
+  NODE_ENV,
+  FRONTEND_URL,
+  BACKEND_URL
+} from './Constants/constants';
 
 // Call Routes
 import IndexRouter from './Routes/index.Routes';
@@ -30,12 +36,11 @@ app.use('/api/v1', IndexRouter);
 connectDb()
   .then(() => {
     app.listen(port, () => {
-      if (NODE_ENV === 'production') {
-        console.log(`🔗 Frontend URL: ${FRONTEND_URL}`);
-        console.log(`🔗 Backend URL: ${BACKEND_URL}`);
-      } else {
+      if (NODE_ENV !== 'production') {
         console.log(`✅ Server running on port ${port}`);
       }
+      console.log(`🔗 Frontend URL: ${FRONTEND_URL}`);
+      console.log(`🔗 Backend URL: ${BACKEND_URL}`);
     });
   })
   .catch((error) => {

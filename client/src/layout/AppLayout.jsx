@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 
 import Head from '@/shared/components/Head';
-import CreateJobModal from '@/features/jobs/components/modals/CreateJobModal';
-import SideBar from '@/features/jobs/components/sidebar/component/SideBar';
+
+import { CreateJobModal } from '@/features/jobs';
+import { SideBar } from '@/features/jobs';
 
 const AppLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -35,7 +36,7 @@ const AppLayout = () => {
         >
           <SideBar toggleSidebar={toggleSidebar} />
         </aside>
-        <div className="flex-1 grid grid-rows-[auto_1fr] max-h-screen overflow-auto">
+        <div className="flex-1 grid grid-rows-[auto_1fr]">
           <Head toggleSidebar={toggleSidebar} />
           <Outlet />
         </div>

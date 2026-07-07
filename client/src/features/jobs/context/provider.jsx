@@ -36,7 +36,7 @@ const JobProvider = ({ children }) => {
       const response = await jobServices.fetchJob(jobId);
       return response.data;
     } catch (error) {
-      console.log(error.response);
+      console.log(error.response || "Couldn't fetch Jobs");
     }
   }, []);
 
@@ -44,7 +44,11 @@ const JobProvider = ({ children }) => {
     const response = await jobServices.updateJob(jobId, updateData);
 
     if (response.data && response.data.success && response.data.job) {
-      setJobs((prev) => (prev ? prev.map((job) => (job._id === jobId ? { ...job, ...response.data.job } : job)) : prev));
+      setJobs((prev) =>
+        prev
+          ? prev.map((job) => (job._id === jobId ? { ...job, ...response.data.job } : job))
+          : prev
+      );
     }
 
     const newResponse = await jobServices.fetchJob(jobId);
@@ -74,12 +78,14 @@ const JobProvider = ({ children }) => {
       const response = await jobServices.switchJobStatus(jobId, newStatus);
 
       if (response.data && response.data.success && response.data.job) {
-        setJobs((prev) => (prev ? prev.map((j) => (j._id === jobId ? response.data.job : j)) : prev));
+        setJobs((prev) =>
+          prev ? prev.map((j) => (j._id === jobId ? response.data.job : j)) : prev
+        );
       }
 
       return response.data;
     },
-    [jobs],
+    [jobs]
   );
 
   // Modal Functions
