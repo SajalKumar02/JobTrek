@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 
 import { IJob } from '../Types/index';
 
-import { WorkMode, JobStatusType, EmployementType } from '../Constants/job.Constants';
+import { WorkMode, JobStatusType, EmployementType, JobSource } from '../Constants/job.Constants';
 
 const jobSchema = new Schema<IJob>(
   {
@@ -16,8 +16,6 @@ const jobSchema = new Schema<IJob>(
     employementType: {
       type: String,
       enum: EmployementType,
-      lowercase: true,
-      required: true,
     },
     workMode: {
       type: String,
@@ -26,19 +24,27 @@ const jobSchema = new Schema<IJob>(
       required: true,
     },
 
+    // Internship Options
+    internshipDuration: { type: String },
+
     // Compensation Details
     annualCTC: { type: Number, min: 0 },
     basePay: { type: Number, min: 0 },
     monthlySalary: { type: Number, min: 0 },
 
+    // Program Information
+    programHighlights: { type: String },
+
     // Compensation Extras
     hasBonus: { type: Boolean, default: false },
     bonusDescription: { type: String },
     hasBenefits: { type: Boolean, default: false },
-    benefitsDetails: { type: [String] },
+    benefitsDetails: { type: [String], default: [] },
 
     // Listing Status
     isListingOpen: { type: Boolean, default: true },
+    jobPostingURL: { type: String, required: true },
+    jobSource: { type: String, enum: JobSource },
 
     // Important Dates
     importantDates: [

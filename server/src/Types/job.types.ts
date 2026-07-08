@@ -17,6 +17,8 @@ export type IStatusHistoryItem = {
   date: Date;
 };
 
+export type IJobSource = 'linkedIn' | 'unstop' | 'internshala' | 'naukri' | 'others';
+
 // Complete Structure
 export type IJob = {
   // About Company
@@ -29,10 +31,16 @@ export type IJob = {
   employementType: IEmploymentType;
   workMode: IWorkMode;
 
+  // Internship Options
+  internshipDuration: string;
+
   // Compensation Details
   annualCTC: number;
   basePay: number;
   monthlySalary: number;
+
+  // Program Highlights
+  programHighlights: string;
 
   // Compensation Extras
   hasBonus: boolean;
@@ -42,6 +50,8 @@ export type IJob = {
 
   // Listing Status
   isListingOpen: boolean;
+  jobPostingURL: string;
+  jobSource: IJobSource;
 
   // Important Dates
   importantDates: IImportantDate[];
@@ -65,6 +75,10 @@ export type IJobUpdateBody = Partial<IJob>;
 // Mongoose Hydrated Document
 export type JobDocument = HydratedDocument<IJob>;
 
+// Job Analytics Data
 export type JobSummaryDocument = HydratedDocument<
-  Pick<IJob, 'companyName' | 'employementType' | 'jobTitle' | 'importantDates' | 'status'>
+  Pick<
+    IJob,
+    'companyName' | 'employementType' | 'jobTitle' | 'importantDates' | 'status' | 'updatedAt'
+  >
 >;
