@@ -21,6 +21,14 @@ export const statusOptions = [
   { order: 6, label: 'Rejected', value: 'rejected' },
 ];
 
+export const jobSourceOptions = [
+  { label: 'LinkedIn', value: 'linkedIn' },
+  { label: 'Unstop', value: 'unstop' },
+  { label: 'Internshala', value: 'internshala' },
+  { label: 'Naukri', value: 'naukri' },
+  { label: 'Other', value: 'other' },
+];
+
 export const filterOptions = [{ label: 'All', value: 'all' }, ...employementTypeOptions];
 
 export const initialStateJob = {
@@ -51,4 +59,8 @@ export const initialStateJob = {
   statusHistory: [],
 
   notes: '',
+  // Add fields to explicitly catch all inputs and always provide a default fallback
+  programHighlights: '', // Used in JobView.jsx, should always exist
+  jobPostingURL: '', // Used in JobView.jsx, should always exist
+  jobSource: '', // Used in JobView.jsx, should always exist
 };

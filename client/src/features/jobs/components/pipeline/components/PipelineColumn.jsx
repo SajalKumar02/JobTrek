@@ -63,7 +63,7 @@ const PipelineColumn = ({ title = '' }) => {
                 key={job._id}
                 companyName={job.companyName}
                 jobTitle={job.jobTitle}
-                employementType={job.employementType}
+                employementType={job.employementType ? job.employementType : 'Unknown'}
                 importantDates={job.importantDates}
                 _id={job._id}
               />
