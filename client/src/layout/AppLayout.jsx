@@ -25,18 +25,19 @@ const AppLayout = () => {
 
   return (
     <>
-      <div className="flex bg-stone-100 h-screen">
+      <div className="flex h-screen bg-slate-100">
         <aside
           className={`
-            bg-slate-900 border-r border-slate-700
-            fixed z-30 top-0 left-0 h-full
+            fixed left-0 top-0 z-30 h-full
+            border-r border-slate-800/60 bg-slate-900 shadow-xl shadow-slate-900/20
+            transition-transform duration-200 ease-out
             ${showSidebar ? 'translate-x-0 md:relative md:z-0' : '-translate-x-full'}
-            transition-transform duration-200
           `}
         >
           <SideBar toggleSidebar={toggleSidebar} />
         </aside>
-        <main className="flex-1 overflow-y-auto grid grid-rows-[auto_1fr]">
+
+        <main className="grid flex-1 grid-rows-[auto_1fr] overflow-y-auto">
           <Head toggleSidebar={toggleSidebar} />
           <Outlet />
         </main>
