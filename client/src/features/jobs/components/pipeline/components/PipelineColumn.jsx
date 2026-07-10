@@ -36,7 +36,7 @@ const PipelineColumn = ({ title = '' }) => {
   const count = filteredJobs.length;
 
   return (
-    <div className="flex flex-col w-70 min-w-[20rem] max-w-xs">
+    <div className="flex flex-col md:w-70">
       {/* Table Header */}
       <div
         className={`sticky top-0 z-10 bg-white border-b-3 rounded-t-l 
@@ -63,7 +63,9 @@ const PipelineColumn = ({ title = '' }) => {
                 key={job._id}
                 companyName={job.companyName}
                 jobTitle={job.jobTitle}
-                employementType={job.employementType ? job.employementType : 'Unknown'}
+                employementType={
+                  job.employementType ? job.employementType : 'Unknown'
+                }
                 importantDates={job.importantDates}
                 _id={job._id}
               />
