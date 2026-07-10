@@ -1,6 +1,6 @@
 import { useJobs } from '@/features/jobs';
 
-import AddApplicationButton from '@/shared/components/AddApplicationButton';
+import { AddJobButton } from '@/features/jobs';
 
 import { countJobs } from '@/features/jobs/utils';
 import { getTodayWithDay } from '@/shared/utils/date.utils';
@@ -22,7 +22,7 @@ const DashboardHeader = () => {
           <span className="font-medium">{applicationsCount} applications tracked</span>
         </p>
       </div>
-      <AddApplicationButton />
+      <AddJobButton />
     </div>
   );
 };

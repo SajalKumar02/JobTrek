@@ -31,22 +31,24 @@ export const jobSourceOptions = [
 
 export const filterOptions = [{ label: 'All', value: 'all' }, ...employementTypeOptions];
 
-export const initialStateJob = {
+export const initialJobState = {
   // About Company
   companyName: '',
   officeAddress: '',
+
   // About Job
   jobTitle: '',
   description: '',
   employementType: 'full time',
   workMode: 'onSite',
+
   // Miscellaneous
   annualCTC: 0,
   basePay: 0,
   monthlySalary: 0,
+
   hasBonus: false,
   bonusDescription: '',
-
   hasBenefits: false,
   benefitsDetails: [],
 
@@ -59,8 +61,8 @@ export const initialStateJob = {
   statusHistory: [],
 
   notes: '',
-  // Add fields to explicitly catch all inputs and always provide a default fallback
-  programHighlights: '', // Used in JobView.jsx, should always exist
-  jobPostingURL: '', // Used in JobView.jsx, should always exist
-  jobSource: '', // Used in JobView.jsx, should always exist
+
+  programHighlights: '',
+  jobPostingURL: '',
+  jobSource: '',
 };

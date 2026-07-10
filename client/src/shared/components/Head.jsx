@@ -4,7 +4,6 @@ import { useLocation, useParams } from 'react-router';
 import { Menu, Search } from 'lucide-react';
 
 import { useJobs } from '@/features/jobs';
-import AddApplicationButton from './AddApplicationButton';
 
 import { useBreadcrumb } from '@/shared/utils/breadcrumbs.utils';
 
@@ -65,7 +64,6 @@ const Head = ({ toggleSidebar }) => {
             placeholder="Search jobs..."
           />
         </div>
-        <AddApplicationButton />
       </div>
     </header>
   );

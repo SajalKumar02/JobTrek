@@ -10,6 +10,6 @@ export const NAV_ITEMS = [
   },
   {
     section: 'Account',
-    items: [{ label: 'Settings', icon: Settings, to: '/settings' }],
+    items: [{ label: 'Settings', icon: Settings, to: '/setting' }],
   },
 ];

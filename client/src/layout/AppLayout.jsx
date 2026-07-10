@@ -3,7 +3,6 @@ import { Outlet } from 'react-router';
 
 import Head from '@/shared/components/Head';
 
-import { CreateJobModal } from '@/features/jobs';
 import { SideBar } from '@/features/jobs';
 
 const AppLayout = () => {
@@ -42,8 +41,6 @@ const AppLayout = () => {
           <Outlet />
         </main>
       </div>
-
-      <CreateJobModal />
     </>
   );
 };
