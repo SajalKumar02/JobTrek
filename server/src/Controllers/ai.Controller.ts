@@ -6,6 +6,7 @@ import { AIRequest, AIResponse } from '../Types';
 
 import { aiJDInputValidator } from '../Validators/ai.Validator';
 import { ApiError } from '../Utils/ApiError.Util';
+import Groq from 'groq-sdk';
 
 export const jdParser = asyncHandler(
   async (req: AIRequest, res: AIResponse) => {
@@ -16,18 +17,24 @@ export const jdParser = asyncHandler(
       throw new ApiError(validatorResult.error.issues[0].message, 400);
     }
 
-    let parsedJob;
     try {
-      parsedJob = await aiService.parseJD(jdUserInput);
-    } catch (error) {
-      throw new ApiError(error.error?.error?.message, 500);
-    }
-    const jsonResponse = JSON.parse(parsedJob);
+      const parsedJob = await aiService.parseJD(jdUserInput);
+      const jsonResponse = JSON.parse(parsedJob);
 
-    res.status(200).json({
-      success: true,
-      message: 'JD Parsed Successfully',
-      jsonResponse,
-    });
+      res.status(200).json({
+        success: true,
+        message: 'JD Parsed Successfully',
+        jsonResponse,
+      });
+    } catch (err) {
+      if (err instanceof Groq.APIError) {
+        throw new ApiError(
+          err.error.error.message || 'An error occurred while parsing the JD',
+          500
+        );
+      } else {
+        throw err;
+      }
+    }
   }
 );
