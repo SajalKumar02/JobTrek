@@ -1,12 +1,20 @@
 import * as z from 'zod';
-import { WorkMode, JobStatusType, EmployementType, JobSource } from '../Constants/job.Constants';
+import {
+  WorkMode,
+  JobStatusType,
+  EmployementType,
+  JobSource,
+} from '../Constants/job.Constants';
 
 export const addJobValidator = z.object({
   // About Company
   companyName: z
     .string()
     .trim()
-    .regex(/^[a-zA-Z0-9][a-zA-Z0-9\s\-&.',()]*$/, 'Company name contains invalid characters'),
+    .regex(
+      /^[a-zA-Z0-9][a-zA-Z0-9\s\-&.',()]*$/,
+      'Company name contains invalid characters'
+    ),
   officeAddress: z.string().optional(),
 
   // About Job
@@ -35,7 +43,7 @@ export const addJobValidator = z.object({
   // Listing Status
   isListingOpen: z.boolean().optional(),
   jobPostingURL: z.string(),
-  JobSource: z.string().optional(),
+  JobSource: z.enum(JobSource).optional(),
 
   // Important Dates
   importantDates: z

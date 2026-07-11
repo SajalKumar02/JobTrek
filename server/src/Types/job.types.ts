@@ -1,11 +1,22 @@
 import { HydratedDocument, Types } from 'mongoose';
 
 // Base Values
-export type IEmploymentType = 'full time' | 'internship' | 'contract' | 'freelancing' | 'part time';
+export type IEmploymentType =
+  | 'full time'
+  | 'internship'
+  | 'contract'
+  | 'freelancing'
+  | 'part time';
 
 export type IWorkMode = 'remote' | 'onSite' | 'hybrid';
 
-export type IJobStatusTypes = 'wishlist' | 'applied' | 'oa' | 'interview' | 'offer' | 'rejected';
+export type IJobStatusTypes =
+  | 'wishlist'
+  | 'applied'
+  | 'oa'
+  | 'interview'
+  | 'offer'
+  | 'rejected';
 
 export type IImportantDate = {
   label: string;
@@ -17,7 +28,12 @@ export type IStatusHistoryItem = {
   date: Date;
 };
 
-export type IJobSource = 'linkedIn' | 'unstop' | 'internshala' | 'naukri' | 'others';
+export type IJobSource =
+  | 'linkedIn'
+  | 'unstop'
+  | 'internshala'
+  | 'naukri'
+  | 'others';
 
 // Complete Structure
 export type IJob = {
@@ -32,12 +48,12 @@ export type IJob = {
   workMode: IWorkMode;
 
   // Internship Options
-  internshipDuration: string;
+  internshipDuration?: string;
 
   // Compensation Details
-  annualCTC: number;
-  basePay: number;
-  monthlySalary: number;
+  annualCTC?: number;
+  basePay?: number;
+  monthlySalary?: number;
 
   // Program Highlights
   programHighlights: string;
@@ -79,6 +95,11 @@ export type JobDocument = HydratedDocument<IJob>;
 export type JobSummaryDocument = HydratedDocument<
   Pick<
     IJob,
-    'companyName' | 'employementType' | 'jobTitle' | 'importantDates' | 'status' | 'updatedAt'
+    | 'companyName'
+    | 'employementType'
+    | 'jobTitle'
+    | 'importantDates'
+    | 'status'
+    | 'updatedAt'
   >
 >;

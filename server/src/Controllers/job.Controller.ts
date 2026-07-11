@@ -73,16 +73,18 @@ export const getAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   });
 });
 
-export const getAllJob = asyncHandler(async (req: JobRequest, res: Response) => {
-  const userId = new Types.ObjectId(req.user.userId);
-  const jobs = await jobService.getAllJob(userId);
+export const getAllJob = asyncHandler(
+  async (req: JobRequest, res: Response) => {
+    const userId = new Types.ObjectId(req.user.userId);
+    const jobs = await jobService.getAllJob(userId);
 
-  res.status(200).json({
-    success: true,
-    message: 'Jobs fetched successfully',
-    jobs,
-  });
-});
+    res.status(200).json({
+      success: true,
+      message: 'Jobs fetched successfully',
+      jobs,
+    });
+  }
+);
 
 export const editAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
@@ -97,7 +99,11 @@ export const editAJob = asyncHandler(async (req: JobRequest, res: Response) => {
     throw new ApiError(validatorResult.error.issues[0].message, 400);
   }
 
-  const job: JobDocument | null = await jobService.editJob(jobId, userId, jobUpdates);
+  const job: JobDocument | null = await jobService.editJob(
+    jobId,
+    userId,
+    jobUpdates
+  );
 
   if (!job) {
     throw new ApiError('Job Not Found', 404);
@@ -110,46 +116,54 @@ export const editAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   });
 });
 
-export const changeJobStatus = asyncHandler(async (req: JobRequest, res: Response) => {
-  const jobId = new Types.ObjectId(req.params.jobId);
-  const userId = new Types.ObjectId(req.user.userId);
+export const changeJobStatus = asyncHandler(
+  async (req: JobRequest, res: Response) => {
+    const jobId = new Types.ObjectId(req.params.jobId);
+    const userId = new Types.ObjectId(req.user.userId);
 
-  const status = req.body.status as IJobStatusTypes;
+    const status = req.body.status as IJobStatusTypes;
 
-  if (!status) {
-    throw new ApiError('Status is required', 400);
+    if (!status) {
+      throw new ApiError('Status is required', 400);
+    }
+
+    const jobUpdates = {
+      status: status,
+    };
+
+    const validatorResult = changeJobStatusValidator.safeParse(jobUpdates);
+    if (!validatorResult.success) {
+      throw new ApiError(validatorResult.error.issues[0].message, 400);
+    }
+
+    const job: JobDocument | null = await jobService.changeJobStatus(
+      jobId,
+      userId,
+      jobUpdates
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Job Status Updated Successfully',
+      job,
+    });
   }
+);
 
-  const jobUpdates = {
-    status: status,
-  };
+export const deleteAJob = asyncHandler(
+  async (req: JobRequest, res: Response) => {
+    const jobId = new Types.ObjectId(req.params.jobId);
+    const userId = new Types.ObjectId(req.user.userId);
 
-  const validatorResult = changeJobStatusValidator.safeParse(jobUpdates);
-  if (!validatorResult.success) {
-    throw new ApiError(validatorResult.error.issues[0].message, 400);
+    const isJob: boolean = await jobService.deleteJob(jobId, userId);
+
+    if (!isJob) {
+      throw new ApiError('Job not found', 404);
+    }
+
+    res.status(200).json({
+      success: isJob,
+      message: 'Job deleted successfully',
+    });
   }
-
-  const job: JobDocument | null = await jobService.changeJobStatus(jobId, userId, jobUpdates);
-
-  res.status(200).json({
-    success: true,
-    message: 'Job Status Updated Successfully',
-    job,
-  });
-});
-
-export const deleteAJob = asyncHandler(async (req: JobRequest, res: Response) => {
-  const jobId = new Types.ObjectId(req.params.jobId);
-  const userId = new Types.ObjectId(req.user.userId);
-
-  const isJob: boolean = await jobService.deleteJob(jobId, userId);
-
-  if (!isJob) {
-    throw new ApiError('Job not found', 404);
-  }
-
-  res.status(200).json({
-    success: isJob,
-    message: 'Job deleted successfully',
-  });
-});
+);

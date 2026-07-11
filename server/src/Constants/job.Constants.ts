@@ -17,4 +17,10 @@ export const JobStatusType = [
 
 export const WorkMode = ['remote', 'onSite', 'hybrid'] as const;
 
-export const JobSource = ['linkedIn', 'unstop', 'internshala', 'naukri', 'other'];
+export const JobSource = [
+  'linkedIn',
+  'unstop',
+  'internshala',
+  'naukri',
+  'other',
+];
