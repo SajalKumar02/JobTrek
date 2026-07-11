@@ -364,17 +364,63 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
             )}
             {form.hasBenefits && (
               <div className="mt-3">
-                <label className={labelBase}>
-                  Benefits Details (comma separated)
-                </label>
-                <input
-                  type="text"
-                  name="benefitsDetails"
-                  value={form.benefitsDetails}
-                  onChange={handleChange}
-                  placeholder="Health insurance, Gym membership"
-                  className={inputBase}
-                />
+                <label className={labelBase}>Benefits Details</label>
+                <div className="space-y-2">
+                  {(form.benefitsDetails && form.benefitsDetails.length > 0
+                    ? form.benefitsDetails
+                    : ['']
+                  ).map((benefit, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        name={`benefitsDetails_${idx}`}
+                        value={benefit}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setForm((prev) => {
+                            const newBenefits = [
+                              ...(prev.benefitsDetails || []),
+                            ];
+                            newBenefits[idx] = newValue;
+                            return { ...prev, benefitsDetails: newBenefits };
+                          });
+                        }}
+                        placeholder="e.g. Health insurance, Gym membership"
+                        className={inputBase}
+                      />
+                      {form.benefitsDetails.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setForm((prev) => {
+                              const newBenefits = [
+                                ...(prev.benefitsDetails || []),
+                              ];
+                              newBenefits.splice(idx, 1);
+                              return { ...prev, benefitsDetails: newBenefits };
+                            });
+                          }}
+                          className="text-rose-500 hover:bg-rose-50 rounded p-1"
+                          aria-label="Remove benefit"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="mt-1 flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800"
+                    onClick={() =>
+                      setForm((prev) => ({
+                        ...prev,
+                        benefitsDetails: [...(prev.benefitsDetails || []), ''],
+                      }))
+                    }
+                  >
+                    <Plus className="h-4 w-4" /> Add another benefit
+                  </button>
+                </div>
               </div>
             )}
           </section>
