@@ -33,7 +33,8 @@ export const getJDParsed = (userInputMessage: string) => {
                 - Extract ONLY information explicitly present in the job description.
                 - Never infer, guess, or assume missing values.
                 - If a field is missing:
-                  - string/number → null
+                  - string → ''
+                  - number → 0
                   - array → []
                 `,
       },

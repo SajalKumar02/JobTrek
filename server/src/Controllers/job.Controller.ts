@@ -3,36 +3,38 @@ import { Types } from 'mongoose';
 
 import { jobService } from '../Services/job.Services';
 
+import { ApiError } from '../Utils/ApiError.Util';
+import { asyncHandler } from '../Utils/asyncHandler';
+
 import {
-  IJob,
   IJobStatusTypes,
-  IJobUpdateBody,
   IStatusHistoryItem,
+  JobCreatePayload,
   JobDocument,
   JobRequest,
 } from '../Types';
 
-import { ApiError } from '../Utils/ApiError.Util';
-import { asyncHandler } from '../Utils/asyncHandler';
 import {
   addJobValidator,
-  changeJobStatusValidator,
   editJobValidator,
+  switchJobValidator,
 } from '../Validators/job.Validator';
 
 export const addAJob = asyncHandler(async (req: JobRequest, res: Response) => {
-  const { userId: _omit, ...restUpdates } = req.body;
+  const { ...restUpdates } = req.body;
 
   const userId = new Types.ObjectId(req.user.userId);
 
+  const status = restUpdates.status;
+
   const statusHistory: IStatusHistoryItem[] = [
     {
-      label: restUpdates.status,
+      label: status,
       date: new Date(),
     },
   ];
 
-  const updates: Partial<IJob> = {
+  const updates: JobCreatePayload = {
     ...restUpdates,
     statusHistory: [...statusHistory],
   };
@@ -43,7 +45,7 @@ export const addAJob = asyncHandler(async (req: JobRequest, res: Response) => {
     throw new ApiError(validatorResult.error.issues[0].message, 400);
   }
 
-  const job = await jobService.addJob(updates, userId);
+  const job = await jobService.createJob(updates, userId);
 
   if (!job) {
     throw new ApiError('Failed to add job', 400);
@@ -90,19 +92,17 @@ export const editAJob = asyncHandler(async (req: JobRequest, res: Response) => {
   const jobId = new Types.ObjectId(req.params.jobId);
   const userId = new Types.ObjectId(req.user.userId);
 
-  const { userId: _omit, ...restUpdates } = req.body;
-  const jobUpdates: IJobUpdateBody = restUpdates;
+  const { ...restUpdates } = req.body;
 
-  const validatorResult = editJobValidator.safeParse(jobUpdates);
+  const validatorResult = editJobValidator.safeParse(restUpdates);
   if (!validatorResult.success) {
-    console.log(validatorResult.error);
     throw new ApiError(validatorResult.error.issues[0].message, 400);
   }
 
   const job: JobDocument | null = await jobService.editJob(
     jobId,
     userId,
-    jobUpdates
+    restUpdates
   );
 
   if (!job) {
@@ -131,7 +131,7 @@ export const changeJobStatus = asyncHandler(
       status: status,
     };
 
-    const validatorResult = changeJobStatusValidator.safeParse(jobUpdates);
+    const validatorResult = switchJobValidator.safeParse(jobUpdates);
     if (!validatorResult.success) {
       throw new ApiError(validatorResult.error.issues[0].message, 400);
     }

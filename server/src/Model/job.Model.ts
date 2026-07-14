@@ -2,20 +2,45 @@ import { Schema, model } from 'mongoose';
 
 import { IJob } from '../Types/index';
 
-import { WorkMode, JobStatusType, EmployementType, JobSource } from '../Constants/job.Constants';
+import {
+  WorkMode,
+  JobStatusType,
+  EmploymentType,
+  JobSource,
+} from '../Constants/job.Constants';
 
 const jobSchema = new Schema<IJob>(
   {
     // About Company
-    companyName: { type: String, required: true },
-    officeAddress: { type: String },
+    companyName: {
+      type: String,
+      required: true,
+    },
+    officeAddress: {
+      type: String,
+      required: false,
+    },
 
     // About Job
-    jobTitle: { type: String, required: true },
-    description: { type: String },
-    employementType: {
+    jobTitle: {
       type: String,
-      enum: EmployementType,
+      required: true,
+    },
+
+    description: {
+      type: String,
+      required: false,
+    },
+    requiredSkills: {
+      type: [String],
+      required: false,
+    },
+
+    employmentType: {
+      type: String,
+      enum: EmploymentType,
+      default: 'fullTime',
+      required: true,
     },
     workMode: {
       type: String,
@@ -25,24 +50,47 @@ const jobSchema = new Schema<IJob>(
     },
 
     // Internship Options
-    internshipDuration: { type: String },
+    internshipDuration: {
+      type: String,
+      required: false,
+    },
+
+    // ---------------------------------------------------------
 
     // Compensation Details
-    annualCTC: { type: Number, min: 0 },
-    basePay: { type: Number, min: 0 },
-    monthlySalary: { type: Number, min: 0 },
+    annualCTC: { type: Number, default: 0 },
+    basePay: { type: Number, default: 0 },
+    monthlySalary: { type: Number, default: 0 },
+    compensationRange: {
+      type: {
+        min: { type: Number, min: 0 },
+        max: { type: Number, min: 0 },
+        period: { type: String, enum: ['monthly', 'annual'] },
+      },
+    },
 
     // Program Information
-    programHighlights: { type: String },
+    programHighlights: [{ type: String }],
 
     // Compensation Extras
     hasBonus: { type: Boolean, default: false },
-    bonusDescription: { type: String },
+    bonusDescription: [{ type: String }],
     hasBenefits: { type: Boolean, default: false },
-    benefitsDetails: { type: [String], default: [] },
+    benefitDetails: [{ type: String }],
+
+    perks: [{ type: String }],
+
+    numberOfOpenings: {
+      type: Number,
+      default: 0,
+    },
+
+    applicationDeadline: {
+      type: Date,
+    },
 
     // Listing Status
-    isListingOpen: { type: Boolean, default: true },
+    isListingActive: { type: Boolean, default: true },
     jobPostingURL: { type: String, required: true },
     jobSource: { type: String, enum: JobSource },
 

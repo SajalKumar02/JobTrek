@@ -1,8 +1,8 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from './auth.types';
 import { UserDocument } from './user.types';
-import { JobDocument } from './job.types';
-import { IAIJobParsedDraft } from './ai.types';
+import { CreateJobInput, JobDocument } from './job.types';
+import { AIJobParsedDraft } from './ai.types';
 
 // REQUESTS
 export interface UserRequest<
@@ -14,12 +14,10 @@ export interface UserRequest<
   };
 }
 
-export interface JobRequest<
-  T = Record<string, any>,
-> extends AuthenticatedRequest {
+export interface JobRequest<T = CreateJobInput> extends AuthenticatedRequest {
   body: T;
   params: {
-    jobId: string;
+    jobId?: string;
     userId: string;
   };
 }
@@ -60,6 +58,6 @@ export interface AIResponse extends Response {
   json: (body: {
     success: boolean;
     message: string;
-    jsonResponse: IAIJobParsedDraft;
+    jsonResponse: AIJobParsedDraft;
   }) => this;
 }

@@ -2,7 +2,7 @@ import * as z from 'zod';
 import {
   WorkMode,
   JobStatusType,
-  EmployementType,
+  EmploymentType,
   JobSource,
 } from '../Constants/job.Constants';
 
@@ -20,7 +20,8 @@ export const addJobValidator = z.object({
   // About Job
   jobTitle: z.string(),
   description: z.string().optional(),
-  employementType: z.enum(EmployementType).optional(),
+  requiredSkills: z.array(z.string()).optional(),
+  employmentType: z.enum(EmploymentType),
   workMode: z.enum(WorkMode),
 
   // Internship Options
@@ -30,20 +31,32 @@ export const addJobValidator = z.object({
   annualCTC: z.number().optional(),
   basePay: z.number().optional(),
   monthlySalary: z.number().optional(),
+  compensationRange: z
+    .object({
+      min: z.number().optional(),
+      max: z.number().optional(),
+      period: z.enum(['monthly', 'annual']).optional(),
+    })
+    .optional(),
 
   // Program Highlights
-  programHighlights: z.string().optional(),
+  programHighlights: z.array(z.string()).optional(),
+  notes: z.string().optional(),
 
   // Compensation Extras
   hasBonus: z.boolean().optional(),
   bonusDescription: z.string().optional(),
   hasBenefits: z.boolean().optional(),
-  benefitsDetails: z.array(z.string()).optional(),
+  benefitDetails: z
+    .array(
+      z.object({
+        benefit: z.string(),
+      })
+    )
+    .optional(),
+  perks: z.array(z.string()).optional(),
 
-  // Listing Status
-  isListingOpen: z.boolean().optional(),
-  jobPostingURL: z.string(),
-  JobSource: z.enum(JobSource).optional(),
+  numberOfOpenings: z.number().optional(),
 
   // Important Dates
   importantDates: z
@@ -54,9 +67,12 @@ export const addJobValidator = z.object({
       })
     )
     .optional(),
+  applicationDeadline: z.coerce.date().optional(),
 
-  // User Settings
-  notes: z.string().optional(),
+  // Listing Status
+  isListingActive: z.boolean().optional(),
+  jobPostingURL: z.string(),
+  jobSource: z.enum(JobSource),
 
   // More on Job Details
   status: z.enum(JobStatusType),
@@ -68,14 +84,8 @@ export const addJobValidator = z.object({
   ),
 });
 
-export const changeJobStatusValidator = z.object({
+export const editJobValidator = addJobValidator.partial();
+
+export const switchJobValidator = z.object({
   status: z.enum(JobStatusType),
 });
-
-// prettier-ignore
-export const editJobValidator = addJobValidator
-  .partial()
-  .refine((data) => Object.keys(data).length > 0, {
-    message: 'At least one field must be provided to update the job.',
-    path: [],
-  });

@@ -1,10 +1,12 @@
-export const EmployementType = [
-  'full time',
+export const EmploymentType = [
+  'fullTime',
   'internship',
   'contract',
   'freelancing',
-  'part time',
+  'partTime',
 ] as const;
+
+export const WorkMode = ['remote', 'onSite', 'hybrid'] as const;
 
 export const JobStatusType = [
   'wishlist',
@@ -15,12 +17,10 @@ export const JobStatusType = [
   'rejected',
 ] as const;
 
-export const WorkMode = ['remote', 'onSite', 'hybrid'] as const;
-
 export const JobSource = [
   'linkedIn',
   'unstop',
   'internshala',
   'naukri',
   'other',
-];
+] as const;

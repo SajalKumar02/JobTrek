@@ -2,10 +2,17 @@ import { Types } from 'mongoose';
 
 import JobModel from '../Model/job.Model';
 
-import { IJob, IJobUpdateBody, JobDocument, JobSummaryDocument } from '../Types';
+import {
+  IJob,
+  JobDocument,
+  JobStatusSwitchInput,
+  JobStatusSwitchPayload,
+  JobSummaryDocument,
+  UpdateJobInput,
+} from '../Types';
 
 export const jobService = {
-  addJob: async (newJob: Partial<IJob>, userId: Types.ObjectId) => {
+  createJob: async (newJob: Partial<IJob>, userId: Types.ObjectId) => {
     const reqBody = {
       ...newJob,
       userId: userId,
@@ -16,20 +23,29 @@ export const jobService = {
   },
 
   getJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {
-    const result: JobDocument | null = await JobModel.findOne({ _id: jobId, userId: userId });
+    const result: JobDocument | null = await JobModel.findOne({
+      _id: jobId,
+      userId: userId,
+    });
 
     return result;
   },
 
   getAllJob: async (userId: Types.ObjectId) => {
-    const result: JobSummaryDocument[] | null = await JobModel.find({ userId: userId }).select(
-      'companyName employementType jobTitle importantDates status statusHistory updatedAt'
+    const result: JobSummaryDocument[] | null = await JobModel.find({
+      userId: userId,
+    }).select(
+      '_id companyName jobTitle employmentType workMode importantDates applicationDeadline isListingActive jobSource status statusHistory updatedAt'
     );
 
     return result;
   },
 
-  editJob: async (jobId: Types.ObjectId, userId: Types.ObjectId, updates: IJobUpdateBody) => {
+  editJob: async (
+    jobId: Types.ObjectId,
+    userId: Types.ObjectId,
+    updates: UpdateJobInput
+  ) => {
     const updatedJob: JobDocument | null = await JobModel.findOneAndUpdate(
       { _id: jobId, userId: userId },
       updates,
@@ -38,21 +54,22 @@ export const jobService = {
       }
     );
 
-    if (!updatedJob) return null;
-
     return updatedJob;
   },
 
   changeJobStatus: async (
     jobId: Types.ObjectId,
     userId: Types.ObjectId,
-    jobUpdates: IJobUpdateBody
+    jobUpdates: JobStatusSwitchInput
   ) => {
-    const result: JobDocument | null = await JobModel.findOne({ _id: jobId, userId: userId });
+    const result: JobDocument | null = await JobModel.findOne({
+      _id: jobId,
+      userId: userId,
+    });
 
     if (!result) return null;
 
-    const updates = {
+    const updates: JobStatusSwitchPayload = {
       ...jobUpdates,
       statusHistory: [
         ...result.statusHistory,
@@ -63,15 +80,24 @@ export const jobService = {
       ],
     };
 
-    const updatedJob = await JobModel.findOneAndUpdate({ _id: jobId, userId: userId }, updates, {
-      after: true,
-    }).select('companyName employementType jobTitle importantDates status statusHistory updatedAt');
+    const updatedJob = await JobModel.findOneAndUpdate(
+      { _id: jobId, userId: userId },
+      updates,
+      {
+        after: true,
+      }
+    ).select(
+      'companyName employmentType jobTitle importantDates status statusHistory updatedAt'
+    );
 
     return updatedJob as JobDocument;
   },
 
   deleteJob: async (jobId: Types.ObjectId, userId: Types.ObjectId) => {
-    const job: JobDocument | null = await JobModel.findOneAndDelete({ _id: jobId, userId: userId });
+    const job: JobDocument | null = await JobModel.findOneAndDelete({
+      _id: jobId,
+      userId: userId,
+    });
     if (job) {
       return true;
     }

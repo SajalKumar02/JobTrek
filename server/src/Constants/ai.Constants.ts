@@ -1,50 +1,51 @@
 export const JOB_JD_PARSER_INPUT_STRUCTURE = {
   // About Company
-  companyName: 'string',
-  officeAddress: 'string',
+  companyName: { type: String },
+  officeAddress: { type: String },
 
   // About Job
-  jobTitle: 'string',
-  description: 'string',
-  employementType: {
-    type: 'string',
-    enum: ['full time', 'internship', 'contract', 'freelancing', 'part time'],
+  jobTitle: { type: String },
+  description: { type: String },
+  requiredSkills: { type: [String] },
+  employmentType: {
+    type: String,
+    enum: ['fullTime', 'internship', 'contract', 'freelancing', 'partTime'],
   },
-  workMode: { type: 'string', enum: ['remote', 'onSite', 'hybrid'] },
+  workMode: { type: String, enum: ['remote', 'onSite', 'hybrid'] },
 
   // Internship Options
-  internshipDuration: 'string',
+  internshipDuration: { type: String, example: '5 months' },
 
-  // Compensation Details
-  annualCTC: 'number',
-  basePay: 'number',
-  monthlySalary: 'number',
-
-  // Program Highlights
-  programHighlights: 'string',
+  // Compenstation Details
+  annualCTC: { type: Number, example: 1200000 },
+  basePay: { type: Number, example: 100000 },
+  monthlySalary: { type: Number, example: 80000 },
+  compensationRange: {
+    type: 'object',
+    properties: {
+      min: { type: Number, example: 10000 },
+      max: { type: Number, example: 20000 },
+      period: { type: String, enum: ['monthly', 'annual'], example: 'monthly' },
+    },
+  },
 
   // Compensation Extras
-  hasBonus: 'boolean',
-  bonusDescription: 'string',
-  hasBenefits: 'boolean',
-  benefitsDetails: 'string',
+  hasBonus: { type: Boolean, default: false },
+  bonusDescription: { type: [String] },
+  hasBenefits: { type: Boolean, default: false },
+  benefitDetails: { type: [String] },
+  perks: { type: [String] },
 
-  // Listing Status
-  isListingOpen: 'boolean',
-  // jobPostingURL: "string",
-  // jobSource: IJobSource,
+  numberOfOpenings: { type: Number },
 
   // Important Dates
-  importantDates: [
-    {
-      label: 'string',
-      date: 'Date',
-    },
-  ],
-
-  // User Settings
-  notes: 'string',
-
-  // Job Status
-  status: 'wishlist',
+  importantDates: {
+    type: [
+      {
+        label: { type: String },
+        date: { type: Date },
+      },
+    ],
+  },
+  applicationDeadline: { type: Date },
 };
