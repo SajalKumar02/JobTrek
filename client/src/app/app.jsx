@@ -36,7 +36,10 @@ const App = () => {
             <Route path="/setting" element={<Settings />} />
           </Route>
         </Route>
-        <Route path="*" element={<PageNotFound statusCode="404" message="Page Not Found" />} />
+        <Route
+          path="*"
+          element={<PageNotFound statusCode="404" message="Page Not Found" />}
+        />
       </Routes>
     </BrowserRouter>
   );

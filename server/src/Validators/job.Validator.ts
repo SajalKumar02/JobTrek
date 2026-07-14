@@ -45,15 +45,9 @@ export const addJobValidator = z.object({
 
   // Compensation Extras
   hasBonus: z.boolean().optional(),
-  bonusDescription: z.string().optional(),
+  bonusDescription: z.array(z.string()).optional(),
   hasBenefits: z.boolean().optional(),
-  benefitDetails: z
-    .array(
-      z.object({
-        benefit: z.string(),
-      })
-    )
-    .optional(),
+  benefitDetails: z.array(z.string()).optional(),
   perks: z.array(z.string()).optional(),
 
   numberOfOpenings: z.number().optional(),

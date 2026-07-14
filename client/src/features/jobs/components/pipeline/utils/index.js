@@ -44,20 +44,24 @@ export const getStatCountByStatus = (jobs) => {
     }
   }
 
-  const responseRate = appliedCount > 0 ? Math.round((respondedCount / appliedCount) * 100) : 0;
+  const responseRate =
+    appliedCount > 0 ? Math.round((respondedCount / appliedCount) * 100) : 0;
 
   return { total, active, interview, offers, responseRate };
 };
 
 export const getJobsThroughStatus = (jobs, status) => {
   const normalizedStatus = status.toLowerCase();
-  return jobs.filter((job) => String(job?.status || '').toLowerCase() === normalizedStatus);
+  return jobs.filter(
+    (job) => String(job?.status || '').toLowerCase() === normalizedStatus
+  );
 };
 
-export const getJobsViaEmployementType = (jobs, status) => {
+export const getJobsViaEmploymentType = (jobs, status) => {
   const normalizedStatus = status.toLowerCase();
   return jobs.filter(
-    (job) => String(job?.employementType || '').toLowerCase() === normalizedStatus
+    (job) =>
+      String(job?.employmentType || '').toLowerCase() === normalizedStatus
   );
 };
 
@@ -68,11 +72,11 @@ export const getJobsForSearch = (jobs, search) => {
     if (!job) return false;
     const companyName = String(job.companyName || '').toLowerCase();
     const jobTitle = String(job.jobTitle || '').toLowerCase();
-    const employementType = String(job.employementType || '').toLowerCase();
+    const employmentType = String(job.employmentType || '').toLowerCase();
     return (
       companyName.includes(normalizedSearch) ||
       jobTitle.includes(normalizedSearch) ||
-      employementType.includes(normalizedSearch)
+      employmentType.includes(normalizedSearch)
     );
   });
 };

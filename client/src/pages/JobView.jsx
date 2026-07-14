@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { ArrowLeft, Pencil, Save } from 'lucide-react';
 
 import {
-  employementTypeOptions,
+  employmentTypeOptions,
   workModeOptions,
   statusOptions,
   initialStateJob,
@@ -72,23 +72,26 @@ const JobView = () => {
     });
   };
 
-  const handleBenefitsDetailsChange = (e) => {
+  const handleBenefitDetailsChange = (e) => {
     setForm((prev) => ({
       ...prev,
-      benefitsDetails: e.target.value ? e.target.value.split(',').map((item) => item.trim()) : [],
+      benefitDetails: e.target.value
+        ? e.target.value.split(',').map((item) => item.trim())
+        : [],
     }));
   };
 
   const handleImportantDateChange = (idx, field, value) => {
     setForm((prev) => {
-      const updatedDates = (Array.isArray(prev.importantDates) ? prev.importantDates : []).map(
-        (d, i) =>
-          i === idx
-            ? {
-                ...d,
-                [field]: value ?? '',
-              }
-            : d
+      const updatedDates = (
+        Array.isArray(prev.importantDates) ? prev.importantDates : []
+      ).map((d, i) =>
+        i === idx
+          ? {
+              ...d,
+              [field]: value ?? '',
+            }
+          : d
       );
       return { ...prev, importantDates: updatedDates };
     });
@@ -136,13 +139,17 @@ const JobView = () => {
 
       {/* Header */}
       <div className="bg-white rounded-lg shadow-md p-8 min-w-2xl mx-auto">
-        <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">Job Details</h2>
+        <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">
+          Job Details
+        </h2>
 
         {/* FORM */}
         <form className="space-y-3" onSubmit={handleSave}>
           {/* About Company */}
           <div>
-            <label className="font-semibold text-gray-700 block">Company Name:</label>
+            <label className="font-semibold text-gray-700 block">
+              Company Name:
+            </label>
             <input
               name="companyName"
               value={form.companyName || ''}
@@ -153,7 +160,9 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Office Address:</label>
+            <label className="font-semibold text-gray-700 block">
+              Office Address:
+            </label>
             <input
               name="officeAddress"
               value={form.officeAddress || ''}
@@ -165,7 +174,9 @@ const JobView = () => {
 
           {/* About Job */}
           <div>
-            <label className="font-semibold text-gray-700 block">Job Title:</label>
+            <label className="font-semibold text-gray-700 block">
+              Job Title:
+            </label>
             <input
               name="jobTitle"
               value={form.jobTitle || ''}
@@ -176,7 +187,9 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Description:</label>
+            <label className="font-semibold text-gray-700 block">
+              Description:
+            </label>
             <textarea
               name="description"
               value={form.description || ''}
@@ -187,10 +200,12 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Employement Type:</label>
+            <label className="font-semibold text-gray-700 block">
+              Employment Type:
+            </label>
             <select
-              name="employementType"
-              value={form.employementType || ''}
+              name="employmentType"
+              value={form.employmentType || ''}
               onChange={handleChange}
               className="border rounded px-2 py-1 w-full"
               required
@@ -199,7 +214,7 @@ const JobView = () => {
               <option value="" disabled>
                 Select job type
               </option>
-              {employementTypeOptions.map((option) => (
+              {employmentTypeOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -207,7 +222,9 @@ const JobView = () => {
             </select>
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Work Mode:</label>
+            <label className="font-semibold text-gray-700 block">
+              Work Mode:
+            </label>
             <select
               name="workMode"
               value={form.workMode || ''}
@@ -228,9 +245,11 @@ const JobView = () => {
           </div>
 
           {/* Internship Options */}
-          {form.employementType === 'internship' && (
+          {form.employmentType === 'internship' && (
             <div className="mb-4">
-              <label className="block mb-1 font-medium">Internship Duration</label>
+              <label className="block mb-1 font-medium">
+                Internship Duration
+              </label>
               <input
                 type="text"
                 name="internshipDuration"
@@ -264,7 +283,9 @@ const JobView = () => {
           </div>
           {/* Compensation Details */}
           <div>
-            <label className="font-semibold text-gray-700 block">Base Pay:</label>
+            <label className="font-semibold text-gray-700 block">
+              Base Pay:
+            </label>
             <input
               type="number"
               name="basePay"
@@ -276,7 +297,9 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Monthly Salary:</label>
+            <label className="font-semibold text-gray-700 block">
+              Monthly Salary:
+            </label>
             <input
               type="number"
               name="monthlySalary"
@@ -288,7 +311,9 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block">Annual CTC:</label>
+            <label className="font-semibold text-gray-700 block">
+              Annual CTC:
+            </label>
             <input
               type="number"
               name="annualCTC"
@@ -302,7 +327,9 @@ const JobView = () => {
 
           {/* Program Information */}
           <div className="mb-4">
-            <label className="font-semibold text-gray-700 block mr-2">Program Highlights</label>
+            <label className="font-semibold text-gray-700 block mr-2">
+              Program Highlights
+            </label>
             <input
               type="text"
               name="programHighlights"
@@ -314,7 +341,9 @@ const JobView = () => {
 
           {/* Extra Compensation */}
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">Bonus Included:</label>
+            <label className="font-semibold text-gray-700 block mr-2">
+              Bonus Included:
+            </label>
             <input
               type="checkbox"
               name="hasBonus"
@@ -326,7 +355,9 @@ const JobView = () => {
           </div>
           {form.hasBonus && (
             <div>
-              <label className="font-semibold text-gray-700 block">Bonus Description:</label>
+              <label className="font-semibold text-gray-700 block">
+                Bonus Description:
+              </label>
               <input
                 name="bonusDescription"
                 value={form.bonusDescription}
@@ -337,7 +368,9 @@ const JobView = () => {
             </div>
           )}
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">Benefits:</label>
+            <label className="font-semibold text-gray-700 block mr-2">
+              Benefits:
+            </label>
             <input
               type="checkbox"
               name="hasBenefits"
@@ -353,9 +386,13 @@ const JobView = () => {
                 Benefits Details (comma separated):
               </label>
               <input
-                name="benefitsDetails"
-                value={Array.isArray(form.benefitsDetails) ? form.benefitsDetails.join(', ') : ''}
-                onChange={handleBenefitsDetailsChange}
+                name="benefitDetails"
+                value={
+                  Array.isArray(form.benefitDetails)
+                    ? form.benefitDetails.join(', ')
+                    : ''
+                }
+                onChange={handleBenefitDetailsChange}
                 className="border rounded px-2 py-1 w-full"
                 placeholder="e.g. Health Insurance, Gym Membership"
                 disabled={!editing}
@@ -364,7 +401,9 @@ const JobView = () => {
           )}
           {/* Is Listing Active */}
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">Is Listing Active:</label>
+            <label className="font-semibold text-gray-700 block mr-2">
+              Is Listing Active:
+            </label>
             <input
               type="checkbox"
               name="isListingActive"
@@ -375,7 +414,9 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">Job Posting URL:</label>
+            <label className="font-semibold text-gray-700 block mr-2">
+              Job Posting URL:
+            </label>
             <input
               type="text"
               name="jobPostingURL"
@@ -387,7 +428,9 @@ const JobView = () => {
             />
           </div>
           <div>
-            <label className="font-semibold text-gray-700 block mr-2">Job Source:</label>
+            <label className="font-semibold text-gray-700 block mr-2">
+              Job Source:
+            </label>
             <select
               name="jobSource"
               value={form.jobSource}
@@ -409,14 +452,23 @@ const JobView = () => {
 
           {/* Important Dates */}
           <div>
-            <label className="font-semibold text-gray-700 block">Important Dates:</label>
-            {Array.isArray(form.importantDates) && form.importantDates.length > 0 ? (
+            <label className="font-semibold text-gray-700 block">
+              Important Dates:
+            </label>
+            {Array.isArray(form.importantDates) &&
+            form.importantDates.length > 0 ? (
               form.importantDates.map((d, idx) => (
                 <div key={idx} className="flex items-center gap-2 mb-1">
                   <input
                     name={`importantDatesLabel${idx}`}
                     value={d.label ?? ''}
-                    onChange={(e) => handleImportantDateChange(idx, 'label', e.target.value ?? '')}
+                    onChange={(e) =>
+                      handleImportantDateChange(
+                        idx,
+                        'label',
+                        e.target.value ?? ''
+                      )
+                    }
                     className="border rounded px-2 py-1 flex-1"
                     placeholder="Label"
                     disabled={!editing}
@@ -424,7 +476,13 @@ const JobView = () => {
                   <input
                     name={`importantDatesDate${idx}`}
                     value={d.date ? d.date.toString().substring(0, 10) : ''}
-                    onChange={(e) => handleImportantDateChange(idx, 'date', e.target.value ?? '')}
+                    onChange={(e) =>
+                      handleImportantDateChange(
+                        idx,
+                        'date',
+                        e.target.value ?? ''
+                      )
+                    }
                     className="border rounded px-2 py-1 flex-1"
                     type="date"
                     disabled={!editing}

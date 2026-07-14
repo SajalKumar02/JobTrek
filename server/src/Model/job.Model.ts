@@ -26,7 +26,6 @@ const jobSchema = new Schema<IJob>(
       type: String,
       required: true,
     },
-
     description: {
       type: String,
       required: false,

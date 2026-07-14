@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import {
   getJobsForSearch,
-  getJobsViaEmployementType,
+  getJobsViaEmploymentType,
   getStatCountByStatus,
 } from '@/features/jobs/components/pipeline/utils';
 
@@ -16,7 +16,7 @@ const StatBar = () => {
     let jobsByStatus = jobs;
 
     if (filterString !== 'all') {
-      jobsByStatus = getJobsViaEmployementType(jobsByStatus, filterString);
+      jobsByStatus = getJobsViaEmploymentType(jobsByStatus, filterString);
     }
     if (searchString !== '') {
       jobsByStatus = getJobsForSearch(jobsByStatus, searchString);
@@ -62,7 +62,12 @@ const StatBar = () => {
   return (
     <div className="app-card grid grid-cols-2 md:grid-cols-5 gap-2 [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1">
       {stats.map((stat, i) => (
-        <StatPill key={i} label={stat.label} value={stat.value} sub={stat.sub} />
+        <StatPill
+          key={i}
+          label={stat.label}
+          value={stat.value}
+          sub={stat.sub}
+        />
       ))}
     </div>
   );

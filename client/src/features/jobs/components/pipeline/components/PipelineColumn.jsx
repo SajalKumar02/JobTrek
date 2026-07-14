@@ -3,7 +3,7 @@ import { useDroppable } from '@dnd-kit/react';
 
 import {
   getJobsThroughStatus,
-  getJobsViaEmployementType,
+  getJobsViaEmploymentType,
   getJobsForSearch,
 } from '@/features/jobs/components/pipeline/utils';
 
@@ -25,7 +25,7 @@ const PipelineColumn = ({ title = '' }) => {
   const filteredJobs = useMemo(() => {
     let jobsByStatus = getJobsThroughStatus(jobs, title);
     if (filterString !== 'all') {
-      jobsByStatus = getJobsViaEmployementType(jobsByStatus, filterString);
+      jobsByStatus = getJobsViaEmploymentType(jobsByStatus, filterString);
     }
     if (searchString !== '') {
       jobsByStatus = getJobsForSearch(jobsByStatus, searchString);
@@ -63,8 +63,8 @@ const PipelineColumn = ({ title = '' }) => {
                 key={job._id}
                 companyName={job.companyName}
                 jobTitle={job.jobTitle}
-                employementType={
-                  job.employementType ? job.employementType : 'Unknown'
+                employmentType={
+                  job.employmentType ? job.employmentType : 'Unknown'
                 }
                 importantDates={job.importantDates}
                 _id={job._id}
