@@ -89,9 +89,15 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
+
     if (type === 'checkbox' && 'checked' in e.target) {
       const checked = e.target.checked;
       setForm((prev) => ({ ...prev, [name]: checked }));
+    } else if (type === 'number') {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value === '' ? '' : Number(value),
+      }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
