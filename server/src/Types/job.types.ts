@@ -77,11 +77,11 @@ export type IJob = {
   benefitDetails?: string[];
   perks?: string[];
 
-  numberOfOpenings?: number;
+  // numberOfOpenings?: number;
 
   // Important Dates
   importantDates?: IImportantDate[];
-  applicationDeadline?: Date;
+  // applicationDeadline?: Date;
 
   // Listing Status
   isListingActive: boolean;
@@ -130,7 +130,7 @@ export type JobSummaryDocument = Pick<
   | 'employmentType'
   | 'workMode'
   | 'importantDates'
-  | 'applicationDeadline'
+  // | 'applicationDeadline'
   | 'isListingActive'
   | 'jobSource'
   | 'status'

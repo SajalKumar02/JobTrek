@@ -12,16 +12,21 @@ const RecentActivityCard = ({ activity, id }) => {
   }
 
   return (
-    <div className="app-card flex flex-col md:w-1/6" onClick={() => navigate(`/jobs/${id}`)}>
+    <div
+      className="app-card flex flex-col md:w-1/6"
+      onClick={() => navigate(`/jobs/${id}`)}
+    >
       <div className="flex flex-row justify-between">
         <span className="font-semibold leading-tight text-sm self-center">
           {activity.companyName}
         </span>
-        <span className="px-3 py-[2px] rounded-full border text-xs font-medium">
+        <span className="px-3 py-[2px] mb-auto rounded-full border text-xs font-medium">
           {activity.status}
         </span>
       </div>
-      <span className="text-[0.97rem] font-normal mb-4">{activity.jobTitle}</span>
+      <span className="text-[0.97rem] font-normal mb-4">
+        {activity.jobTitle}
+      </span>
       <div className="flex flex-row text-xs text-gray-500 items-center gap-4">
         <span className="">
           <Clock3 />

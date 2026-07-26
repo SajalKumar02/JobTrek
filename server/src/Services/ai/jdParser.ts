@@ -31,11 +31,12 @@ export const getJDParsed = (userInputMessage: string) => {
           
                 Extraction Rules:
                 - Extract ONLY information explicitly present in the job description.
-                - Never infer, guess, or assume missing values.
-                - If a field is missing:
+                - Never infer, guess, or assume missing values, never return null.
+                - Always send default values:
+                  - array → [] 
                   - string → ''
                   - number → 0
-                  - array → []
+                  - date - null
                 `,
       },
       {

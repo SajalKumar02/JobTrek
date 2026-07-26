@@ -1,51 +1,97 @@
 export const JOB_JD_PARSER_INPUT_STRUCTURE = {
   // About Company
-  companyName: { type: String },
-  officeAddress: { type: String },
+  companyName: { type: 'string', required: true },
+  officeAddress: { type: 'string', required: false },
 
   // About Job
-  jobTitle: { type: String },
-  description: { type: String },
-  requiredSkills: { type: [String] },
+  jobTitle: { type: 'string', required: true },
+  description: { type: 'string', required: false },
+  requiredSkills: { type: 'array', items: { type: 'string' }, required: false },
+
   employmentType: {
-    type: String,
+    type: 'string',
     enum: ['fullTime', 'internship', 'contract', 'freelancing', 'partTime'],
+    default: 'fullTime',
+    required: true,
   },
-  workMode: { type: String, enum: ['remote', 'onSite', 'hybrid'] },
+  workMode: {
+    type: 'string',
+    enum: ['onSite', 'remote', 'hybrid'],
+    default: 'onSite',
+    required: true,
+  },
 
   // Internship Options
-  internshipDuration: { type: String, example: '5 months' },
+  internshipDuration: { type: 'string', required: false },
 
-  // Compenstation Details
-  annualCTC: { type: Number, example: 1200000 },
-  basePay: { type: Number, example: 100000 },
-  monthlySalary: { type: Number, example: 80000 },
-  compensationRange: {
-    type: 'object',
-    properties: {
-      min: { type: Number, example: 10000 },
-      max: { type: Number, example: 20000 },
-      period: { type: String, enum: ['monthly', 'annual'], example: 'monthly' },
-    },
+  // Compensation Details
+  annualCTC: { type: 'number', default: 0 },
+  basePay: { type: 'number', default: 0 },
+  monthlySalary: { type: 'number', default: 0 },
+  // compensationRange: {
+  //   type: 'object',
+  //   properties: {
+  //     min: { type: 'number', min: 0 },
+  //     max: { type: 'number', min: 0 },
+  //     period: { type: 'string', enum: ['monthly', 'annual'] },
+  //   },
+  //   required: false,
+  // },
+
+  // Program Information
+  programHighlights: {
+    type: 'array',
+    items: { type: 'string' },
+    required: false,
   },
 
   // Compensation Extras
-  hasBonus: { type: Boolean, default: false },
-  bonusDescription: { type: [String] },
-  hasBenefits: { type: Boolean, default: false },
-  benefitDetails: { type: [String] },
-  perks: { type: [String] },
+  hasBonus: { type: 'boolean', default: false },
+  bonusDescription: {
+    type: 'array',
+    items: { type: 'string' },
+    required: false,
+  },
+  hasBenefits: { type: 'boolean', default: false },
+  benefitDetails: { type: 'array', items: { type: 'string' }, required: false },
 
-  numberOfOpenings: { type: Number },
+  perks: { type: 'array', items: { type: 'string' }, required: false },
+
+  // numberOfOpenings: { type: 'number', default: 0 },
+
+  // applicationDeadline: { type: 'string', format: 'date-time', required: false },
+
+  // Listing Status
+  isListingActive: { type: 'boolean', default: true },
+  // jobPostingURL: { type: 'string', required: true },
+  // jobSource: {
+  //   type: 'string',
+  //   enum: ['linkedin', 'naukri', 'companyWebsite', 'referral', 'user', 'other'],
+  //   required: false,
+  // },
 
   // Important Dates
   importantDates: {
-    type: [
-      {
-        label: { type: String },
-        date: { type: Date },
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        label: { type: 'string' },
+        date: { type: 'string', format: 'date-time' },
       },
-    ],
+    },
+    required: false,
   },
-  applicationDeadline: { type: Date },
+
+  // User Setting
+  // userId: { type: 'string', required: true }, // MongoDB ObjectId as string
+  notes: { type: 'string', required: false },
+
+  // Job Status
+  status: {
+    type: 'string',
+    enum: ['wishlist', 'applied', 'oa', 'interview', 'offer', 'rejected'],
+    default: 'wishlist',
+    required: true,
+  },
 };

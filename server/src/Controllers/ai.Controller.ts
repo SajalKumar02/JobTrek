@@ -11,7 +11,6 @@ import { asyncHandler } from '../Utils/asyncHandler';
 import { ApiError } from '../Utils/ApiError.Util';
 
 import { AIRequest, AIResponse } from '../Types';
-import { AIJobParsedDraft } from '../Types/ai.types';
 
 export const jdParser = asyncHandler(
   async (req: AIRequest, res: AIResponse) => {
@@ -28,7 +27,6 @@ export const jdParser = asyncHandler(
 
       const validatorResult = AIResponseJobValidator.safeParse(jsonResponse);
       if (!validatorResult.success) {
-        console.log(validatorResult.error);
         throw new ApiError(validatorResult.error.issues[0].message, 400);
       }
 

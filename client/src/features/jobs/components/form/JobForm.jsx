@@ -24,26 +24,40 @@ import JobFormHeader from '@/features/jobs/components/form/JobFormHeader';
 const getDefaultJobState = (initialJobState) => ({
   companyName: initialJobState.companyName || '',
   officeAddress: initialJobState.officeAddress || '',
+
   jobTitle: initialJobState.jobTitle || '',
   description: initialJobState.description || '',
+  requiredSkills: initialJobState.requiredSkills || [], // ----------------- Not added Yet
   employmentType:
-    initialJobState.employmentType || employmentTypeOptions[0]?.value || '',
-  workMode: initialJobState.workMode || workModeOptions[0]?.value || '',
+    initialJobState.employmentType || employmentTypeOptions[0]?.value,
+  workMode: initialJobState.workMode || workModeOptions[0]?.value,
+
   internshipDuration: initialJobState.internshipDuration || '',
   annualCTC: initialJobState.annualCTC ?? '',
   basePay: initialJobState.basePay ?? '',
   monthlySalary: initialJobState.monthlySalary ?? '',
+  compensationRange: {
+    min: initialJobState.compensationRange?.min ?? '',
+    max: initialJobState.compensationRange?.max ?? '',
+    period: initialJobState.compensationRange?.period ?? '',
+  }, // ------------------------- Not added yet
+
+  programHighlights: initialJobState.programHighlights ?? [],
+  notes: initialJobState.notes || '',
+
   // Booleans
   hasBonus: !!initialJobState.hasBonus,
   hasBenefits: !!initialJobState.hasBenefits,
-  isListingActive:
-    'isListingActive' in initialJobState
-      ? !!initialJobState.isListingActive
-      : true,
-  jobPostingURL: initialJobState.jobPostingURL || '',
+  perks: initialJobState.perks ?? [],
+
+  // numberOfOpenings: initialJobState.numberOfOpenings ?? '', // ------------------------- Not added yet
+  // applicationDeadline: initialJobState.applicationDeadline ?? undefined, // ------------------------- Not added yet
+
+  isListingActive: !!initialJobState.isListingActive,
+  jobPostingURL: initialJobState.jobPostingURL || 'www.test.com',
   jobSource: initialJobState.jobSource || '',
-  status: initialJobState.status || statusOptions[0]?.value || '',
-  notes: initialJobState.notes || '',
+
+  status: initialJobState.status || statusOptions[0].value,
 });
 
 const inputBase =
@@ -175,7 +189,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
       bonusDescription,
     };
 
-    console.log(formData);
+    // console.log(formData);
 
     onSubmit(formData);
     navigate('/jobs');

@@ -35,7 +35,7 @@ export const jobService = {
     const result: JobSummaryDocument[] | null = await JobModel.find({
       userId: userId,
     }).select(
-      '_id companyName jobTitle employmentType workMode importantDates applicationDeadline isListingActive jobSource status statusHistory updatedAt'
+      '_id companyName jobTitle employmentType workMode importantDates isListingActive jobSource status statusHistory updatedAt'
     );
 
     return result;

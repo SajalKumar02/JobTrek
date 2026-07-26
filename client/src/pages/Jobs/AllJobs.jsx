@@ -5,7 +5,7 @@ import StatBar from '@/shared/components/StatBar/StatBar';
 
 const AllJobs = () => {
   return (
-    <div className="flex flex-col gap-3 px-3 pt-3 overflow-x-auto">
+    <div className="flex flex-col gap-3 px-3 pt-3 md:overflow-x-auto">
       <StatBar />
 
       <EmploymentTypeFilterRow />

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Sparkles, WandSparkles, FileText } from 'lucide-react';
-import { useToast } from '../toast';
-import AIServices from './services';
+
+import { useToast } from '@/features/toast';
+
+import AIServices from '@/features/ai/services';
 
 const AnalyzingLoader = () => {
   return (

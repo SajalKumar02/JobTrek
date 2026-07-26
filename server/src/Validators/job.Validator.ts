@@ -31,13 +31,13 @@ export const addJobValidator = z.object({
   annualCTC: z.number().optional(),
   basePay: z.number().optional(),
   monthlySalary: z.number().optional(),
-  compensationRange: z
-    .object({
-      min: z.number().optional(),
-      max: z.number().optional(),
-      period: z.enum(['monthly', 'annual']).optional(),
-    })
-    .optional(),
+  // compensationRange: z
+  //   .object({
+  //     min: z.number().optional(),
+  //     max: z.number().optional(),
+  //     period: z.enum(['monthly', 'annual']).optional(),
+  //   })
+  //   .optional(),
 
   // Program Highlights
   programHighlights: z.array(z.string()).optional(),
@@ -50,7 +50,7 @@ export const addJobValidator = z.object({
   benefitDetails: z.array(z.string()).optional(),
   perks: z.array(z.string()).optional(),
 
-  numberOfOpenings: z.number().optional(),
+  // numberOfOpenings: z.number().optional(),
 
   // Important Dates
   importantDates: z
@@ -61,7 +61,7 @@ export const addJobValidator = z.object({
       })
     )
     .optional(),
-  applicationDeadline: z.coerce.date().optional(),
+  // applicationDeadline: z.coerce.date().optional().nullable(),
 
   // Listing Status
   isListingActive: z.boolean().optional(),

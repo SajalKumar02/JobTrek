@@ -79,14 +79,14 @@ const jobSchema = new Schema<IJob>(
 
     perks: [{ type: String }],
 
-    numberOfOpenings: {
-      type: Number,
-      default: 0,
-    },
+    // numberOfOpenings: {
+    //   type: Number,
+    //   default: 0,
+    // },
 
-    applicationDeadline: {
-      type: Date,
-    },
+    // applicationDeadline: {
+    //   type: Date,
+    // },
 
     // Listing Status
     isListingActive: { type: Boolean, default: true },

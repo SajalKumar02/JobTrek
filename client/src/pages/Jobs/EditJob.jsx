@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { useJobs, JobForm } from '@/features/jobs';
+import { initialJobState, useJobs, JobForm } from '@/features/jobs';
 
-import { initialJobState } from '@/features/jobs/constants';
 import { useToast } from '@/features/toast';
-import { editJobInputMethodOptions } from '@/features/ai/constants';
-import AIAutofillForm from '@/features/ai/AIAutofillForm';
-import AIAnalysisResult from '@/features/ai/AIAnalysisResult';
+
+import { AIAnalysisResult, editJobInputMethodOptions } from '@/features/ai';
 
 const EditJob = () => {
   const [jobForm, setJobForm] = useState({ ...initialJobState });
   const [isLoading, setIsLoading] = useState(true);
+
   const { jobId } = useParams();
 
+  // Hooks
   const { fetchJobByID, updateJob } = useJobs();
   const { showToast } = useToast();
 
+  // Tab Settings
   const [activeTab, setActiveTab] = useState(0);
+  const handleSetActiveTab = (value) => setActiveTab(value);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -27,7 +29,7 @@ const EditJob = () => {
       }
       try {
         const response = await fetchJobByID(jobId);
-        setJobForm((prev) => ({ ...prev, ...response.job })); // ✅ functional update
+        setJobForm((prev) => ({ ...prev, ...response.job }));
       } catch (error) {
         showToast(
           'error',
@@ -54,7 +56,7 @@ const EditJob = () => {
 
   return (
     <div className="p-3">
-      {/* <div className="grid grid-cols-3 sticky justify-around border-b border-gray-200">
+      <div className="grid grid-cols-2 sticky justify-around border-b border-gray-200">
         {editJobInputMethodOptions.map(({ id, label }) => (
           <button
             key={id}
@@ -69,18 +71,17 @@ const EditJob = () => {
             {label}
           </button>
         ))}
-      </div> */}
-      {/* <div className="flex flex-row justify-center p-3"> */}
-      {/* {activeTab === 0 && ( */}
-      <JobForm
-        initialJobState={jobForm}
-        onSubmit={handleSubmitEditJobForm}
-        buttonTitle="Save Changes"
-      />
-      {/* )} */}
-      {/* {activeTab === 1 && <AIAutofillForm />} */}
-      {/* {activeTab === 2 && <AIAnalysisResult />} */}
-      {/* </div> */}
+      </div>
+      <div className="flex flex-row justify-center p-3">
+        {activeTab === 0 && (
+          <JobForm
+            initialJobState={jobForm}
+            onSubmit={handleSubmitEditJobForm}
+            buttonTitle="Save Changes"
+          />
+        )}
+        {activeTab === 1 && <AIAnalysisResult />}
+      </div>
     </div>
   );
 };

@@ -55,8 +55,8 @@ export const initialJobState = {
   hasBonus: false,
   hasBenefits: false,
 
-  numberOfOpenings: 0,
-  applicationDeadline: '',
+  // numberOfOpenings: 0,
+  // applicationDeadline: '',
 
   jobPostingURL: '',
   notes: '',

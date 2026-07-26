@@ -1,20 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { initialJobState, JobForm, useJobs } from '@/features/jobs';
 import { useToast } from '@/features/toast';
 
-import { newJobInputMethodOptions } from '@/features/ai/constants';
-
-import AIAutofillForm from '@/features/ai/AIAutofillForm';
+import { AIAutofillForm, newJobInputMethodOptions } from '@/features/ai';
 
 const NewJob = () => {
   const [jobForm, setJobForm] = useState({ ...initialJobState });
 
+  // Hooks
   const { createJob } = useJobs();
   const { showToast } = useToast();
 
+  // Tab Settings
   const [activeTab, setActiveTab] = useState(0);
-
   const handleSetActiveTab = (value) => setActiveTab(value);
 
   const handleSubmitNewJobForm = async (form) => {
@@ -27,7 +26,6 @@ const NewJob = () => {
   };
 
   const handleAIResponse = async (incomingAIFromData) => {
-    console.log(incomingAIFromData);
     setJobForm((prev) => ({
       ...prev,
       ...Object.fromEntries(
@@ -62,7 +60,6 @@ const NewJob = () => {
         {activeTab === 0 && (
           <JobForm
             initialJobState={jobForm}
-            isEditableProp={false}
             onSubmit={handleSubmitNewJobForm}
             buttonTitle="Create New Job"
           />
