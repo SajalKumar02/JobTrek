@@ -3,7 +3,7 @@ export { default as JobProvider } from '@/features/jobs/context/provider';
 export { useJobs } from '@/features/jobs/context/useJobs';
 
 // Components
-export { default as EmployementTypeFilterRow } from '@/features/jobs/components/EmployementTypeFilterRow';
+export { default as EmploymentTypeFilterRow } from '@/features/jobs/components/EmploymentTypeFilterRow';
 export { default as AddJobButton } from '@/features/jobs/components/AddJobButton';
 
 // Components/Modals
@@ -15,7 +15,7 @@ export { default as SideBar } from '@/features/jobs/components/sidebar/component
 
 // Jobs/Constants
 export {
-  employementTypeOptions,
+  employmentTypeOptions,
   workModeOptions,
   statusOptions,
   initialJobState,

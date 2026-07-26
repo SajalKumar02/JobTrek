@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
-import { Menu, Search } from 'lucide-react';
+import { ArrowLeft, Menu, Search } from 'lucide-react';
 
 import { useJobs } from '@/features/jobs';
 
@@ -10,6 +10,8 @@ import { useBreadcrumb } from '@/shared/utils/breadcrumbs.utils';
 const Head = ({ toggleSidebar }) => {
   const location = useLocation();
   const { jobId } = useParams();
+
+  const navigate = useNavigate();
 
   const { searchString, handleSetSearchString } = useJobs();
 
@@ -32,6 +34,10 @@ const Head = ({ toggleSidebar }) => {
     };
   }, [searchInput, handleSetSearchString]);
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <header className="sticky top-0 z-10 flex flex-row items-center justify-between gap-2 border-b border-slate-200 bg-white/80 px-2 py-2.5 backdrop-blur-sm md:px-4">
       <div className="flex min-w-0 flex-row items-center gap-2">
@@ -44,10 +50,27 @@ const Head = ({ toggleSidebar }) => {
 
         <div className="mx-1 h-5 w-px bg-slate-200" />
 
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50 text-indigo-600">
-          <Icon size={16} />
+        <span className="flex min-w-0 items-center gap-2 rounded-lg py-1 pl-1.5 pr-2 -ml-1.5 transition-colors cursor-pointer">
+          <button
+            type="button"
+            onClick={handleBack}
+            className="flex items-center justify-center rounded-md p-0.5 hover:bg-slate-200 hover:text-slate-800 transition-colors"
+            style={{ lineHeight: 0 }}
+            aria-label="Go back"
+          >
+            <ArrowLeft
+              size={18}
+              className="text-slate-400 group-hover:text-slate-800 transition-colors"
+            />
+          </button>
+
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50 text-indigo-600">
+            <Icon size={16} />
+          </span>
+          <span className="truncate text-sm font-medium text-slate-700">
+            {breadcrumb.label}
+          </span>
         </span>
-        <span className="truncate text-sm font-medium text-slate-700">{breadcrumb.label}</span>
       </div>
 
       <div className="flex flex-row items-center gap-3">

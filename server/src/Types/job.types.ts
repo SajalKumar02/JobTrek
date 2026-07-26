@@ -1,15 +1,36 @@
 import { HydratedDocument, Types } from 'mongoose';
 
-// Base Values
-export type IEmploymentType = 'full time' | 'internship' | 'contract' | 'freelancing' | 'part time';
+// -------------------------------------------------------
+// Constant Values
+export type IEmploymentType =
+  | 'fullTime'
+  | 'internship'
+  | 'contract'
+  | 'freelancing'
+  | 'partTime';
 
 export type IWorkMode = 'remote' | 'onSite' | 'hybrid';
 
-export type IJobStatusTypes = 'wishlist' | 'applied' | 'oa' | 'interview' | 'offer' | 'rejected';
+export type IJobStatusTypes =
+  | 'wishlist'
+  | 'applied'
+  | 'oa'
+  | 'interview'
+  | 'offer'
+  | 'rejected';
 
+export type IJobSource =
+  | 'linkedIn'
+  | 'unstop'
+  | 'internshala'
+  | 'naukri'
+  | 'other';
+
+// -------------------------------------------------------
+// Heirarichal Structure
 export type IImportantDate = {
-  label: string;
-  date: Date;
+  label?: string;
+  date?: Date;
 };
 
 export type IStatusHistoryItem = {
@@ -17,10 +38,10 @@ export type IStatusHistoryItem = {
   date: Date;
 };
 
-export type IJobSource = 'linkedIn' | 'unstop' | 'internshala' | 'naukri' | 'others';
-
+// -------------------------------------------------------
 // Complete Structure
 export type IJob = {
+  _id: Types.ObjectId;
   // About Company
   companyName: string;
   officeAddress?: string;
@@ -28,57 +49,91 @@ export type IJob = {
   // About Job
   jobTitle: string;
   description?: string;
-  employementType: IEmploymentType;
+  requiredSkills?: string[];
+  employmentType: IEmploymentType;
   workMode: IWorkMode;
 
   // Internship Options
-  internshipDuration: string;
+  internshipDuration?: string;
 
   // Compensation Details
-  annualCTC: number;
-  basePay: number;
-  monthlySalary: number;
+  annualCTC?: number;
+  basePay?: number;
+  monthlySalary?: number;
+  compensationRange?: {
+    min?: number;
+    max?: number;
+    period?: 'monthly' | 'annual';
+  };
 
-  // Program Highlights
-  programHighlights: string;
+  // Program Information
+  programHighlights?: string[];
+  notes?: string;
 
   // Compensation Extras
   hasBonus: boolean;
-  bonusDescription?: string;
+  bonusDescription?: string[];
   hasBenefits: boolean;
-  benefitsDetails?: string[];
+  benefitDetails?: string[];
+  perks?: string[];
 
-  // Listing Status
-  isListingOpen: boolean;
-  jobPostingURL: string;
-  jobSource: IJobSource;
+  // numberOfOpenings?: number;
 
   // Important Dates
-  importantDates: IImportantDate[];
+  importantDates?: IImportantDate[];
+  // applicationDeadline?: Date;
 
-  // User Settings
-  userId: Types.ObjectId;
-  notes?: string;
+  // Listing Status
+  isListingActive: boolean;
+  jobPostingURL: string;
+  jobSource: IJobSource;
 
   // Job Status
   status: IJobStatusTypes;
   statusHistory: IStatusHistoryItem[];
 
+  // User Settings
+  userId: Types.ObjectId;
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
 };
 
-// Updates
-export type IJobUpdateBody = Partial<IJob>;
+// JOB CREATION
+export type CreateJobInput = Omit<
+  IJob,
+  '_id' | 'userId' | 'createdAt' | 'updatedAt'
+>;
 
-// Mongoose Hydrated Document
+// Job Input after adding status
+export type JobCreatePayload = CreateJobInput & {
+  statusHistory: IStatusHistoryItem[];
+};
+
+// JOB UPDATION
+export type UpdateJobInput = Partial<CreateJobInput>;
+
+// JOB SWITCH STATUS
+export type JobStatusSwitchInput = Pick<IJob, 'status'>;
+
+export type JobStatusSwitchPayload = Pick<IJob, 'status' | 'statusHistory'>;
+
+// Mongoose Hydrated Document (includes methods)
 export type JobDocument = HydratedDocument<IJob>;
 
-// Job Analytics Data
-export type JobSummaryDocument = HydratedDocument<
-  Pick<
-    IJob,
-    'companyName' | 'employementType' | 'jobTitle' | 'importantDates' | 'status' | 'updatedAt'
-  >
+// JOB GET ALL JOBS DOCUMENT
+export type JobSummaryDocument = Pick<
+  JobDocument,
+  | '_id'
+  | 'companyName'
+  | 'jobTitle'
+  | 'employmentType'
+  | 'workMode'
+  | 'importantDates'
+  // | 'applicationDeadline'
+  | 'isListingActive'
+  | 'jobSource'
+  | 'status'
+  | 'statusHistory'
+  | 'updatedAt'
 >;

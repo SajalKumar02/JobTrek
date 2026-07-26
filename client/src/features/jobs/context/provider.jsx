@@ -26,7 +26,9 @@ const JobProvider = ({ children }) => {
   const createJob = useCallback(async (jobData) => {
     const response = await jobServices.createJob(jobData);
     if (response.data && response.data.success) {
-      setJobs((prev) => (prev ? [response.data.job, ...prev] : [response.data.job]));
+      setJobs((prev) =>
+        prev ? [response.data.job, ...prev] : [response.data.job]
+      );
       return response.data;
     }
   }, []);
@@ -46,7 +48,9 @@ const JobProvider = ({ children }) => {
     if (response.data && response.data.success && response.data.job) {
       setJobs((prev) =>
         prev
-          ? prev.map((job) => (job._id === jobId ? { ...job, ...response.data.job } : job))
+          ? prev.map((job) =>
+              job._id === jobId ? { ...job, ...response.data.job } : job
+            )
           : prev
       );
     }
@@ -59,7 +63,8 @@ const JobProvider = ({ children }) => {
   const deleteJob = useCallback(async (jobId) => {
     const response = await jobServices.deleteJob(jobId);
     if (response.data && response.data.success) {
-      const newJobs = (prev) => (prev ? prev.filter((job) => job._id !== jobId) : prev);
+      const newJobs = (prev) =>
+        prev ? prev.filter((job) => job._id !== jobId) : prev;
       setJobs(newJobs);
     }
     return response.data;
@@ -79,7 +84,9 @@ const JobProvider = ({ children }) => {
 
       if (response.data && response.data.success && response.data.job) {
         setJobs((prev) =>
-          prev ? prev.map((j) => (j._id === jobId ? response.data.job : j)) : prev
+          prev
+            ? prev.map((j) => (j._id === jobId ? response.data.job : j))
+            : prev
         );
       }
 
@@ -97,8 +104,14 @@ const JobProvider = ({ children }) => {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
 
-  const handleSetFilter = useCallback((filterString) => setFilter(filterString), []);
-  const handleSetSearchString = useCallback((searchString) => setSearch(searchString), []);
+  const handleSetFilter = useCallback(
+    (filterString) => setFilter(filterString),
+    []
+  );
+  const handleSetSearchString = useCallback(
+    (searchString) => setSearch(searchString),
+    []
+  );
 
   return (
     <JobContext.Provider

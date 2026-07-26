@@ -1,7 +1,7 @@
 import { filterOptions } from '@/features/jobs/constants';
 import { useJobs } from '@/features/jobs/context/useJobs';
 
-const EmployementTypeFilterRow = () => {
+const EmploymentTypeFilterRow = () => {
   const { filterString, handleSetFilter } = useJobs();
 
   return (
@@ -21,4 +21,4 @@ const EmployementTypeFilterRow = () => {
   );
 };
 
-export default EmployementTypeFilterRow;
+export default EmploymentTypeFilterRow;

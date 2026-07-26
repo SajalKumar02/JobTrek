@@ -1,14 +1,14 @@
-export const employementTypeOptions = [
-  { label: 'Full Time', value: 'full time' },
+export const employmentTypeOptions = [
+  { label: 'Full Time', value: 'fullTime' },
   { label: 'Internship', value: 'internship' },
   { label: 'Contract', value: 'contract' },
   { label: 'Freelancing', value: 'freelancing' },
-  { label: 'Part Time', value: 'part time' },
+  { label: 'Part Time', value: 'partTime' },
 ];
 
 export const workModeOptions = [
-  { label: 'Remote', value: 'remote' },
   { label: 'On Site', value: 'onSite' },
+  { label: 'Remote', value: 'remote' },
   { label: 'Hybrid', value: 'hybrid' },
 ];
 
@@ -29,40 +29,49 @@ export const jobSourceOptions = [
   { label: 'Other', value: 'other' },
 ];
 
-export const filterOptions = [{ label: 'All', value: 'all' }, ...employementTypeOptions];
+export const filterOptions = [
+  { label: 'All', value: 'all' },
+  ...employmentTypeOptions,
+];
 
 export const initialJobState = {
-  // About Company
   companyName: '',
-  officeAddress: '',
-
-  // About Job
   jobTitle: '',
-  description: '',
-  employementType: 'full time',
-  workMode: 'onSite',
 
-  // Miscellaneous
+  officeAddress: '',
+  description: '',
+  internshipDuration: '',
+
   annualCTC: 0,
   basePay: 0,
   monthlySalary: 0,
-
-  hasBonus: false,
-  bonusDescription: '',
-  hasBenefits: false,
-  benefitsDetails: [],
+  compensationRange: {
+    min: 0,
+    max: 0,
+    period: 'annual',
+  },
 
   isListingActive: true,
+  hasBonus: false,
+  hasBenefits: false,
 
-  importantDates: [],
+  // numberOfOpenings: 0,
+  // applicationDeadline: '',
 
-  // User Setting
-  status: 'wishlist',
-  statusHistory: [],
-
+  jobPostingURL: '',
   notes: '',
 
-  programHighlights: '',
-  jobPostingURL: '',
+  employmentType: employmentTypeOptions[0].value,
+  workMode: workModeOptions[0].value,
   jobSource: '',
+  status: 'wishlist',
+
+  requiredSkills: [],
+  programHighlights: [],
+  bonusDescription: [],
+  benefitDetails: [],
+  perks: [],
+
+  importantDates: [],
+  statusHistory: [],
 };

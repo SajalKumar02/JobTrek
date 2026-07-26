@@ -1,43 +1,50 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
+import { Suspense, lazy } from 'react';
 
-import Home from '@/pages/Home';
-import Dashboard from '@/pages/Dashboard';
-import Registration from '@/pages/Registration';
-import Settings from '@/pages/Settings';
-import PageNotFound from '@/pages/PageNotFound';
+const Home = lazy(() => import('@/pages/Home'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Registration = lazy(() => import('@/pages/Registration'));
+const Settings = lazy(() => import('@/pages/Settings'));
+const PageNotFound = lazy(() => import('@/pages/PageNotFound'));
 
-import AllJobs from '@/pages/Jobs/AllJobs';
-import EditJob from '@/pages/Jobs/EditJob';
-import NewJob from '@/pages/Jobs/NewJob';
+const AllJobs = lazy(() => import('@/pages/Jobs/AllJobs'));
+const EditJob = lazy(() => import('@/pages/Jobs/EditJob'));
+const NewJob = lazy(() => import('@/pages/Jobs/NewJob'));
 
-import AppLayout from '@/layout/AppLayout';
+const AppLayout = lazy(() => import('@/layout/AppLayout'));
 
 import { ProtectedRoute } from '@/features/auth';
 import { JobProvider } from '@/features/jobs';
+import Loader from '@/shared/components/Loader';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route index path="/" element={<Home />} />
-        <Route path="/register" element={<Registration />} />
-        <Route element={<ProtectedRoute />}>
-          <Route
-            element={
-              <JobProvider>
-                <AppLayout />
-              </JobProvider>
-            }
-          >
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/jobs" element={<AllJobs />} />
-            <Route path="/jobs/:jobId" element={<EditJob />} />
-            <Route path="/jobs/new" element={<NewJob />} />
-            <Route path="/setting" element={<Settings />} />
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route index path="/" element={<Home />} />
+          <Route path="/register" element={<Registration />} />
+          <Route element={<ProtectedRoute />}>
+            <Route
+              element={
+                <JobProvider>
+                  <AppLayout />
+                </JobProvider>
+              }
+            >
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/jobs" element={<AllJobs />} />
+              <Route path="/jobs/:jobId" element={<EditJob />} />
+              <Route path="/jobs/new" element={<NewJob />} />
+              <Route path="/setting" element={<Settings />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="*" element={<PageNotFound statusCode="404" message="Page Not Found" />} />
-      </Routes>
+          <Route
+            path="*"
+            element={<PageNotFound statusCode="404" message="Page Not Found" />}
+          />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };

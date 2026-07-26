@@ -34,7 +34,11 @@ const RecentActivity = () => {
       <div className="flex flex-col md:flex-row gap-2">
         {recentActivities.length > 0 ? (
           recentActivities.map((activity) => (
-            <RecentActivityCard activity={activity} id={activity._id} key={activity._id} />
+            <RecentActivityCard
+              activity={activity}
+              id={activity._id}
+              key={activity._id}
+            />
           ))
         ) : (
           <div className="flex flex-col items-center text-gray-500 text-sm p-4 w-full text-center">

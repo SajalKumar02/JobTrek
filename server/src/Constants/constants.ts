@@ -10,6 +10,8 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
 // prettier-ignore
 export {
   PORT,
@@ -18,4 +20,6 @@ export {
   JWT_ACCESS_SECRET,
   FRONTEND_URL,
   BACKEND_URL,
+
+  GROQ_API_KEY
 };
