@@ -1,6 +1,6 @@
 import { authService } from '../Services/auth.Services';
 
-import { asyncHandler } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler.Util';
 import { ApiError } from '../Utils/ApiError.Util';
 import {
   clearRefreshToken,

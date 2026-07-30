@@ -1,4 +1,4 @@
-import { asyncHandler } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler.Util';
 import { ApiError } from '../Utils/ApiError.Util';
 import { verifyAccessToken } from '../Utils/token.Util';
 import { NextFunction } from 'express';

@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import { jobService } from '../Services/job.Services';
 
 import { ApiError } from '../Utils/ApiError.Util';
-import { asyncHandler } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler.Util';
 
 import {
   IJobStatusTypes,

@@ -9,7 +9,7 @@ import {
   UserResponse,
 } from '../Types';
 
-import { asyncHandler } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler.Util';
 import { ApiError } from '../Utils/ApiError.Util';
 import { UpdateUserEmailValidator } from '../Validators/user.Validator';
 

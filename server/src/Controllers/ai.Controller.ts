@@ -7,7 +7,7 @@ import {
   AIResponseJobValidator,
 } from '../Validators/ai.Validator';
 
-import { asyncHandler } from '../Utils/asyncHandler';
+import { asyncHandler } from '../Utils/asyncHandler.Util';
 import { ApiError } from '../Utils/ApiError.Util';
 
 import { AIRequest, AIResponse } from '../Types';
