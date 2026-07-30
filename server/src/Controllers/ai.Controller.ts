@@ -23,9 +23,9 @@ export const jdParser = asyncHandler(
 
     try {
       const parsedJob = await aiService.parseJD(jdUserInput);
-      const jsonResponse = JSON.parse(parsedJob);
+      const aiJsonResponse = JSON.parse(parsedJob);
 
-      const validatorResult = AIResponseJobValidator.safeParse(jsonResponse);
+      const validatorResult = AIResponseJobValidator.safeParse(aiJsonResponse);
       if (!validatorResult.success) {
         throw new ApiError(validatorResult.error.issues[0].message, 400);
       }
@@ -33,7 +33,7 @@ export const jdParser = asyncHandler(
       res.status(200).json({
         success: true,
         message: 'JD Parsed Successfully',
-        jsonResponse,
+        aiJsonResponse,
       });
     } catch (err) {
       if (err instanceof Groq.APIError) {

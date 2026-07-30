@@ -1,6 +1,6 @@
 import { CreateJobInput } from './job.types';
 
-export type AIJobParsed = Omit<
+export interface AIJobParsed extends Omit<
   CreateJobInput,
   | 'status'
   | 'statusHistory'
@@ -8,6 +8,6 @@ export type AIJobParsed = Omit<
   | 'jobSource'
   | 'jobPostingURL'
   | 'isListingActive'
->;
+> {}
 
-export type AIJobParsedDraft = Partial<AIJobParsed>;
+export interface AIJobParsedDraft extends Partial<AIJobParsed> {}

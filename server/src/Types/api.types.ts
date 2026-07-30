@@ -1,6 +1,5 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from './auth.types';
-import { UserDocument } from './user.types';
 import { CreateJobInput, JobDocument } from './job.types';
 import { AIJobParsedDraft } from './ai.types';
 
@@ -29,35 +28,30 @@ export interface AIRequest extends AuthenticatedRequest {
 }
 
 // --------------------------------------
-// RESPONSES
-export interface BaseResponse extends Response {
-  json: (body: {
-    success: boolean;
-    message: string;
-    user?: UserDocument;
-  }) => this;
+// STRUCTURES
+export interface ResponseStructure {
+  success: boolean;
+  message: string;
 }
 
-export interface UserResponse extends Response {
-  json: (body: {
-    success: boolean;
-    message: string;
-    user: UserDocument;
-  }) => this;
+// JOB
+interface JobResponseStructure extends ResponseStructure {
+  jobs: JobDocument;
 }
 
-export interface JobResponse extends Response {
-  json: (body: {
-    success: boolean;
-    message: string;
-    jobs: JobDocument;
-  }) => this;
+interface AIResponseStructure extends ResponseStructure {
+  aiJsonResponse: AIJobParsedDraft;
 }
 
-export interface AIResponse extends Response {
-  json: (body: {
-    success: boolean;
-    message: string;
-    jsonResponse: AIJobParsedDraft;
-  }) => this;
+// This is default Base Response which has success and message at all times.
+// If we need to add more data inside json({})
+// we could use BaseResponse and ResponseStructure Generic.
+export interface BaseResponse<T = ResponseStructure> extends Response {
+  json: (body: T) => this;
 }
+
+// JOB Response
+export interface JobResponse extends BaseResponse<JobResponseStructure> {}
+
+// AI Response
+export interface AIResponse extends BaseResponse<AIResponseStructure> {}

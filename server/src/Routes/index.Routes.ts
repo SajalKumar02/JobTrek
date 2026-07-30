@@ -8,7 +8,8 @@ import AIRouter from './ai.Router';
 const IndexRouter = Router();
 
 // prettier-ignore
-IndexRouter.use('/auth', AuthRouter)
+IndexRouter
+  .use('/auth', AuthRouter)
   .use('/user', UserRouter)
   .use('/jobs', JobRouter)
   .use('/ai', AIRouter)

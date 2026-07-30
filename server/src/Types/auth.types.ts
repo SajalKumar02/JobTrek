@@ -1,28 +1,55 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
+import { Types } from 'mongoose';
+import { UserDocument } from './user.types';
+import { BaseResponse, ResponseStructure } from './api.types';
 
-// Request interface with optional access token cookie
-export interface AccessTokenRequest extends Request {
+// --------------------------------------------------------------------------------------------------------------------------------------------
+// LOGIN AND REGISTER - AUTH
+// REQUESTS✅
+export interface AuthRequestStructure {
+  email: string;
+  password: string;
+}
+export interface AuthRequestBody extends Request {
+  body: AuthRequestStructure;
+}
+
+// RESPONSE✅
+// In this -> adding fields of ResponseStructure with new ones and creating a new structure.
+export interface AuthResponseStructure extends ResponseStructure {
+  user?: UserDocument;
+  accessToken: string;
+}
+// Using the BaseResponse which is already extends Response is making single source of truth.
+export interface AuthResponse extends BaseResponse<AuthResponseStructure> {}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------
+// AuthMiddleware
+// Request ✅
+export interface AuthMiddlewareRequest extends Request {
+  user?: {
+    userId: Types.ObjectId;
+  };
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------
+// LOG OUT
+// Request ✅
+// Responses ✅
+
+// --------------------------------------------------------------------------------------------------------------------------------------------
+// Refresh Token
+export interface RequestWithRefreshToken extends Request {
   cookies: {
-    accessToken?: string;
+    refreshToken: string;
   };
 }
 
-// Authenticated request with user information attached
-export interface AuthenticatedRequest extends AccessTokenRequest {
+// After Middleware
+// Use it in Base requests where userId is needed
+// Add fields to it and use this.
+export interface AuthenticatedRequest extends Request {
   user: {
-    userId: string;
+    userId: Types.ObjectId;
   };
 }
-
-// Standard authenticated request type for user update operations (e.g., password, username change)
-export interface UserUpdateRequest<T = Record<string, string>> extends AuthenticatedRequest {
-  body: T;
-}
-
-// Request interface for login operations
-export interface LoginRequest<T = Record<string, string>> extends Request {
-  body: T;
-}
-
-// -----------------------
-// Responses

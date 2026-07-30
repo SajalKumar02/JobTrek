@@ -1,49 +1,84 @@
-import { Types } from 'mongoose';
 import { authService } from '../Services/auth.Services';
+
 import { asyncHandler } from '../Utils/asyncHandler';
-
-import { mountTokenToResponse } from '../Utils/token.Util';
-import { AccessTokenRequest, BaseResponse, LoginRequest, UserUpdateRequest } from '../Types';
-import { ChangePasswordValidator, RegisterOrLoginValidator } from '../Validators/auth.Validator';
 import { ApiError } from '../Utils/ApiError.Util';
+import {
+  clearRefreshToken,
+  mountRefreshTokenToResponse,
+} from '../Utils/token.Util';
 
-export const registerOrLogin = asyncHandler(async (req: LoginRequest, res: BaseResponse) => {
-  const { email, password } = req.body;
+import { RegisterOrLoginValidator } from '../Validators/auth.Validator';
+import {
+  AuthenticatedRequest,
+  AuthRequestBody,
+  AuthResponse,
+  BaseResponse,
+  RequestWithRefreshToken,
+} from '../Types';
 
-  const validatorResult = RegisterOrLoginValidator.safeParse({ email, password });
-  if (!validatorResult.success) {
-    throw new ApiError(validatorResult.error.issues[0].message, 400);
+import { Request } from 'express';
+
+export const AuthController = asyncHandler(
+  async (req: AuthRequestBody, res: AuthResponse) => {
+    const { email, password } = req.body;
+
+    const validatorResult = RegisterOrLoginValidator.safeParse({
+      email,
+      password,
+    });
+
+    if (!validatorResult.success) {
+      throw new ApiError(validatorResult.error.issues[0].message, 400);
+    }
+
+    const result = await authService.authUser(email, password);
+
+    mountRefreshTokenToResponse(res, result.refreshToken);
+
+    res.status(result.isNewUser ? 201 : 200).json({
+      success: true,
+      message: result.isNewUser ? 'User Registered' : 'User Logged In',
+      user: result.user,
+      accessToken: result.accessToken,
+    });
   }
+);
 
-  const result = await authService.registerOrLoginUser(email, password);
+export const LogOutController = asyncHandler(
+  async (req: Request, res: BaseResponse) => {
+    clearRefreshToken(res);
 
-  mountTokenToResponse(res, result.accessToken);
-
-  res.status(result.isNewUser ? 201 : 200).json({
-    success: true,
-    message: result.isNewUser ? 'User Registered' : 'User Logged In',
-    user: result.user,
-  });
-});
-
-export const changePassword = asyncHandler(async (req: UserUpdateRequest, res: BaseResponse) => {
-  const userId = new Types.ObjectId(req.user.userId);
-  const { oldPassword, newPassword } = req.body;
-
-  const validatorResult = ChangePasswordValidator.safeParse({ oldPassword, newPassword });
-  if (!validatorResult.success) {
-    throw new ApiError(validatorResult.error.issues[0].message, 400);
+    return res.status(200).json({
+      success: true,
+      message: 'Logout successful',
+    });
   }
+);
 
-  await authService.changeUserPassword(userId, oldPassword, newPassword);
+export const RefreshTokenController = asyncHandler(
+  async (req: RequestWithRefreshToken, res: AuthResponse) => {
+    const { newAccessToken, newRefreshToken } =
+      await authService.issueNewAuthTokens(req);
 
-  res.status(200).json({
-    success: true,
-    message: 'USER PASSWORD CHANGED',
-  });
-});
+    mountRefreshTokenToResponse(res, newRefreshToken);
 
-export const logout = asyncHandler(async (req: AccessTokenRequest, res: BaseResponse) => {
-  res.clearCookie('accessToken');
-  res.json({ success: true, message: 'Logged out' });
-});
+    return res.status(200).json({
+      success: true,
+      message: 'New access token issued',
+      accessToken: newAccessToken,
+    });
+  }
+);
+
+export const GetCurrentUserController = asyncHandler(
+  async (req: AuthenticatedRequest, res: AuthResponse) => {
+    const result = await authService.getCurrentUser(req);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Authenticated',
+      user: result.user,
+      accessToken: result.accessToken,
+    });
+  }
+);

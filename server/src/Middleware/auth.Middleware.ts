@@ -1,21 +1,21 @@
 import { asyncHandler } from '../Utils/asyncHandler';
 import { ApiError } from '../Utils/ApiError.Util';
 import { verifyAccessToken } from '../Utils/token.Util';
-import { AuthenticatedRequest } from '../Types';
 import { NextFunction } from 'express';
+import { AuthMiddlewareRequest } from '../Types';
 
 export const authMiddleware = asyncHandler(
-  (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies.accessToken as string;
-
-    if (!accessToken) {
-      throw new ApiError('ACCESS TOKEN NOT FOUND', 401);
+  (req: AuthMiddlewareRequest, res, next: NextFunction) => {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new ApiError('No token provided', 401);
     }
 
-    const decoded = verifyAccessToken(accessToken);
+    const token = authHeader.split(' ')[1];
+    const decoded = verifyAccessToken(token);
 
     if (!decoded) {
-      throw new ApiError('ACCESS TOKEN EXPIRED', 401);
+      throw new ApiError('Unauthorized', 401);
     }
 
     req.user = { userId: decoded.id };

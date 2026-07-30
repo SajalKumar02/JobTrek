@@ -5,3 +5,4 @@ export * from './user.types';
 export * from './job.types';
 export * from './api.types';
 export * from './token.types';
+export * from './ai.types';

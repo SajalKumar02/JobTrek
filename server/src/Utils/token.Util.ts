@@ -1,31 +1,54 @@
 import jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
-import { BaseResponse, DecodedToken } from '../Types';
 
-export const generateAccessToken = (id: Types.ObjectId) => {
-  const accessToken = jwt.sign({ id: id }, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: '15d',
+import {
+  JWT_ACCESS_SECRET,
+  JWT_ACCESS_MAX_AGE,
+  JWT_REFRESH_SECRET,
+  JWT_REFRESH_MAX_AGE,
+} from '../Constants/constants';
+
+import { AuthResponse, BaseResponse, DecodedToken } from '../Types';
+
+export const generateAccessToken = (id: Types.ObjectId): string => {
+  return jwt.sign({ id: id }, JWT_ACCESS_SECRET, {
+    expiresIn: JWT_ACCESS_MAX_AGE,
   });
-  return accessToken;
 };
 
-export const verifyAccessToken = (token: string) => {
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as DecodedToken;
-    return decoded;
-  } catch (error) {
-    return null;
-  }
+export const generateRefreshToken = (id: Types.ObjectId): string => {
+  return jwt.sign({ id: id }, JWT_REFRESH_SECRET, {
+    expiresIn: JWT_REFRESH_MAX_AGE,
+  });
 };
 
-export const mountTokenToResponse = (res: BaseResponse, accessToken: string) => {
-  const accessMaxAge = 15 * 24 * 60 * 60 * 1000;
+export const verifyAccessToken = (token: string): DecodedToken => {
+  return jwt.verify(token, JWT_ACCESS_SECRET) as DecodedToken;
+};
 
-  res.cookie('accessToken', accessToken, {
+export const verifyRefreshToken = (token: string): DecodedToken => {
+  return jwt.verify(token, JWT_REFRESH_SECRET) as DecodedToken;
+};
+
+export const mountRefreshTokenToResponse = (
+  res: AuthResponse,
+  refreshToken: string
+) => {
+  res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
     sameSite: 'none',
-    maxAge: accessMaxAge,
+    maxAge: JWT_REFRESH_MAX_AGE,
+  });
+
+  return res;
+};
+
+export const clearRefreshToken = (res: BaseResponse) => {
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
   });
 
   return res;

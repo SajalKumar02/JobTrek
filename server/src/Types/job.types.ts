@@ -2,45 +2,81 @@ import { HydratedDocument, Types } from 'mongoose';
 
 // -------------------------------------------------------
 // Constant Values
+export interface IEmploymentTypeMap {
+  fullTime: 'fullTime';
+  internship: 'internship';
+  contract: 'contract';
+  freelancing: 'freelancing';
+  partTime: 'partTime';
+}
 export type IEmploymentType =
-  | 'fullTime'
-  | 'internship'
-  | 'contract'
-  | 'freelancing'
-  | 'partTime';
+  | IEmploymentTypeMap['fullTime']
+  | IEmploymentTypeMap['internship']
+  | IEmploymentTypeMap['contract']
+  | IEmploymentTypeMap['freelancing']
+  | IEmploymentTypeMap['partTime'];
 
-export type IWorkMode = 'remote' | 'onSite' | 'hybrid';
+export interface IWorkModeMap {
+  remote: 'remote';
+  onSite: 'onSite';
+  hybrid: 'hybrid';
+}
+export type IWorkMode =
+  | IWorkModeMap['remote']
+  | IWorkModeMap['onSite']
+  | IWorkModeMap['hybrid'];
 
+export interface IJobStatusTypesMap {
+  wishlist: 'wishlist';
+  applied: 'applied';
+  oa: 'oa';
+  interview: 'interview';
+  offer: 'offer';
+  rejected: 'rejected';
+}
 export type IJobStatusTypes =
-  | 'wishlist'
-  | 'applied'
-  | 'oa'
-  | 'interview'
-  | 'offer'
-  | 'rejected';
+  | IJobStatusTypesMap['wishlist']
+  | IJobStatusTypesMap['applied']
+  | IJobStatusTypesMap['oa']
+  | IJobStatusTypesMap['interview']
+  | IJobStatusTypesMap['offer']
+  | IJobStatusTypesMap['rejected'];
 
+export interface IJobSourceMap {
+  linkedIn: 'linkedIn';
+  unstop: 'unstop';
+  internshala: 'internshala';
+  naukri: 'naukri';
+  other: 'other';
+}
 export type IJobSource =
-  | 'linkedIn'
-  | 'unstop'
-  | 'internshala'
-  | 'naukri'
-  | 'other';
+  | IJobSourceMap['linkedIn']
+  | IJobSourceMap['unstop']
+  | IJobSourceMap['internshala']
+  | IJobSourceMap['naukri']
+  | IJobSourceMap['other'];
 
 // -------------------------------------------------------
 // Heirarichal Structure
-export type IImportantDate = {
+export interface IImportantDate {
   label?: string;
   date?: Date;
-};
+}
 
-export type IStatusHistoryItem = {
+export interface IStatusHistoryItem {
   label: IJobStatusTypes;
   date: Date;
-};
+}
 
 // -------------------------------------------------------
 // Complete Structure
-export type IJob = {
+export interface ICompensationRange {
+  min?: number;
+  max?: number;
+  period?: 'monthly' | 'annual';
+}
+
+export interface IJob {
   _id: Types.ObjectId;
   // About Company
   companyName: string;
@@ -60,11 +96,7 @@ export type IJob = {
   annualCTC?: number;
   basePay?: number;
   monthlySalary?: number;
-  compensationRange?: {
-    min?: number;
-    max?: number;
-    period?: 'monthly' | 'annual';
-  };
+  compensationRange?: ICompensationRange;
 
   // Program Information
   programHighlights?: string[];
@@ -97,32 +129,35 @@ export type IJob = {
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
-};
+}
 
 // JOB CREATION
-export type CreateJobInput = Omit<
+export interface CreateJobInput extends Omit<
   IJob,
   '_id' | 'userId' | 'createdAt' | 'updatedAt'
->;
+> {}
 
 // Job Input after adding status
-export type JobCreatePayload = CreateJobInput & {
+export interface JobCreatePayload extends CreateJobInput {
   statusHistory: IStatusHistoryItem[];
-};
+}
 
 // JOB UPDATION
-export type UpdateJobInput = Partial<CreateJobInput>;
+export interface UpdateJobInput extends Partial<CreateJobInput> {}
 
 // JOB SWITCH STATUS
-export type JobStatusSwitchInput = Pick<IJob, 'status'>;
+export interface JobStatusSwitchInput extends Pick<IJob, 'status'> {}
 
-export type JobStatusSwitchPayload = Pick<IJob, 'status' | 'statusHistory'>;
+export interface JobStatusSwitchPayload extends Pick<
+  IJob,
+  'status' | 'statusHistory'
+> {}
 
 // Mongoose Hydrated Document (includes methods)
-export type JobDocument = HydratedDocument<IJob>;
+export interface JobDocument extends HydratedDocument<IJob> {}
 
 // JOB GET ALL JOBS DOCUMENT
-export type JobSummaryDocument = Pick<
+export interface JobSummaryDocument extends Pick<
   JobDocument,
   | '_id'
   | 'companyName'
@@ -136,4 +171,4 @@ export type JobSummaryDocument = Pick<
   | 'status'
   | 'statusHistory'
   | 'updatedAt'
->;
+> {}

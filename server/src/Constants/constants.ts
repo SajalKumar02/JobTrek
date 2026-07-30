@@ -9,6 +9,9 @@ const BACKEND_URL = process.env.BACKEND_URL;
 const MONGO_URI = process.env.MONGO_URI;
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
+const JWT_ACCESS_MAX_AGE = 15 * 60 * 1000; // 15 min
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const JWT_REFRESH_MAX_AGE = 15 * 24 * 60 * 60 * 1000;
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
@@ -18,6 +21,9 @@ export {
   MONGO_URI,
   NODE_ENV,
   JWT_ACCESS_SECRET,
+  JWT_ACCESS_MAX_AGE,
+  JWT_REFRESH_SECRET,
+  JWT_REFRESH_MAX_AGE,
   FRONTEND_URL,
   BACKEND_URL,
 

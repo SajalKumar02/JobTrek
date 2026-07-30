@@ -1,6 +1,11 @@
 import { Router } from 'express';
 
-import { registerOrLogin, changePassword, logout } from '../Controllers/auth.Controller';
+import {
+  AuthController,
+  LogOutController,
+  RefreshTokenController,
+  GetCurrentUserController,
+} from '../Controllers/auth.Controller';
 
 import { authMiddleware } from '../Middleware/auth.Middleware';
 
@@ -16,17 +21,13 @@ const AuthRouter = Router();
 
 // prettier-ignore
 AuthRouter
-
   // User login or registration
-  .post('/login', loginLimiter, registerOrLogin)
-  // Change user's password; protected route
-  .put('/password', authMiddleware, changePassword)
-  // Logs out the user; protected route
-  .post('/logout', logout)
-  .get('/access/check', authMiddleware, (req, res) => {
-    res.status(200).json({
-      success: true,
-    });
-  });
+  .post('/login', loginLimiter, AuthController)
+  .post('/logout', authMiddleware, LogOutController)
+  
+  // Issue new access and refresh tokens using a valid refresh token
+  .get('/refreshToken', RefreshTokenController)
+  // to check user has access token or not and then return user information
+  .get('/me', authMiddleware, GetCurrentUserController)
 
 export default AuthRouter;

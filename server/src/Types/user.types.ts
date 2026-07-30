@@ -1,4 +1,5 @@
 import { HydratedDocument } from 'mongoose';
+import { BaseResponse, ResponseStructure } from './api.types';
 
 // Structure Define
 export interface IUser {
@@ -8,12 +9,27 @@ export interface IUser {
 }
 
 // These are for responses
-export type IUserPublic = Omit<IUser, 'password'>;
+export interface IUserPublic {
+  email: string;
+  username: string;
+}
 
-export type IUserUpdatePayload = Pick<IUser, 'username'>;
+export interface IUserUpdatePayload {
+  username: string;
+}
 
-export type IUserUpdateEmail = Pick<IUser, 'email'>;
+export interface IUserUpdateEmail {
+  email: string;
+}
 
-export type IUserUpdatePassword = Pick<IUser, 'password'>;
+export interface IUserUpdatePassword {
+  password: string;
+}
 
-export type UserDocument = HydratedDocument<IUser>;
+export interface UserDocument extends HydratedDocument<IUser> {}
+
+interface UserResponseStructure extends ResponseStructure {
+  user: UserDocument;
+}
+
+export interface UserResponse extends BaseResponse<UserResponseStructure> {}

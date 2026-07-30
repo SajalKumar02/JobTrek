@@ -7,6 +7,7 @@ declare global {
       FRONTEND_URL: string;
       BACKEND_URL: string;
       JWT_ACCESS_SECRET: string;
+      JWT_REFRESH_SECRET: string;
     }
   }
 }
