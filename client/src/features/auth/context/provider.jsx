@@ -1,94 +1,66 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import AuthContext from './context';
 
 import AuthServices from '@/features/auth/services';
+import { setAccessToken } from '@/api';
 
 const AuthProvider = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  // const [error,setError] = useState();
-
-  const handleAuth = useCallback(
-    async ({ email, password }) => {
-      setLoading(true);
-      const response = await AuthServices.handleLogin(email, password);
-      if (response.data && response.data.success) {
-        setAuthenticated(true);
-        setUser(response.data.user);
-      }
-      setLoading(false);
-      return response.data;
-    },
-    [setLoading, setAuthenticated],
-  );
-
-  const logOut = useCallback(async () => {
-    const response = await AuthServices.handleLogOut();
-    if (response.data && response.data.success) {
-      setAuthenticated(false);
-      setUser(undefined);
-    }
-    return response.data;
-  }, [setAuthenticated, setUser]);
-
-  const updateUserProfile = useCallback(
-    async (updatedProfile) => {
-      const response = await AuthServices.updateUserProfile(updatedProfile);
-      if (response.data && response.data.success) {
-        setUser(response.data.user);
-      }
-      return response.data;
-    },
-    [setUser],
-  );
-
-  const updateUserEmail = useCallback(
-    async (updatedEmail) => {
-      const response = await AuthServices.updateUserEmail(updatedEmail);
-      if (response.data && response.data.success) {
-        setUser(response.data.user);
-      }
-      return response.data;
-    },
-    [setUser],
-  );
+  const [token, setToken] = useState(undefined);
 
   useEffect(() => {
-    (async () => {
+    setAccessToken(token ?? null);
+  }, [token]);
+
+  const handleAuth = async ({ email, password }) => {
+    const response = await AuthServices.auth(email, password);
+    if (response.data && response.data.success) {
+      setToken(response.data.accessToken);
+      setUser(response.data.user);
+    }
+    return response.data;
+  };
+
+  const logOut = async () => {
+    try {
+      const response = await AuthServices.logOut();
+      return response;
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setToken(null);
+    }
+  };
+
+  useEffect(() => {
+    const fetchMe = async () => {
       try {
         const response = await AuthServices.getUser();
-        if (response.data && response.data.success) {
-          setUser(response.data.user);
-          setAuthenticated(true);
-        } else {
-          setUser(null);
-          setAuthenticated(false);
-        }
+        setToken(response.data.accessToken);
+        setUser(response.data.user);
       } catch {
-        setUser(null);
-        setAuthenticated(false);
-      } finally {
-        setLoading(false);
+        setToken(null);
       }
-    })();
+    };
+    fetchMe();
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      token,
+      user,
+      setToken,
+      isAuthenticated: !!token,
+      isLoading: token === undefined,
+      handleAuth,
+      logOut,
+    }),
+    [token, user]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        authenticated,
-        loading,
-        handleAuth,
-        logOut,
-        updateUserProfile,
-        updateUserEmail,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 

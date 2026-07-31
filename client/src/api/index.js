@@ -10,21 +10,55 @@ const config = {
 
 const http = axios.create(config);
 
-// http.defaults.withCredentials = true;
+let accessToken = null; //module-level variable. Lives in JS memory, outside any component. Survives across renders, shared by anything that imports
 
-// http.interceptors.response.use(
-//     function (response) {
-//         return response;
-//     },
-//     function (error) {
-//         if (error.response?.status === 401) {
-//             const isLoginPage = window.location.pathname === '/register';
-//             if (!isLoginPage) {
-//                 window.location.href = "/register";
-//             }
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+export const setAccessToken = (token) => {
+  accessToken = token;
+}; // the only way to write to that variable
+
+export const getAccessToken = () => accessToken; // the only way to read it
+
+http.interceptors.request.use((config) => {
+  if (!config._retry && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
+// Request interceptor
+// → runs before every outgoing request
+// → grabs accessToken via getAccessToken() (not via closure/prop)
+// → attaches Authorization header if present
+
+http.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    const isUnauthorized =
+      error.response &&
+      (error.response.status === 401 ||
+        (error.response.status === 403 &&
+          error.response.data?.message === 'Unauthorized'));
+
+    const isRefreshRequest =
+      originalRequest.url?.includes('/auth/refreshToken');
+
+    if (isUnauthorized && !originalRequest._retry && !isRefreshRequest) {
+      originalRequest._retry = true;
+      try {
+        const res = await http.get('/auth/refreshToken');
+        const newAccessToken = res.data.accessToken;
+        setAccessToken(newAccessToken);
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return http(originalRequest);
+      } catch (refreshError) {
+        setAccessToken(null);
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default http;

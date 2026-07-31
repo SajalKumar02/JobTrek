@@ -96,10 +96,10 @@ export default function Home() {
           <a href="#pipeline" style={styles.navLink}>
             Pipeline
           </a>
-          <button style={styles.navCta} onClick={() => navigate('/register')}>
+          <button style={styles.navCta} onClick={() => navigate('/auth')}>
             Sign in
           </button>
-          <button style={styles.navCtaSolid} onClick={() => navigate('/register')}>
+          <button style={styles.navCtaSolid} onClick={() => navigate('/auth')}>
             Get started
           </button>
         </div>
@@ -122,9 +122,13 @@ export default function Home() {
           <br />
           <span style={styles.heroTitleAccent}>finally under control.</span>
         </h1>
-        <p style={styles.heroSub}>Track every application through a visual pipeline. Let AI parse JDs, rewrite your resume, draft cold emails, and prep you for every round. Stop losing track. Start landing interviews.</p>
+        <p style={styles.heroSub}>
+          Track every application through a visual pipeline. Let AI parse JDs,
+          rewrite your resume, draft cold emails, and prep you for every round.
+          Stop losing track. Start landing interviews.
+        </p>
         <div style={styles.heroCtas}>
-          <button style={styles.ctaPrimary} onClick={() => navigate('/register')}>
+          <button style={styles.ctaPrimary} onClick={() => navigate('/auth')}>
             Start tracking free →
           </button>
           <button style={styles.ctaGhost} onClick={() => navigate('/demo')}>
@@ -170,7 +174,10 @@ export default function Home() {
           <br />
           One board.
         </h2>
-        <p style={styles.sectionSub}>Move cards across stages with a click. Never lose track of where you stand with any company.</p>
+        <p style={styles.sectionSub}>
+          Move cards across stages with a click. Never lose track of where you
+          stand with any company.
+        </p>
 
         <div style={styles.kanban}>
           {PIPELINE_STAGES.map((stage) => (
@@ -196,7 +203,9 @@ export default function Home() {
               {Array.from({ length: Math.min(stage.count, 2) }).map((_, j) => (
                 <div key={j} style={styles.kanbanCard}>
                   <div style={styles.kanbanCardCompany}>Company {j + 1}</div>
-                  <div style={styles.kanbanCardRole}>Software Engineer · Full Time</div>
+                  <div style={styles.kanbanCardRole}>
+                    Software Engineer · Full Time
+                  </div>
                   <div style={styles.kanbanCardFooter}>
                     <span style={styles.kanbanCardDate}>Apr {20 + j}</span>
                     <span
@@ -224,7 +233,10 @@ export default function Home() {
           <br />
           does the work.
         </h2>
-        <p style={styles.sectionSub}>Not generic ChatGPT prompts. Purpose-built tools for each stage of your job hunt, right inside your dashboard.</p>
+        <p style={styles.sectionSub}>
+          Not generic ChatGPT prompts. Purpose-built tools for each stage of
+          your job hunt, right inside your dashboard.
+        </p>
 
         <div style={styles.featuresGrid}>
           {AI_FEATURES.map((f, i) => (
@@ -241,8 +253,10 @@ export default function Home() {
       <section style={styles.ctaSection}>
         <div style={styles.ctaGlow} />
         <h2 style={styles.ctaTitle}>Ready to stop guessing?</h2>
-        <p style={styles.ctaSub}>Set up your board in 2 minutes. Add your first application today.</p>
-        <button style={styles.ctaPrimary} onClick={() => navigate('/register')}>
+        <p style={styles.ctaSub}>
+          Set up your board in 2 minutes. Add your first application today.
+        </p>
+        <button style={styles.ctaPrimary} onClick={() => navigate('/auth')}>
           Create free account →
         </button>
       </section>
@@ -250,7 +264,9 @@ export default function Home() {
       {/* FOOTER */}
       <footer style={styles.footer}>
         <span style={styles.footerLogo}>JobTrek</span>
-        <span style={styles.footerNote}>Built for job seekers. Not recruiters.</span>
+        <span style={styles.footerNote}>
+          Built for job seekers. Not recruiters.
+        </span>
       </footer>
 
       <style>{`

@@ -22,7 +22,7 @@ const AuthRouter = Router();
 // prettier-ignore
 AuthRouter
   // User login or registration
-  .post('/login', loginLimiter, AuthController)
+  .post('/', loginLimiter, AuthController)
   .post('/logout', authMiddleware, LogOutController)
   
   // Issue new access and refresh tokens using a valid refresh token

@@ -5,17 +5,17 @@ import Loader from '@/shared/components/Loader';
 import { useAuth } from '@/features/auth/context/useAuth';
 
 const ProtectedRoute = () => {
-  const { authenticated, loading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
-  if (!authenticated) {
-    return <Navigate to="/register" replace />;
+  if (isAuthenticated) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/auth" replace />;
   }
-
-  return <Outlet />;
 };
 
 export default ProtectedRoute;

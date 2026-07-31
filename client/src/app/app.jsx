@@ -23,7 +23,7 @@ const App = () => {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route index path="/" element={<Home />} />
-          <Route path="/register" element={<Registration />} />
+          <Route path="/auth" element={<Registration />} />
           <Route element={<ProtectedRoute />}>
             <Route
               element={

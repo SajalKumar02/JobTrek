@@ -7,16 +7,18 @@ import { useAuth } from '@/features/auth';
 import { useToast } from '@/features/toast';
 
 const Registration = () => {
-  const { authenticated, handleAuth } = useAuth();
+  const { token, handleAuth } = useAuth();
   const { showToast } = useToast();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authenticated) {
+    if (token) {
+      // Token present: authenticated, navigate to dashboard
       navigate('/dashboard', { replace: true });
     }
-  }, [authenticated, navigate]);
+    // If token is null, do nothing (unauthenticated or new user)
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,13 +46,20 @@ const Registration = () => {
             <LineChart className="text-white" size={22} />
           </span>
           <div>
-            <h2 className="text-xl font-semibold text-slate-800">Create your account</h2>
-            <p className="mt-0.5 text-sm text-slate-400">Start tracking your job search</p>
+            <h2 className="text-xl font-semibold text-slate-800">
+              Create your account
+            </h2>
+            <p className="mt-0.5 text-sm text-slate-400">
+              Start tracking your job search
+            </p>
           </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-[13px] font-medium text-slate-700">
+          <label
+            htmlFor="email"
+            className="text-[13px] font-medium text-slate-700"
+          >
             Email
           </label>
           <input
@@ -62,7 +71,10 @@ const Registration = () => {
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-[13px] font-medium text-slate-700">
+          <label
+            htmlFor="password"
+            className="text-[13px] font-medium text-slate-700"
+          >
             Password
           </label>
           <input

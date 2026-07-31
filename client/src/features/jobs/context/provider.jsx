@@ -8,20 +8,18 @@ import { useAuth } from '@/features/auth';
 
 const JobProvider = ({ children }) => {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const { authenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (!authenticated) return;
+    if (!isAuthenticated) return;
     (async function () {
       const response = await jobServices.getAll();
       if (response.data && response.data.success) {
         setJobs(response.data.jobs);
       }
     })();
-  }, [authenticated]);
+  }, [isAuthenticated]);
 
   const createJob = useCallback(async (jobData) => {
     const response = await jobServices.createJob(jobData);
