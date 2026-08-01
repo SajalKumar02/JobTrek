@@ -181,15 +181,18 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // most recent date first
+    const sortedImportantDates = importantDates.sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
+
     const formData = {
       ...form,
-      importantDates,
+      importantDates: sortedImportantDates,
       benefitDetails,
       programHighlights,
       bonusDescription,
     };
-
-    // console.log(formData);
 
     onSubmit(formData);
     navigate('/jobs');

@@ -13,14 +13,14 @@ const RecentActivityCard = ({ activity, id }) => {
 
   return (
     <div
-      className="app-card flex flex-col md:w-1/6"
+      className="app-card flex-1 flex flex-col md:w-1/6 cursor-pointer"
       onClick={() => navigate(`/jobs/${id}`)}
     >
       <div className="flex flex-row justify-between">
         <span className="font-semibold leading-tight text-sm self-center">
           {activity.companyName}
         </span>
-        <span className="px-3 py-[2px] mb-auto rounded-full border text-xs font-medium">
+        <span className="px-3 py-0.5 mb-auto rounded-full border text-xs font-medium">
           {activity.status}
         </span>
       </div>

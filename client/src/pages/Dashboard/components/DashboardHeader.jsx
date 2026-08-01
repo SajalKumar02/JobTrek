@@ -16,10 +16,12 @@ const DashboardHeader = () => {
     <div className="app-card flex flex-row justify-between items-center p-4">
       <div className="flex flex-col">
         <h1 className="text-2xl font-bold tracking-tight">JobTrek</h1>
-        <p className="text-sm mt-1">
+        <p className="text-sm mt-1 gap-2">
           {todayString}
-          &nbsp;·&nbsp;{' '}
-          <span className="font-medium">{applicationsCount} applications tracked</span>
+          &nbsp;·&nbsp;
+          <span className="font-medium">
+            {applicationsCount} applications tracked
+          </span>
         </p>
       </div>
       <AddJobButton />
