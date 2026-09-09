@@ -53,7 +53,7 @@ const AIAutofillForm = ({ handleAIResponse, handleSetActiveTab }) => {
 
       if (response && response.success) {
         showToast('success', response.message);
-        handleAIResponse(response.jsonResponse);
+        handleAIResponse(response.aiJsonResponse);
         handleSetActiveTab(0);
       }
     } catch (error) {
