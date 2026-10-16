@@ -24,11 +24,11 @@ const AppLayout = () => {
 
   return (
     <>
-      <div className="flex h-screen bg-slate-100">
+      <div className="flex h-screen bg-canvas-parchment">
         <aside
           className={`
             fixed left-0 top-0 z-30 h-full
-            border-r border-slate-800/60 bg-slate-900 shadow-xl shadow-slate-900/20
+            border-r border-surface-tile-3 bg-surface-black
             transition-transform duration-200 ease-out
             ${showSidebar ? 'translate-x-0 md:relative md:z-0' : '-translate-x-full'}
           `}

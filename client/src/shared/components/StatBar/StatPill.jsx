@@ -1,8 +1,14 @@
 const StatPill = ({ label, value, sub }) => (
-  <div className="flex flex-col border border-gray-300 shadow-sm rounded-lg items-start transition p-4">
-    <span className="text-sm text-gray-600 uppercase tracking-wider font-semibold">{label}</span>
-    <span className="text-2xl">{value}</span>
-    <span className="text-sm text-gray-900 font-normal tracking-wide">{sub}</span>
+  <div className="flex flex-col items-start rounded-lg border border-hairline bg-canvas p-6">
+    <span className="text-[14px] leading-[1.43] font-semibold tracking-[-0.224px] text-ink-muted-48 uppercase">
+      {label}
+    </span>
+    <span className="font-display text-[34px] leading-[1.47] font-semibold tracking-[-0.374px] text-ink">
+      {value}
+    </span>
+    <span className="text-[14px] leading-[1.43] tracking-[-0.224px] text-ink-muted-80">
+      {sub}
+    </span>
   </div>
 );
 

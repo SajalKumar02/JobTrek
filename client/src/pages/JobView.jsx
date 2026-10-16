@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { ArrowLeft, Pencil, Save } from 'lucide-react';
+import { ArrowLeft, Pencil, Save, Plus } from 'lucide-react';
 
 import {
   employmentTypeOptions,
@@ -13,6 +13,31 @@ import {
 import { useJobs } from '@/features/jobs';
 import { useToast } from '@/features/toast';
 import { jobSourceOptions } from '@/features/jobs/constants';
+
+// Reusable input component with label, error, helpText support, all styles
+function FormField({
+  label,
+  children,
+  helpText,
+  error = '',
+  className = '',
+  required = false,
+  ...props
+}) {
+  return (
+    <div className={`flex flex-col gap-1 ${className}`} {...props}>
+      {label && (
+        <label className="text-sm font-medium text-slate-700 mb-1">
+          {label}
+          {required && <span className="ml-1 text-red-500">*</span>}
+        </label>
+      )}
+      {children}
+      {helpText && <small className="text-xs text-slate-500">{helpText}</small>}
+      {error && <span className="text-xs text-red-500">{error}</span>}
+    </div>
+  );
+}
 
 const JobView = () => {
   const { jobId } = useParams();
@@ -63,7 +88,6 @@ const JobView = () => {
       if (type === 'checkbox') {
         newValue = checked;
       } else if (type === 'number') {
-        // empty string stays as '', otherwise parse as number (avoid undefined)
         newValue = value === '' ? '' : Number(value);
       } else {
         newValue = value ?? '';
@@ -107,424 +131,440 @@ const JobView = () => {
   };
 
   return (
-    <div className="grid overflow-auto px-2 py-2">
-      {/* Bar with Back and Edit/Save buttons */}
-      <div className="flex justify-between items-center mb-8">
-        <button
-          onClick={() => window.history.back()}
-          className="flex items-center gap-2 px-4 py-2 rounded border border-gray-300 bg-gray-50 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 transition font-medium"
-        >
-          <ArrowLeft size={18} />
-          Back
-        </button>
-        {!editing ? (
+    <div className="flex justify-center min-h-screen bg-linear-to-br from-slate-100 to-white">
+      <div className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl px-3 py-4">
+        {/* Sticky header bar with actions */}
+        <div className="sticky top-0 z-20 bg-white/90 rounded-b-xl shadow flex justify-between items-center px-4 py-3 mb-6 border border-slate-100">
           <button
-            onClick={() => setEditing(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded border border-blue-600 bg-blue-600 text-white cursor-pointer font-medium shadow-sm hover:bg-blue-700 hover:border-blue-700 transition"
+            onClick={() => window.history.back()}
+            className="flex items-center gap-2 px-3 py-2 rounded-md border border-slate-200 bg-white text-slate-700 font-semibold shadow-sm transition hover:bg-slate-100 hover:shadow hover:text-blue-700 focus:ring-2 focus:ring-blue-200"
           >
-            <Pencil size={18} />
-            Edit
+            <ArrowLeft size={18} />
+            Back
           </button>
-        ) : (
-          <button
-            onClick={handleSave}
-            type="submit"
-            className="flex items-center gap-2 px-4 py-2 rounded border border-green-600 bg-green-600 text-white cursor-pointer font-medium shadow-sm hover:bg-green-700 hover:border-green-700 transition"
-          >
-            <Save size={18} />
-            Save
-          </button>
-        )}
-      </div>
-
-      {/* Header */}
-      <div className="bg-white rounded-lg shadow-md p-8 min-w-2xl mx-auto">
-        <h2 className="text-2xl text-center font-bold text-gray-900 mb-6">
-          Job Details
-        </h2>
-
-        {/* FORM */}
-        <form className="space-y-3" onSubmit={handleSave}>
-          {/* About Company */}
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Company Name:
-            </label>
-            <input
-              name="companyName"
-              value={form.companyName || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Office Address:
-            </label>
-            <input
-              name="officeAddress"
-              value={form.officeAddress || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              disabled={!editing}
-            />
-          </div>
-
-          {/* About Job */}
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Job Title:
-            </label>
-            <input
-              name="jobTitle"
-              value={form.jobTitle || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Description:
-            </label>
-            <textarea
-              name="description"
-              value={form.description || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              rows={4}
-              disabled={!editing}
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Employment Type:
-            </label>
-            <select
-              name="employmentType"
-              value={form.employmentType || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
+          {!editing ? (
+            <button
+              onClick={() => setEditing(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600 bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 hover:border-blue-800 focus:ring-2 focus:ring-blue-200"
             >
-              <option value="" disabled>
-                Select job type
-              </option>
-              {employmentTypeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Work Mode:
-            </label>
-            <select
-              name="workMode"
-              value={form.workMode || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              required
-              disabled={!editing}
+              <Pencil size={20} />
+              Edit
+            </button>
+          ) : (
+            <button
+              onClick={handleSave}
+              type="submit"
+              className="flex items-center gap-2 px-4 py-2 rounded-md border border-green-600 bg-green-600 text-white font-semibold shadow hover:bg-green-700 hover:border-green-800 focus:ring-2 focus:ring-green-200"
             >
-              <option value="" disabled>
-                Select workMode
-              </option>
-              {workModeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Internship Options */}
-          {form.employmentType === 'internship' && (
-            <div className="mb-4">
-              <label className="block mb-1 font-medium">
-                Internship Duration
-              </label>
-              <input
-                type="text"
-                name="internshipDuration"
-                value={form.internshipDuration || ''}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
-            </div>
+              <Save size={20} />
+              Save
+            </button>
           )}
+        </div>
 
-          {/* Job Status */}
-          <div>
-            <label className="font-semibold text-gray-700 block">Status:</label>
-            <select
-              name="status"
-              value={form.status || ''}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              disabled={!editing}
-              required
-            >
-              <option value="" disabled>
-                Select status
-              </option>
-              {statusOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          {/* Compensation Details */}
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Base Pay:
-            </label>
-            <input
-              type="number"
-              name="basePay"
-              value={form.basePay}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              min={0}
-              disabled={!editing}
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Monthly Salary:
-            </label>
-            <input
-              type="number"
-              name="monthlySalary"
-              value={form.monthlySalary}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              min={0}
-              disabled={!editing}
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Annual CTC:
-            </label>
-            <input
-              type="number"
-              name="annualCTC"
-              value={form.annualCTC}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              min={0}
-              disabled={!editing}
-            />
-          </div>
+        <div className="bg-white rounded-2xl shadow-xl px-6 sm:px-8 py-8">
+          <h2 className="text-3xl font-bold text-center text-slate-900 mb-7 tracking-tight">
+            Job Details
+          </h2>
 
-          {/* Program Information */}
-          <div className="mb-4">
-            <label className="font-semibold text-gray-700 block mr-2">
-              Program Highlights
-            </label>
-            <input
-              type="text"
-              name="programHighlights"
-              value={form.programHighlights}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-            />
-          </div>
-
-          {/* Extra Compensation */}
-          <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Bonus Included:
-            </label>
-            <input
-              type="checkbox"
-              name="hasBonus"
-              checked={form.hasBonus}
-              onChange={handleChange}
-              className="mr-2"
-              disabled={!editing}
-            />
-          </div>
-          {form.hasBonus && (
+          <form className="space-y-6" onSubmit={handleSave}>
+            {/* --- About Company Section --- */}
             <div>
-              <label className="font-semibold text-gray-700 block">
-                Bonus Description:
-              </label>
-              <input
-                name="bonusDescription"
-                value={form.bonusDescription}
-                onChange={handleChange}
-                className="border rounded px-2 py-1 w-full"
-                disabled={!editing}
-              />
-            </div>
-          )}
-          <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Benefits:
-            </label>
-            <input
-              type="checkbox"
-              name="hasBenefits"
-              checked={form.hasBenefits}
-              onChange={handleChange}
-              className="mr-2"
-              disabled={!editing}
-            />
-          </div>
-          {form.hasBenefits && (
-            <div>
-              <label className="font-semibold text-gray-700 block">
-                Benefits Details (comma separated):
-              </label>
-              <input
-                name="benefitDetails"
-                value={
-                  Array.isArray(form.benefitDetails)
-                    ? form.benefitDetails.join(', ')
-                    : ''
-                }
-                onChange={handleBenefitDetailsChange}
-                className="border rounded px-2 py-1 w-full"
-                placeholder="e.g. Health Insurance, Gym Membership"
-                disabled={!editing}
-              />
-            </div>
-          )}
-          {/* Is Listing Active */}
-          <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Is Listing Active:
-            </label>
-            <input
-              type="checkbox"
-              name="isListingActive"
-              checked={form.isListingActive}
-              onChange={handleChange}
-              className="mr-2"
-              disabled={!editing}
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Job Posting URL:
-            </label>
-            <input
-              type="text"
-              name="jobPostingURL"
-              value={form.jobPostingURL}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              disabled={!editing}
-              placeholder="Job Posting Link"
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-gray-700 block mr-2">
-              Job Source:
-            </label>
-            <select
-              name="jobSource"
-              value={form.jobSource}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              disabled={!editing}
-              required
-            >
-              <option value="" disabled>
-                Select jobSource
-              </option>
-              {jobSourceOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Important Dates */}
-          <div>
-            <label className="font-semibold text-gray-700 block">
-              Important Dates:
-            </label>
-            {Array.isArray(form.importantDates) &&
-            form.importantDates.length > 0 ? (
-              form.importantDates.map((d, idx) => (
-                <div key={idx} className="flex items-center gap-2 mb-1">
+              <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                Company Information
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField label="Company Name" required>
                   <input
-                    name={`importantDatesLabel${idx}`}
-                    value={d.label ?? ''}
-                    onChange={(e) =>
-                      handleImportantDateChange(
-                        idx,
-                        'label',
-                        e.target.value ?? ''
-                      )
-                    }
-                    className="border rounded px-2 py-1 flex-1"
-                    placeholder="Label"
+                    name="companyName"
+                    value={form.companyName || ''}
+                    onChange={handleChange}
+                    className="input"
+                    required
                     disabled={!editing}
                   />
+                </FormField>
+                <FormField label="Office Address">
                   <input
-                    name={`importantDatesDate${idx}`}
-                    value={d.date ? d.date.toString().substring(0, 10) : ''}
-                    onChange={(e) =>
-                      handleImportantDateChange(
-                        idx,
-                        'date',
-                        e.target.value ?? ''
-                      )
-                    }
-                    className="border rounded px-2 py-1 flex-1"
-                    type="date"
+                    name="officeAddress"
+                    value={form.officeAddress || ''}
+                    onChange={handleChange}
+                    className="input"
                     disabled={!editing}
                   />
+                </FormField>
+              </div>
+            </div>
+
+            {/* --- Job Details Section --- */}
+            <div>
+              <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                Job Overview
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField label="Job Title" required>
+                  <input
+                    name="jobTitle"
+                    value={form.jobTitle || ''}
+                    onChange={handleChange}
+                    className="input"
+                    required
+                    disabled={!editing}
+                  />
+                </FormField>
+                <FormField label="Employment Type" required>
+                  <select
+                    name="employmentType"
+                    value={form.employmentType || ''}
+                    onChange={handleChange}
+                    className="input"
+                    required
+                    disabled={!editing}
+                  >
+                    <option value="" disabled>
+                      Select job type
+                    </option>
+                    {employmentTypeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormField>
+                <FormField label="Work Mode" required>
+                  <select
+                    name="workMode"
+                    value={form.workMode || ''}
+                    onChange={handleChange}
+                    className="input"
+                    required
+                    disabled={!editing}
+                  >
+                    <option value="" disabled>
+                      Select work mode
+                    </option>
+                    {workModeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormField>
+                <FormField label="Status" required>
+                  <select
+                    name="status"
+                    value={form.status || ''}
+                    onChange={handleChange}
+                    className="input"
+                    required
+                    disabled={!editing}
+                  >
+                    <option value="" disabled>
+                      Select status
+                    </option>
+                    {statusOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormField>
+              </div>
+              {/* Internship Option */}
+              {form.employmentType === 'internship' && (
+                <div className="md:w-1/2 mt-4">
+                  <FormField label="Internship Duration">
+                    <input
+                      type="text"
+                      name="internshipDuration"
+                      value={form.internshipDuration || ''}
+                      onChange={handleChange}
+                      className="input"
+                      disabled={!editing}
+                      placeholder="e.g. 6 months"
+                    />
+                  </FormField>
                 </div>
-              ))
-            ) : (
-              <span className="text-gray-400 text-sm ml-1">None</span>
-            )}
-            {editing && (
-              <div className="flex gap-3 mt-2">
-                <button
-                  type="button"
-                  className="px-3 py-1 border border-blue-500 rounded bg-blue-500 text-white font-medium hover:bg-blue-600 transition"
-                  onClick={() => handleAddImportantDate()}
+              )}
+            </div>
+
+            <div>
+              <FormField label="Description">
+                <textarea
+                  name="description"
+                  value={form.description || ''}
+                  onChange={handleChange}
+                  className="input h-24"
+                  rows={4}
+                  disabled={!editing}
+                  placeholder="Job description and responsibilities"
+                />
+              </FormField>
+            </div>
+
+            {/* --- Compensation Section --- */}
+            <div>
+              <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                Compensation
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <FormField label="Base Pay">
+                  <input
+                    type="number"
+                    name="basePay"
+                    value={form.basePay}
+                    onChange={handleChange}
+                    className="input"
+                    min={0}
+                    disabled={!editing}
+                  />
+                </FormField>
+                <FormField label="Monthly Salary">
+                  <input
+                    type="number"
+                    name="monthlySalary"
+                    value={form.monthlySalary}
+                    onChange={handleChange}
+                    className="input"
+                    min={0}
+                    disabled={!editing}
+                  />
+                </FormField>
+                <FormField label="Annual CTC">
+                  <input
+                    type="number"
+                    name="annualCTC"
+                    value={form.annualCTC}
+                    onChange={handleChange}
+                    className="input"
+                    min={0}
+                    disabled={!editing}
+                  />
+                </FormField>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6 mt-5">
+                <FormField label="Program Highlights">
+                  <input
+                    type="text"
+                    name="programHighlights"
+                    value={form.programHighlights}
+                    onChange={handleChange}
+                    className="input"
+                    disabled={!editing}
+                  />
+                </FormField>
+                <FormField
+                  label={
+                    <span className="flex items-center gap-1">
+                      Bonus Included
+                      <input
+                        type="checkbox"
+                        name="hasBonus"
+                        checked={form.hasBonus}
+                        onChange={handleChange}
+                        className="ml-2 accent-green-600 h-4 w-4"
+                        disabled={!editing}
+                      />
+                    </span>
+                  }
                 >
-                  + Add Important Date
-                </button>
+                  {form.hasBonus && (
+                    <input
+                      name="bonusDescription"
+                      value={form.bonusDescription}
+                      onChange={handleChange}
+                      className="input mt-2"
+                      disabled={!editing}
+                      placeholder="Bonus description"
+                    />
+                  )}
+                </FormField>
+                <FormField
+                  label={
+                    <span className="flex items-center gap-1">
+                      Has Benefits
+                      <input
+                        type="checkbox"
+                        name="hasBenefits"
+                        checked={form.hasBenefits}
+                        onChange={handleChange}
+                        className="ml-2 accent-blue-600 h-4 w-4"
+                        disabled={!editing}
+                      />
+                    </span>
+                  }
+                >
+                  {form.hasBenefits && (
+                    <input
+                      name="benefitDetails"
+                      value={
+                        Array.isArray(form.benefitDetails)
+                          ? form.benefitDetails.join(', ')
+                          : ''
+                      }
+                      onChange={handleBenefitDetailsChange}
+                      className="input mt-2"
+                      placeholder="e.g. Health Insurance, Gym Membership"
+                      disabled={!editing}
+                    />
+                  )}
+                </FormField>
+              </div>
+            </div>
+
+            {/* --- Listing and Source Section --- */}
+            <div>
+              <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                Listing &amp; Sourcing
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField
+                  label={
+                    <span className="flex items-center gap-1">
+                      Is Listing Active
+                      <input
+                        type="checkbox"
+                        name="isListingActive"
+                        checked={form.isListingActive}
+                        onChange={handleChange}
+                        className="ml-2 accent-blue-600 h-4 w-4"
+                        disabled={!editing}
+                      />
+                    </span>
+                  }
+                  className=""
+                >
+                  {/* nothing extra needed, toggle only */}
+                </FormField>
+                <FormField label="Job Posting URL">
+                  <input
+                    type="text"
+                    name="jobPostingURL"
+                    value={form.jobPostingURL}
+                    onChange={handleChange}
+                    className="input"
+                    disabled={!editing}
+                    placeholder="Job Posting Link"
+                  />
+                </FormField>
+                <FormField label="Job Source" required>
+                  <select
+                    name="jobSource"
+                    value={form.jobSource}
+                    onChange={handleChange}
+                    className="input"
+                    disabled={!editing}
+                    required
+                  >
+                    <option value="" disabled>
+                      Select job source
+                    </option>
+                    {jobSourceOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormField>
+              </div>
+            </div>
+
+            {/* --- Important Dates Section --- */}
+            <div>
+              <h3 className="text-lg font-semibold text-blue-700 mb-2 flex items-center">
+                Important Dates
+                {editing && (
+                  <button
+                    type="button"
+                    className="ml-2 inline-flex items-center gap-2 text-sm font-medium px-2 py-1 rounded-md border border-blue-500 bg-blue-500 text-white shadow hover:bg-blue-600 transition"
+                    onClick={handleAddImportantDate}
+                  >
+                    <Plus size={16} />
+                    Add
+                  </button>
+                )}
+              </h3>
+              {Array.isArray(form.importantDates) &&
+              form.importantDates.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  {form.importantDates.map((d, idx) => (
+                    <div
+                      key={idx}
+                      className="flex flex-col sm:flex-row gap-2 items-stretch"
+                    >
+                      <input
+                        name={`importantDatesLabel${idx}`}
+                        value={d.label ?? ''}
+                        onChange={(e) =>
+                          handleImportantDateChange(
+                            idx,
+                            'label',
+                            e.target.value ?? ''
+                          )
+                        }
+                        className="input flex-1"
+                        placeholder="Label"
+                        disabled={!editing}
+                      />
+                      <input
+                        name={`importantDatesDate${idx}`}
+                        value={d.date ? d.date.toString().substring(0, 10) : ''}
+                        onChange={(e) =>
+                          handleImportantDateChange(
+                            idx,
+                            'date',
+                            e.target.value ?? ''
+                          )
+                        }
+                        className="input flex-1"
+                        type="date"
+                        disabled={!editing}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <span className="text-slate-400 text-sm ml-1">None</span>
+              )}
+            </div>
+
+            {/* --- Notes Section --- */}
+            <div>
+              <FormField label="Notes">
+                <textarea
+                  name="notes"
+                  value={form.notes}
+                  onChange={handleChange}
+                  className="input h-16"
+                  rows={2}
+                  disabled={!editing}
+                  placeholder="Add notes here..."
+                />
+              </FormField>
+            </div>
+
+            {/* --- Save button at bottom in editing mode for convenience --- */}
+            {editing && (
+              <div className="flex justify-end pt-4">
                 <button
                   type="submit"
-                  className="px-3 py-1 border border-green-600 rounded bg-green-600 text-white font-medium hover:bg-green-700 transition"
-                  onClick={handleSave}
+                  className="inline-flex items-center gap-2 px-6 py-2 rounded-lg border border-green-600 bg-green-600 text-white font-semibold shadow hover:bg-green-700 hover:border-green-800 focus:ring-2 focus:ring-green-200 transition"
                 >
-                  Save
+                  <Save size={20} />
+                  Save Changes
                 </button>
               </div>
             )}
-          </div>
-          {/* Notes */}
-          <div>
-            <label className="font-semibold text-gray-700 block">Notes:</label>
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={handleChange}
-              className="border rounded px-2 py-1 w-full"
-              rows={2}
-              disabled={!editing}
-            />
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
+      <style>
+        {`
+        .input {
+          @apply border border-slate-300 rounded px-3 py-2 w-full bg-white text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-100 focus:bg-blue-50 transition disabled:bg-slate-100 disabled:text-slate-400;
+        }
+      `}
+      </style>
     </div>
   );
 };

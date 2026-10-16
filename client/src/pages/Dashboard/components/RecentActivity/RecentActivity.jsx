@@ -22,16 +22,21 @@ const RecentActivity = () => {
   }, [jobs]);
 
   return (
-    <div className="app-card flex flex-col gap-2">
-      <div className="flex flex-row justify-between">
-        <span className="text-sm font-semibold">Recent activity</span>
-        <Link to="/jobs" className="flex flex-row cursor-pointer align-middle">
+    <div className="app-card flex flex-col gap-4">
+      <div className="flex flex-row items-center justify-between">
+        <span className="text-[17px] leading-[1.24] font-semibold tracking-[-0.374px] text-ink">
+          Recent activity
+        </span>
+        <Link
+          to="/jobs"
+          className="text-link flex cursor-pointer flex-row items-center gap-1"
+        >
           <span>View all</span>
-          <ArrowRight />
+          <ArrowRight size={16} />
         </Link>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-2">
+      <div className="flex flex-col gap-4 md:flex-row">
         {recentActivities.length > 0 ? (
           recentActivities.map((activity) => (
             <RecentActivityCard
@@ -41,9 +46,9 @@ const RecentActivity = () => {
             />
           ))
         ) : (
-          <div className="flex flex-col items-center text-gray-500 text-sm p-4 w-full text-center">
+          <div className="flex w-full flex-col items-center p-6 text-center text-[17px] leading-[1.47] text-ink-muted-48">
             <span className="mb-2 flex justify-center">
-              <File className="h-6 w-6 text-gray-400" />
+              <File className="h-6 w-6 text-ink-muted-48" />
             </span>
             No recent activity to show.
           </div>

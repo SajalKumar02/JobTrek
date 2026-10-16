@@ -2,41 +2,29 @@ import { useState } from 'react';
 import { Sparkles, WandSparkles, FileText } from 'lucide-react';
 
 import { useToast } from '@/features/toast';
-
 import AIServices from '@/features/ai/services';
 
 const AnalyzingLoader = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-10">
+    <div className="flex flex-col items-center justify-center gap-6 py-12">
       <div className="relative h-16 w-16">
-        {/* pulsing core */}
-        <div className="absolute inset-0 m-auto h-8 w-8 rounded-full bg-linear-to-br from-blue-500 to-indigo-600 shadow-lg shadow-indigo-600/30 animate-pulse" />
-        {/* orbiting ring */}
-        <div className="absolute inset-0 animate-spin [animation-duration:1.6s]">
-          <span className="absolute -top-0.5 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-indigo-500" />
+        <div className="absolute inset-0 m-auto h-10 w-10 animate-pulse rounded-full bg-primary/20" />
+        <div className="absolute inset-0 animate-spin [animation-duration:1.7s]">
+          <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-primary" />
         </div>
-        <div className="absolute inset-0 animate-spin [animation-duration:2.4s] [animation-direction:reverse]">
-          <span className="absolute top-1/2 -right-0.5 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-blue-400" />
+        <div className="absolute inset-0 animate-spin [animation-duration:2.6s] [animation-direction:reverse]">
+          <span className="absolute top-1/2 -right-1 h-2 w-2 -translate-y-1/2 rounded-full bg-primary/40" />
         </div>
-        {/* static outer ring */}
-        <div className="absolute inset-0 rounded-full border-2 border-indigo-100" />
+        <div className="absolute inset-0 rounded-full border-[2.5px] border-divider-soft" />
       </div>
-
       <div className="flex flex-col items-center gap-1">
-        <span className="bg-linear-to-r from-slate-800 via-indigo-500 to-slate-800 g-size-[200%_100%] bg-clip-text text-sm font-semibold text-transparent animate-[shimmer_2s_linear_infinite]">
+        <span className="text-[17px] leading-[1.47] font-semibold tracking-[-0.374px] text-ink">
           Parsing job description…
         </span>
-        <span className="text-xs text-slate-400">
-          Extracting skills, red flags & fit score
+        <span className="text-[14px] leading-[1.43] tracking-[-0.224px] text-ink-muted-48">
+          Extracting skills, red flags &amp; fit score
         </span>
       </div>
-
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-      `}</style>
     </div>
   );
 };
@@ -64,32 +52,30 @@ const AIAutofillForm = ({ handleAIResponse, handleSetActiveTab }) => {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
-      {/* Header */}
-      <div className="mb-4 flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 shadow-sm shadow-indigo-900/20">
-          <WandSparkles className="text-white" size={18} />
+    <div className="app-card w-full max-w-xl">
+      <div className="mb-6 flex items-center gap-4">
+        <span className="flex h-11 w-11 items-center justify-center rounded-sm bg-primary">
+          <WandSparkles className="text-on-primary" size={20} />
         </span>
         <div>
-          <h3 className="text-base font-semibold text-slate-800">
+          <h3 className="text-[21px] leading-[1.19] font-semibold tracking-[0.231px] text-ink">
             AI Autofill
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="mt-0.5 text-[14px] leading-[1.43] tracking-[-0.224px] text-ink-muted-48">
             Paste a JD and let AI extract the details
           </p>
         </div>
       </div>
 
-      {/* Body: textarea or loader */}
       {isLoading ? (
         <AnalyzingLoader />
       ) : (
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <label
             htmlFor="jdText"
-            className="flex items-center gap-1.5 text-[13px] font-medium text-slate-700"
+            className="flex items-center gap-2 text-[17px] leading-[1.24] font-semibold tracking-[-0.374px] text-ink"
           >
-            <FileText size={14} className="text-slate-400" />
+            <FileText size={16} className="text-ink-muted-48" />
             Job Description
           </label>
           <textarea
@@ -97,21 +83,24 @@ const AIAutofillForm = ({ handleAIResponse, handleSetActiveTab }) => {
             value={jdText}
             onChange={(e) => setJdText(e.target.value)}
             rows={8}
+            spellCheck={false}
             placeholder="Paste the full job description here..."
-            className="resize-none rounded-lg border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none transition-all duration-150 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
+            className="resize-none rounded-sm border border-hairline bg-surface-pearl px-4 py-3 text-[17px] leading-[1.47] tracking-[-0.374px] text-ink placeholder:text-ink-muted-48 outline-none transition focus:border-primary focus:bg-canvas focus:outline-none focus-visible:outline-2 focus-visible:outline-primary-focus"
+            style={{
+              fontFamily: 'inherit',
+            }}
           />
         </div>
       )}
 
-      {/* Action */}
       {!isLoading && (
         <button
           type="button"
           onClick={handleSubmit}
           disabled={!jdText.trim()}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none cursor-pointer"
+          className="btn-primary mt-6 w-full"
         >
-          <Sparkles size={16} />
+          <Sparkles size={18} />
           Analyze with AI
         </button>
       )}

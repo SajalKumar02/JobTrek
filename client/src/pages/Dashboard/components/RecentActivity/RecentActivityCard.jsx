@@ -13,24 +13,22 @@ const RecentActivityCard = ({ activity, id }) => {
 
   return (
     <div
-      className="app-card flex-1 flex flex-col md:w-1/6 cursor-pointer"
+      className="app-card flex flex-1 cursor-pointer flex-col md:w-1/6"
       onClick={() => navigate(`/jobs/${id}`)}
     >
-      <div className="flex flex-row justify-between">
-        <span className="font-semibold leading-tight text-sm self-center">
+      <div className="flex flex-row justify-between gap-2">
+        <span className="self-center text-[14px] leading-[1.29] font-semibold tracking-[-0.224px] text-ink">
           {activity.companyName}
         </span>
-        <span className="px-3 py-0.5 mb-auto rounded-full border text-xs font-medium">
+        <span className="chip-pill mb-auto px-3 py-1 text-[12px] leading-none">
           {activity.status}
         </span>
       </div>
-      <span className="text-[0.97rem] font-normal mb-4">
+      <span className="mb-4 text-[17px] leading-[1.47] tracking-[-0.374px] text-ink-muted-80">
         {activity.jobTitle}
       </span>
-      <div className="flex flex-row text-xs text-gray-500 items-center gap-4">
-        <span className="">
-          <Clock3 />
-        </span>
+      <div className="flex flex-row items-center gap-2 text-[12px] leading-none tracking-[-0.12px] text-ink-muted-48">
+        <Clock3 size={14} />
         <span>{getDaysBehind(activity.updatedAt)}</span>
       </div>
     </div>

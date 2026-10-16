@@ -1,0 +1,7 @@
+# UI & Design System Enforcement
+
+Always read and adhere strictly to `DESIGN.md` in the project root before creating or updating any user interface components, pages, or stylesheets.
+
+- **Source of Truth:** Use only the colors, spacing scales, border radii, and typography rules specified in `DESIGN.md`.
+- **Consistency:** Ensure every new screen matches the existing design tokens to prevent visual fragmentation.
+- **No Hardcoding:** Avoid arbitrary hex codes, margins, or padding values unless defined in the design guidelines.

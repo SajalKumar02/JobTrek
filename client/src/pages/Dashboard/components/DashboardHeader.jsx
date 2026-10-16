@@ -13,13 +13,15 @@ const DashboardHeader = () => {
   const applicationsCount = countJobs(jobs);
 
   return (
-    <div className="app-card flex flex-row justify-between items-center p-4">
-      <div className="flex flex-col">
-        <h1 className="text-2xl font-bold tracking-tight">JobTrek</h1>
-        <p className="text-sm mt-1 gap-2">
+    <div className="app-card flex flex-row items-center justify-between">
+      <div className="flex flex-col gap-1">
+        <h1 className="font-display text-[40px] leading-[1.1] font-semibold tracking-normal text-ink">
+          JobTrek
+        </h1>
+        <p className="text-[17px] leading-[1.47] tracking-[-0.374px] text-ink-muted-48">
           {todayString}
           &nbsp;·&nbsp;
-          <span className="font-medium">
+          <span className="font-semibold text-ink">
             {applicationsCount} applications tracked
           </span>
         </p>

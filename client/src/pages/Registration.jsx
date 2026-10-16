@@ -1,23 +1,36 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
 import { LineChart } from 'lucide-react';
-
 import { useAuth } from '@/features/auth';
 import { useToast } from '@/features/toast';
+
+// Apple-style surface/tile colors and typography (from DESIGN.md)
+const COLORS = {
+  primary: '#0066cc',
+  ink: '#1d1d1f',
+  muted: '#7a7a7a',
+  bg: '#f5f5f7', // canvas-parchment
+  surface: '#ffffff',
+  inputBG: '#fafafc', // surface-pearl
+  border: '#e0e0e0', // hairline
+  accent: '#0066cc',
+  focus: '#2997ff',
+};
+
+const FONTS = {
+  display: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+  text: 'SF Pro Text, system-ui, -apple-system, sans-serif',
+};
 
 const Registration = () => {
   const { token, handleAuth } = useAuth();
   const { showToast } = useToast();
-
   const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
-      // Token present: authenticated, navigate to dashboard
       navigate('/dashboard', { replace: true });
     }
-    // If token is null, do nothing (unauthenticated or new user)
   }, [token, navigate]);
 
   const handleSubmit = async (e) => {
@@ -36,29 +49,78 @@ const Registration = () => {
   };
 
   return (
-    <div className="flex h-full items-center justify-center bg-slate-100 px-4">
+    <div
+      className="flex min-h-screen items-center justify-center px-4"
+      style={{
+        background: COLORS.bg,
+      }}
+    >
       <form
-        className="flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5"
+        className="flex w-full max-w-md flex-col gap-6 rounded-2xl border shadow-none"
         onSubmit={handleSubmit}
+        style={{
+          borderColor: COLORS.border,
+          background: COLORS.surface,
+          boxShadow: '0 2px 24px 0 #00000007, 0 1.5px 0 0 ' + COLORS.border,
+          padding: '40px 36px 34px 36px',
+        }}
       >
-        <div className="mb-2 flex flex-col items-center gap-3 text-center">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-sm shadow-indigo-900/20">
-            <LineChart className="text-white" size={22} />
+        <div className="mb-2 flex flex-col items-center gap-4 text-center">
+          <span
+            className="flex h-14 w-14 items-center justify-center rounded-2xl"
+            style={{
+              background: 'linear-gradient(135deg, #e9f4fd 10%, #d8eaff 100%)',
+              boxShadow: '0 2px 12px #0066cc15',
+            }}
+          >
+            <LineChart
+              style={{
+                color: COLORS.accent,
+              }}
+              size={30}
+              strokeWidth={2.25}
+            />
           </span>
           <div>
-            <h2 className="text-xl font-semibold text-slate-800">
+            <h2
+              style={{
+                fontFamily: FONTS.display,
+                fontSize: 32,
+                fontWeight: 600,
+                letterSpacing: '-0.02em',
+                color: COLORS.ink,
+                lineHeight: 1.14,
+              }}
+              className="mb-1"
+            >
               Create your account
             </h2>
-            <p className="mt-0.5 text-sm text-slate-400">
+            <p
+              style={{
+                fontFamily: FONTS.text,
+                fontSize: 16,
+                color: COLORS.muted,
+                fontWeight: 400,
+                letterSpacing: 0,
+              }}
+              className="mt-0.5"
+            >
               Start tracking your job search
             </p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <label
             htmlFor="email"
-            className="text-[13px] font-medium text-slate-700"
+            style={{
+              fontFamily: FONTS.text,
+              fontSize: 14.2,
+              fontWeight: 500,
+              color: COLORS.ink,
+              letterSpacing: 0,
+              marginBottom: 3,
+            }}
           >
             Email
           </label>
@@ -66,14 +128,36 @@ const Registration = () => {
             name="email"
             type="email"
             required
-            className="rounded-lg border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all duration-150 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
+            autoComplete="email"
+            style={{
+              fontFamily: FONTS.text,
+              fontSize: 16,
+              borderRadius: 12,
+              border: `1.5px solid ${COLORS.border}`,
+              background: COLORS.inputBG,
+              padding: '14px 15px',
+              color: COLORS.ink,
+              outline: 'none',
+              transition: 'border-color .2s, box-shadow .2s',
+              boxShadow: '0 0.5px 0 #d2d2d7',
+            }}
+            className="focus:outline-none focus:ring-2"
+            onFocus={(e) => (e.target.style.borderColor = COLORS.focus)}
+            onBlur={(e) => (e.target.style.borderColor = COLORS.border)}
             defaultValue="admin@test.com"
           />
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <label
             htmlFor="password"
-            className="text-[13px] font-medium text-slate-700"
+            style={{
+              fontFamily: FONTS.text,
+              fontSize: 14.2,
+              fontWeight: 500,
+              color: COLORS.ink,
+              letterSpacing: 0,
+              marginBottom: 3,
+            }}
           >
             Password
           </label>
@@ -81,13 +165,47 @@ const Registration = () => {
             type="password"
             name="password"
             required
-            className="rounded-lg border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all duration-150 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10"
+            autoComplete="new-password"
+            style={{
+              fontFamily: FONTS.text,
+              fontSize: 16,
+              borderRadius: 12,
+              border: `1.5px solid ${COLORS.border}`,
+              background: COLORS.inputBG,
+              padding: '14px 15px',
+              color: COLORS.ink,
+              outline: 'none',
+              transition: 'border-color .2s, box-shadow .2s',
+              boxShadow: '0 0.5px 0 #d2d2d7',
+            }}
+            className="focus:outline-none focus:ring-2"
+            onFocus={(e) => (e.target.style.borderColor = COLORS.focus)}
+            onBlur={(e) => (e.target.style.borderColor = COLORS.border)}
             defaultValue="password"
           />
         </div>
         <button
           type="submit"
-          className="mt-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors hover:bg-indigo-700 cursor-pointer"
+          className="mt-3 w-full"
+          style={{
+            fontFamily: FONTS.display,
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            fontSize: 17,
+            borderRadius: 98,
+            padding: '15px 0',
+            background: COLORS.primary,
+            color: '#fff',
+            boxShadow: '0 2px 5px #0066cc18',
+            outline: 'none',
+            border: 'none',
+            transition: 'background .2s',
+            cursor: 'pointer',
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.background = COLORS.focus)}
+          onMouseOut={(e) =>
+            (e.currentTarget.style.background = COLORS.primary)
+          }
         >
           Create Account
         </button>

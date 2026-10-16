@@ -21,13 +21,16 @@ import {
 
 import JobFormHeader from '@/features/jobs/components/form/JobFormHeader';
 
+/**
+ * Updated getDefaultJobState follows prior logic (UI change only)
+ */
 const getDefaultJobState = (initialJobState) => ({
   companyName: initialJobState.companyName || '',
   officeAddress: initialJobState.officeAddress || '',
 
   jobTitle: initialJobState.jobTitle || '',
   description: initialJobState.description || '',
-  requiredSkills: initialJobState.requiredSkills || [], // ----------------- Not added Yet
+  requiredSkills: initialJobState.requiredSkills || [],
   employmentType:
     initialJobState.employmentType || employmentTypeOptions[0]?.value,
   workMode: initialJobState.workMode || workModeOptions[0]?.value,
@@ -40,51 +43,45 @@ const getDefaultJobState = (initialJobState) => ({
     min: initialJobState.compensationRange?.min ?? '',
     max: initialJobState.compensationRange?.max ?? '',
     period: initialJobState.compensationRange?.period ?? '',
-  }, // ------------------------- Not added yet
+  },
 
   programHighlights: initialJobState.programHighlights ?? [],
   notes: initialJobState.notes || '',
 
-  // Booleans
   hasBonus: !!initialJobState.hasBonus,
   hasBenefits: !!initialJobState.hasBenefits,
   perks: initialJobState.perks ?? [],
 
-  // numberOfOpenings: initialJobState.numberOfOpenings ?? '', // ------------------------- Not added yet
-  // applicationDeadline: initialJobState.applicationDeadline ?? undefined, // ------------------------- Not added yet
-
   isListingActive: !!initialJobState.isListingActive,
-  jobPostingURL: initialJobState.jobPostingURL || 'www.test.com',
+  jobPostingURL: initialJobState.jobPostingURL || '',
   jobSource: initialJobState.jobSource || '',
 
   status: initialJobState.status || statusOptions[0].value,
 });
 
 const inputBase =
-  'w-full rounded-lg border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none transition-all duration-150 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10';
+  'w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base font-normal text-slate-900 placeholder:text-slate-400 shadow-sm outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all';
 
-const labelBase = 'mb-1.5 block text-[13px] font-medium text-slate-700';
+const labelBase = 'mb-1 block text-sm font-medium text-gray-800';
 
-const requiredMark = <span className="ml-0.5 text-rose-500">*</span>;
+const requiredMark = <span className="ml-0.5 text-rose-600">*</span>;
 
 const SectionHeader = ({ icon: Icon, title, subtitle }) => (
-  <div className="mb-4 flex items-center gap-2.5">
-    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
-      <Icon className="h-4 w-4" />
+  <div className="mb-5 flex items-center gap-3">
+    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700">
+      <Icon className="h-5 w-5" />
     </span>
     <div>
-      <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
-      {subtitle && <p className="text-xs text-slate-400">{subtitle}</p>}
+      <h3 className="text-base font-semibold text-gray-900">{title}</h3>
+      {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
     </div>
   </div>
 );
 
-const Divider = () => <div className="mb-7 h-px w-full bg-slate-200" />;
+const Divider = () => <div className="my-7 h-px w-full bg-slate-200" />;
 
 const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
   const [form, setForm] = useState(() => getDefaultJobState(initialJobState));
-
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
   const [importantDates, setImportantDates] = useState(
     initialJobState.importantDates ?? []
   );
@@ -97,16 +94,13 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
   const [programHighlights, setProgramHighlights] = useState(
     initialJobState.programHighlights ?? []
   );
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-
     if (type === 'checkbox' && 'checked' in e.target) {
-      const checked = e.target.checked;
-      setForm((prev) => ({ ...prev, [name]: checked }));
+      setForm((prev) => ({ ...prev, [name]: e.target.checked }));
     } else if (type === 'number') {
       setForm((prev) => ({
         ...prev,
@@ -117,8 +111,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
     }
   };
 
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // Date Functions
+  // --- Important Dates
   const handleImportantDateChange = (idx, field, value) => {
     setImportantDates((prev) =>
       prev.map((date, i) => (i === idx ? { ...date, [field]: value } : date))
@@ -137,7 +130,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
     setImportantDates((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  // Bonus Functions
+  // --- Bonus
   const handleBonusChange = (index, value) => {
     setBonusDescription((prev) =>
       prev.map((bonus, i) => (i === index ? value : bonus))
@@ -150,7 +143,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
     setBonusDescription((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Benefit Functions
+  // --- Benefit
   const handleBenefitChange = (index, value) => {
     setBenefitDetails((prev) =>
       prev.map((benefit, i) => (i === index ? value : benefit))
@@ -163,7 +156,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
     setBenefitDetails((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Program Highlights Functions
+  // --- Program Highlights
   const handleProgramHighlightChange = (index, value) => {
     setProgramHighlights((prev) =>
       prev.map((highlight, i) => (i === index ? value : highlight))
@@ -176,15 +169,13 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
     setProgramHighlights((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // Form Functions
+  // --- Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // most recent date first
-    const sortedImportantDates = importantDates.sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
-    );
+    const sortedImportantDates = importantDates
+      .slice()
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     const formData = {
       ...form,
@@ -199,21 +190,19 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
   };
 
   return (
-    <div>
-      {/* Header */}
+    <div className="bg-white rounded-2xl shadow-lg border border-slate-100 max-w-2xl mx-auto">
       <JobFormHeader />
 
-      {/* Scrollable body */}
       <form
-        className="flex flex-1 flex-col overflow-hidden"
+        className="flex flex-1 flex-col"
         onSubmit={handleSubmit}
+        autoComplete="off"
       >
-        <div className="flex-1 overflow-y-auto px-6 py-6">
-          {/* About Company */}
-          <section className="mb-7">
+        <div className="flex-1 overflow-y-auto px-8 pt-6 pb-10">
+          {/* Section 1: Company */}
+          <section className="mb-8">
             <SectionHeader icon={Building2} title="Company" />
-            {/* Company Name & Office Address */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className={labelBase}>Company Name {requiredMark}</label>
                 <input
@@ -242,11 +231,10 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
 
           <Divider />
 
-          {/* Job details */}
-          <section className="mb-7">
+          {/* Section 2: Role Details */}
+          <section className="mb-8">
             <SectionHeader icon={Briefcase} title="Role Details" />
-            <div className="space-y-4">
-              {/* Job Title & Description */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={labelBase}>Job Title {requiredMark}</label>
                 <input
@@ -260,6 +248,26 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                 />
               </div>
               <div>
+                <label className={labelBase}>
+                  Employment Type {requiredMark}
+                </label>
+                <select
+                  name="employmentType"
+                  value={form.employmentType}
+                  onChange={handleChange}
+                  className={`${inputBase} cursor-pointer`}
+                  required
+                >
+                  {employmentTypeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-6 mt-6">
+              <div>
                 <label className={labelBase}>Description</label>
                 <textarea
                   name="description"
@@ -270,26 +278,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                   className={`${inputBase} resize-none`}
                 />
               </div>
-
-              {/* Employment Type & Work Mode */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className={labelBase}>
-                    Employment Type {requiredMark}
-                  </label>
-                  <select
-                    name="employmentType"
-                    value={form.employmentType}
-                    onChange={handleChange}
-                    className={`${inputBase} cursor-pointer`}
-                  >
-                    {employmentTypeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className={labelBase}>Work Mode {requiredMark}</label>
                   <select
@@ -306,35 +295,33 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                     ))}
                   </select>
                 </div>
+                {form.employmentType === 'internship' && (
+                  <div>
+                    <label className={labelBase}>Internship Duration</label>
+                    <input
+                      type="text"
+                      name="internshipDuration"
+                      value={form.internshipDuration}
+                      onChange={handleChange}
+                      placeholder="e.g. 6 months"
+                      className={inputBase}
+                    />
+                  </div>
+                )}
               </div>
-
-              {/* Internship Options */}
-              {form.employmentType === 'internship' && (
-                <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3.5">
-                  <label className={labelBase}>Internship Duration</label>
-                  <input
-                    type="text"
-                    name="internshipDuration"
-                    value={form.internshipDuration}
-                    onChange={handleChange}
-                    placeholder="e.g. 6 months"
-                    className={inputBase}
-                  />
-                </div>
-              )}
             </div>
           </section>
 
           <Divider />
 
-          {/* Compensation */}
-          <section className="mb-7">
+          {/* Section 3: Compensation */}
+          <section className="mb-8">
             <SectionHeader
               icon={IndianRupee}
               title="Compensation"
               subtitle="Optional but recommended"
             />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className={labelBase}>Annual CTC</label>
                 <input
@@ -388,51 +375,51 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                 />
               </div>
             </div>
-
-            {/* Program Information */}
-            <div className="mt-4">
+            <div className="mt-6">
               <label className={labelBase}>Program Highlights</label>
-              {programHighlights.length > 0 &&
-                programHighlights.map((highlight, idx) => (
-                  <div key={idx} className="flex items-center gap-2 mb-2">
-                    <input
-                      type="text"
-                      name={`programHighlights-${idx}`}
-                      value={highlight}
-                      onChange={(e) =>
-                        handleProgramHighlightChange(idx, e.target.value)
-                      }
-                      placeholder="e.g. Mentorship, PPO conversion, stipend perks..."
-                      className={inputBase}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveProgramHighlight(idx)}
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-rose-500 transition-colors hover:bg-rose-50 cursor-pointer"
-                      aria-label="Remove highlight"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              <button
-                type="button"
-                className="mt-1 flex items-center gap-1.5 rounded-lg border border-dashed border-indigo-200 px-3 py-2 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-50 cursor-pointer"
-                onClick={handleAddProgramHighlight}
-              >
-                <Plus className="h-3.5 w-3.5" />
-                Add Highlight
-              </button>
+              <div className="flex flex-col gap-2">
+                {programHighlights.length > 0 &&
+                  programHighlights.map((highlight, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        name={`programHighlights-${idx}`}
+                        value={highlight}
+                        onChange={(e) =>
+                          handleProgramHighlightChange(idx, e.target.value)
+                        }
+                        placeholder="e.g. Mentorship, PPO conversion, stipend perks..."
+                        className={inputBase}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveProgramHighlight(idx)}
+                        className="group flex h-9 w-9 items-center justify-center rounded-full hover:bg-red-50 transition-colors"
+                        aria-label="Remove highlight"
+                      >
+                        <X className="h-4 w-4 text-red-400 group-hover:text-red-600" />
+                      </button>
+                    </div>
+                  ))}
+                <button
+                  type="button"
+                  className="flex items-center w-fit gap-1.5 rounded-md border border-dashed border-indigo-300 px-3 py-2 text-xs font-medium text-indigo-600 hover:bg-indigo-50 mt-2"
+                  onClick={handleAddProgramHighlight}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Highlight
+                </button>
+              </div>
             </div>
 
-            {/* Toggle pills - hasBonus, hasBenefits, isListingActive */}
-            <div className="mt-4 flex flex-wrap gap-2">
+            {/* Toggles */}
+            <div className="mt-6 flex flex-wrap gap-3">
               <label
                 htmlFor="hasBonus"
-                className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-medium cursor-pointer transition ${
                   form.hasBonus
-                    ? 'border-indigo-200 bg-indigo-50 text-indigo-700'
-                    : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'
+                    ? 'border-indigo-300 bg-indigo-50 text-indigo-700'
+                    : 'border-slate-200 bg-slate-50 text-gray-500 hover:border-slate-300'
                 }`}
               >
                 <input
@@ -441,16 +428,16 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                   checked={form.hasBonus}
                   onChange={handleChange}
                   id="hasBonus"
-                  className="h-3.5 w-3.5 accent-indigo-600"
+                  className="h-4 w-4 accent-indigo-600"
                 />
-                Bonus Included
+                Bonus
               </label>
               <label
                 htmlFor="hasBenefits"
-                className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-medium cursor-pointer transition ${
                   form.hasBenefits
-                    ? 'border-indigo-200 bg-indigo-50 text-indigo-700'
-                    : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'
+                    ? 'border-indigo-300 bg-indigo-50 text-indigo-700'
+                    : 'border-slate-200 bg-slate-50 text-gray-500 hover:border-slate-300'
                 }`}
               >
                 <input
@@ -459,16 +446,16 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                   checked={form.hasBenefits}
                   onChange={handleChange}
                   id="hasBenefits"
-                  className="h-3.5 w-3.5 accent-indigo-600"
+                  className="h-4 w-4 accent-indigo-600"
                 />
-                Benefit Included
+                Benefits
               </label>
               <label
                 htmlFor="isListingActive"
-                className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                className={`flex items-center gap-2  px-4 py-2 rounded-full border text-xs font-medium cursor-pointer transition ${
                   form.isListingActive
-                    ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                    : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300'
+                    ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                    : 'border-slate-200 bg-slate-50 text-gray-500 hover:border-slate-300'
                 }`}
               >
                 <input
@@ -477,23 +464,19 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                   checked={form.isListingActive}
                   onChange={handleChange}
                   id="isListingActive"
-                  className="h-3.5 w-3.5 accent-emerald-600"
+                  className="h-4 w-4 accent-emerald-600"
                 />
-                Listing Active
+                Active
               </label>
             </div>
 
-            {/* Compensation Extras */}
             {form.hasBonus && (
-              <div className="mt-3">
+              <div className="mt-5">
                 <label className={labelBase}>Bonus Details</label>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {bonusDescription.length > 0 &&
                     bonusDescription.map((bonus, idx) => (
-                      <div
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50/60 p-2"
-                        key={idx}
-                      >
+                      <div className="flex items-center gap-2" key={idx}>
                         <input
                           type="text"
                           placeholder="Bonus (e.g. Joining Bonus, Performance Bonus, etc.)"
@@ -501,42 +484,36 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                           onChange={(e) =>
                             handleBonusChange(idx, e.target.value)
                           }
-                          className={`${inputBase} bg-white`}
+                          className={inputBase}
                         />
                         <button
                           type="button"
-                          onClick={() => {
-                            setForm(() => handleRemoveBonus(idx));
-                          }}
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-rose-500 transition-colors hover:bg-rose-50 cursor-pointer"
+                          onClick={() => handleRemoveBonus(idx)}
+                          className="group flex h-9 w-9 items-center justify-center rounded-full hover:bg-red-50 transition-colors"
                           aria-label="Remove bonus"
                         >
-                          <X className="h-4 w-4" />
+                          <X className="h-4 w-4 text-red-400 group-hover:text-red-600" />
                         </button>
                       </div>
                     ))}
+                  <button
+                    type="button"
+                    onClick={handleAddBonus}
+                    className="flex items-center w-fit gap-1.5 rounded-md border border-dashed border-indigo-300 px-3 py-2 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add More Bonus
+                  </button>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={handleAddBonus}
-                  className="flex items-center gap-1.5 rounded-lg border border-dashed border-indigo-200 px-3 py-2 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-50 cursor-pointer"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add More Bonus
-                </button>
               </div>
             )}
             {form.hasBenefits && (
-              <div className="mt-3">
+              <div className="mt-5">
                 <label className={labelBase}>Benefit Details</label>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {benefitDetails.length > 0 &&
                     benefitDetails.map((benefit, idx) => (
-                      <div
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50/60 p-2"
-                        key={idx}
-                      >
+                      <div className="flex items-center gap-2" key={idx}>
                         <input
                           type="text"
                           placeholder="Benefit (e.g. Health Insurance, Paid Leave, etc.)"
@@ -544,44 +521,40 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                           onChange={(e) =>
                             handleBenefitChange(idx, e.target.value)
                           }
-                          className={`${inputBase} bg-white`}
+                          className={inputBase}
                         />
                         <button
                           type="button"
                           onClick={() => handleRemoveBenefitDetails(idx)}
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-rose-500 transition-colors hover:bg-rose-50 cursor-pointer"
+                          className="group flex h-9 w-9 items-center justify-center rounded-full hover:bg-red-50 transition-colors"
                           aria-label="Remove benefit"
                         >
-                          <X className="h-4 w-4" />
+                          <X className="h-4 w-4 text-red-400 group-hover:text-red-600" />
                         </button>
                       </div>
                     ))}
+                  <button
+                    type="button"
+                    onClick={handleAddBenefitDetails}
+                    className="flex items-center w-fit gap-1.5 rounded-md border border-dashed border-indigo-300 px-3 py-2 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add More Benefit
+                  </button>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={handleAddBenefitDetails}
-                  className="flex items-center gap-1.5 rounded-lg border border-dashed border-indigo-200 px-3 py-2 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-50 cursor-pointer"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add More Benefit
-                </button>
               </div>
             )}
           </section>
 
           <Divider />
 
-          {/* Important Dates */}
-          <section className="mb-7">
+          {/* Section 4: Important Dates */}
+          <section className="mb-8">
             <SectionHeader icon={CalendarDays} title="Important Dates" />
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               {importantDates.length > 0 &&
                 importantDates.map((date, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50/60 p-2"
-                  >
+                  <div key={idx} className="flex items-center gap-2">
                     <input
                       type="text"
                       placeholder="Label (e.g. OA, Interview)"
@@ -589,7 +562,7 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                       onChange={(e) =>
                         handleImportantDateChange(idx, 'label', e.target.value)
                       }
-                      className={`${inputBase} bg-white`}
+                      className={inputBase}
                     />
                     <input
                       type="date"
@@ -601,15 +574,15 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
                       onChange={(e) =>
                         handleImportantDateChange(idx, 'date', e.target.value)
                       }
-                      className={`${inputBase} bg-white`}
+                      className={inputBase}
                     />
                     <button
                       type="button"
                       onClick={() => handleRemoveImportantDate(idx)}
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-rose-500 transition-colors hover:bg-rose-50 cursor-pointer"
+                      className="group flex h-9 w-9 items-center justify-center rounded-full hover:bg-red-50 transition-colors"
                       aria-label="Remove date"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-4 w-4 text-red-400 group-hover:text-red-600" />
                     </button>
                   </div>
                 ))}
@@ -617,9 +590,9 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
               <button
                 type="button"
                 onClick={handleAddImportantDate}
-                className="flex items-center gap-1.5 rounded-lg border border-dashed border-indigo-200 px-3 py-2 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-50 cursor-pointer"
+                className="flex items-center w-fit gap-1.5 rounded-md border border-dashed border-indigo-300 px-3 py-2 text-xs font-medium text-indigo-600 hover:bg-indigo-50 mt-2"
               >
-                <Plus className="h-3.5 w-3.5" />
+                <Plus className="h-4 w-4" />
                 Add Date
               </button>
             </div>
@@ -627,10 +600,10 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
 
           <Divider />
 
-          {/* Job Posting URL & Job Source */}
-          <section className="mb-7">
+          {/* Section 5: Listing Info */}
+          <section className="mb-8">
             <SectionHeader icon={Link2} title="Listing Info" />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={labelBase}>
                   Job Posting URL {requiredMark}
@@ -669,10 +642,10 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
 
           <Divider />
 
-          {/* Status & Notes */}
+          {/* Section 6: Status & Notes */}
           <section>
             <SectionHeader icon={StickyNote} title="Status & Notes" />
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={labelBase}>Status {requiredMark}</label>
                 <select
@@ -704,10 +677,10 @@ const JobForm = ({ initialJobState, onSubmit, buttonTitle }) => {
         </div>
 
         {/* Sticky footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
+        <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-slate-100 px-8 py-5 bg-white">
           <button
             type="submit"
-            className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors hover:bg-indigo-700 cursor-pointer"
+            className="rounded-md bg-indigo-600 px-6 py-2.5 text-base font-semibold text-white shadow-md hover:bg-indigo-700 transition-colors"
           >
             {buttonTitle}
           </button>

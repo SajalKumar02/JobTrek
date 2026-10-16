@@ -12,7 +12,7 @@ export const newJobInputMethodOptions = [
 ];
 
 export const editJobInputMethodOptions = [
-  baseJobInputMethodOption,
+  // baseJobInputMethodOption,
   // {
   //   id: 1,
   //   label: 'AI Analysis',

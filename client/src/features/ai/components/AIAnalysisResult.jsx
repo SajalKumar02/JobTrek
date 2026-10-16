@@ -9,36 +9,19 @@ import {
   Info,
 } from 'lucide-react';
 
-// ─────────────────────────────────────────────────────────────
-// Small building blocks
-// ─────────────────────────────────────────────────────────────
-const Pill = ({ children, tone = 'slate' }) => {
-  const tones = {
-    slate: 'border-slate-200 bg-slate-50 text-slate-600',
-    indigo: 'border-indigo-200 bg-indigo-50 text-indigo-700',
-    emerald: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-    rose: 'border-rose-200 bg-rose-50 text-rose-700',
-    amber: 'border-amber-200 bg-amber-50 text-amber-700',
-  };
-  return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${tones[tone]}`}
-    >
-      {children}
-    </span>
-  );
-};
+const Pill = ({ children, selected = false }) => (
+  <span className={selected ? 'chip-pill-selected' : 'chip-pill'}>
+    {children}
+  </span>
+);
 
 const SectionLabel = ({ icon: Icon, title }) => (
-  <div className="mb-2.5 flex items-center gap-1.5 text-[13px] font-semibold text-slate-700">
-    <Icon size={14} className="text-slate-400" />
+  <div className="mb-3 flex items-center gap-2 text-[14px] leading-[1.29] font-semibold tracking-[-0.224px] text-ink">
+    <Icon size={14} className="text-ink-muted-48" />
     {title}
   </div>
 );
 
-// ─────────────────────────────────────────────────────────────
-// Role Fit Score — circular gauge
-// ─────────────────────────────────────────────────────────────
 const RoleFitGauge = ({ score = 0 }) => {
   const radius = 30;
   const circumference = 2 * Math.PI * radius;
@@ -46,16 +29,16 @@ const RoleFitGauge = ({ score = 0 }) => {
 
   const scoreColor =
     score >= 75
-      ? 'text-emerald-600'
+      ? 'text-primary'
       : score >= 45
-        ? 'text-amber-600'
-        : 'text-rose-600';
+        ? 'text-ink-muted-80'
+        : 'text-ink-muted-48';
   const strokeColor =
     score >= 75
-      ? 'stroke-emerald-500'
+      ? 'stroke-primary'
       : score >= 45
-        ? 'stroke-amber-500'
-        : 'stroke-rose-500';
+        ? 'stroke-ink-muted-80'
+        : 'stroke-ink-muted-48';
 
   return (
     <div className="flex items-center gap-4">
@@ -66,7 +49,7 @@ const RoleFitGauge = ({ score = 0 }) => {
             cy="36"
             r={radius}
             strokeWidth="6"
-            className="fill-none stroke-slate-100"
+            className="fill-none stroke-divider-soft"
           />
           <circle
             cx="36"
@@ -80,14 +63,18 @@ const RoleFitGauge = ({ score = 0 }) => {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`text-lg font-bold ${scoreColor}`}>{score}</span>
+          <span
+            className={`text-[21px] leading-[1.19] font-semibold tracking-[0.231px] ${scoreColor}`}
+          >
+            {score}
+          </span>
         </div>
       </div>
       <div>
-        <div className="text-sm font-semibold text-slate-800">
+        <div className="text-[17px] leading-[1.24] font-semibold tracking-[-0.374px] text-ink">
           Role Fit Score
         </div>
-        <div className="text-xs text-slate-400">
+        <div className="text-[14px] leading-[1.43] tracking-[-0.224px] text-ink-muted-48">
           Based on your profile & the JD
         </div>
       </div>
@@ -95,11 +82,7 @@ const RoleFitGauge = ({ score = 0 }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────
-// Main Component
-// ─────────────────────────────────────────────────────────────
 const AIAnalysisResult = () => {
-  // Static demo data — no fetching / functionality wired
   const data = {
     roleFitScore: 78,
     tldr: 'Mid-level frontend role focused on React + TypeScript, hybrid work mode, with a fast-paced product team.',
@@ -115,74 +98,66 @@ const AIAnalysisResult = () => {
   };
 
   return (
-    <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
-      {/* Header */}
-      <div className="mb-5 flex items-center justify-between">
+    <div className="app-card w-full max-w-xl">
+      <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-emerald-400 to-teal-600 shadow-sm shadow-emerald-900/20">
-            <Sparkle className="text-white" size={18} />
+          <span className="flex h-10 w-10 items-center justify-center rounded-sm bg-primary">
+            <Sparkle className="text-on-primary" size={18} />
           </span>
           <div>
-            <h3 className="text-base font-semibold text-slate-800">
+            <h3 className="text-[17px] leading-[1.24] font-semibold tracking-[-0.374px] text-ink">
               AI Analysis
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-[14px] leading-[1.43] tracking-[-0.224px] text-ink-muted-48">
               Extracted from the job description
             </p>
           </div>
         </div>
-        <Pill tone="emerald">Parsed</Pill>
+        <Pill selected>Parsed</Pill>
       </div>
 
-      {/* Role fit gauge */}
-      <div className="mb-5 rounded-xl border border-slate-100 bg-slate-50/60 p-4">
+      <div className="mb-6 rounded-sm border border-hairline bg-surface-pearl p-4">
         <RoleFitGauge score={data.roleFitScore} />
       </div>
 
-      {/* TL;DR */}
-      <div className="mb-5">
+      <div className="mb-6">
         <SectionLabel icon={Info} title="TL;DR" />
-        <p className="rounded-lg border border-slate-100 bg-slate-50/60 p-3 text-sm leading-relaxed text-slate-600">
+        <p className="rounded-sm border border-hairline bg-surface-pearl p-4 text-[17px] leading-[1.47] tracking-[-0.374px] text-ink-muted-80">
           {data.tldr}
         </p>
       </div>
 
-      {/* Required Skills */}
-      <div className="mb-5">
+      <div className="mb-6">
         <SectionLabel icon={ListChecks} title="Required Skills" />
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {data.requiredSkills.map((skill) => (
-            <Pill key={skill} tone="indigo">
+            <Pill key={skill} selected>
               {skill}
             </Pill>
           ))}
         </div>
       </div>
 
-      {/* Nice to Haves */}
-      <div className="mb-5">
+      <div className="mb-6">
         <SectionLabel icon={ClipboardList} title="Nice to Haves" />
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {data.niceToHaves.map((skill) => (
-            <Pill key={skill} tone="slate">
-              {skill}
-            </Pill>
+            <Pill key={skill}>{skill}</Pill>
           ))}
         </div>
       </div>
 
-      {/* Red Flags */}
-      <div className="mb-5">
+      <div className="mb-6">
         <SectionLabel icon={TriangleAlert} title="Red Flags" />
-        <ul className="space-y-1.5">
+        <ul className="space-y-2">
           {data.redFlags.map((flag) => (
             <li
               key={flag}
-              className="flex items-start gap-2 rounded-lg border border-rose-100 bg-rose-50/60 px-3 py-2 text-xs text-rose-700"
+              className="flex items-start gap-2 rounded-sm border border-hairline bg-surface-pearl px-4 py-3 text-[14px] leading-[1.43] tracking-[-0.224px] text-ink-muted-80"
             >
               <TriangleAlert
                 size={13}
-                className="mt-0.5 shrink-0 text-rose-500"
+                className="mt-0.5 shrink-0 text-ink-muted-48"
               />
               {flag}
             </li>
@@ -190,33 +165,28 @@ const AIAnalysisResult = () => {
         </ul>
       </div>
 
-      {/* Compensation + Work Mode */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-lg border border-slate-100 bg-slate-50/60 p-3">
-          <div className="mb-1 flex items-center gap-1.5 text-xs font-medium text-slate-500">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-sm border border-hairline bg-surface-pearl p-4">
+          <div className="mb-1 flex items-center gap-2 text-[14px] leading-[1.43] font-semibold tracking-[-0.224px] text-ink-muted-48">
             <Wallet size={13} />
             Compensation
           </div>
-          <div className="text-sm font-semibold text-slate-800">
+          <div className="text-[17px] leading-[1.24] font-semibold tracking-[-0.374px] text-ink">
             {data.compensation}
           </div>
         </div>
-        <div className="rounded-lg border border-slate-100 bg-slate-50/60 p-3">
-          <div className="mb-1 flex items-center gap-1.5 text-xs font-medium text-slate-500">
+        <div className="rounded-sm border border-hairline bg-surface-pearl p-4">
+          <div className="mb-1 flex items-center gap-2 text-[14px] leading-[1.43] font-semibold tracking-[-0.224px] text-ink-muted-48">
             <MapPinned size={13} />
             Work Mode
           </div>
-          <div className="text-sm font-semibold text-slate-800">
+          <div className="text-[17px] leading-[1.24] font-semibold tracking-[-0.374px] text-ink">
             {data.workMode}
           </div>
         </div>
       </div>
 
-      {/* Footer action */}
-      <button
-        type="button"
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors hover:bg-indigo-700 cursor-pointer"
-      >
+      <button type="button" className="btn-primary mt-6 w-full">
         <Gauge size={16} />
         Use This to Fill Form
       </button>

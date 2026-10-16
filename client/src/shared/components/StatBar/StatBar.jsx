@@ -60,7 +60,7 @@ const StatBar = () => {
   );
 
   return (
-    <div className="app-card grid grid-cols-2 md:grid-cols-5 gap-2 [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1">
+    <div className="grid grid-cols-2 gap-6 md:grid-cols-5 [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1">
       {stats.map((stat, i) => (
         <StatPill
           key={i}

@@ -1,50 +1,83 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+// Enhanced colors, new accent and strong surface contrast
+const C = {
+  bg: '#1A1A1C',
+  surface: '#232328',
+  elevated: '#292933',
+  border: '#24243d',
+  borderHover: '#353560',
+  text: '#F2F2F7',
+  muted: '#A1A1AA',
+  accent: '#AAF683', // brighter, modern green accent
+  accentAlt: '#FFBE76', // new warm accent for secondary CTAs
+  secondary: '#3741FD', // vivid blue for selection pop
+  shadow: 'rgba(0,0,0,0.24)',
+};
+
 const PIPELINE_STAGES = [
-  { label: 'Wishlist', color: '#8B7CF6', count: 3 },
-  { label: 'Applied', color: '#60A5FA', count: 8 },
-  { label: 'OA', color: '#FBBF24', count: 4 },
-  { label: 'Interview', color: '#34D399', count: 2 },
-  { label: 'Offer', color: '#86EFAC', count: 1 },
-  { label: 'Rejected', color: '#F87171', count: 2 },
+  { label: 'Wishlist', color: '#8B7CF6', count: 3, icon: '📝' },
+  { label: 'Applied', color: '#60A5FA', count: 8, icon: '📤' },
+  { label: 'OA', color: '#FBBF24', count: 4, icon: '💻' },
+  { label: 'Interview', color: '#34D399', count: 2, icon: '🎤' },
+  { label: 'Offer', color: '#AAF683', count: 1, icon: '🎉' },
+  { label: 'Rejected', color: '#F87171', count: 2, icon: '❌' },
 ];
 
 const AI_FEATURES = [
   {
-    icon: '◈',
+    icon: '🧬',
     title: 'JD Parser',
-    desc: 'Paste any job description. Get a clean list of required skills, nice-to-haves, and red flags.',
+    desc: 'Just paste the description – our AI will instantly extract required skills, nice-to-haves, and any hidden traps.',
   },
   {
-    icon: '◉',
+    icon: '✍️',
     title: 'Resume Bullets',
-    desc: 'Paste your bullet. Tell it the role. Get a rewritten version that matches the JD language.',
+    desc: 'Paste your bullet, pick a role, and get a keyword-optimized rewrite that matches the job description.',
   },
   {
-    icon: '◎',
+    icon: '📧',
     title: 'Cold Email',
-    desc: 'Company name + role + your background. One click to a personalised outreach email.',
+    desc: 'Company + role + your background → instant tailored cold outreach email for any recruiter or referral.',
   },
   {
-    icon: '◐',
+    icon: '🤖',
     title: 'Interview Prep',
-    desc: 'Role-specific questions, model answers, and follow-up prep — before every round.',
+    desc: 'Role-specific likely questions, model answers, and follow-up prep—generated just for your interview.',
   },
 ];
 
 const STATS = [
   {
     value: '68%',
-    label: 'of applications get no response without follow-up',
+    label: (
+      <>
+        of applications
+        <br />
+        get no response{' '}
+        <span style={{ color: C.accentAlt }}>without follow-up</span>
+      </>
+    ),
   },
   {
     value: '11×',
-    label: 'more likely to get a callback with a tailored resume',
+    label: (
+      <>
+        more likely to get a callback{' '}
+        <span style={{ color: C.secondary }}>with a tailored resume</span>
+      </>
+    ),
   },
   {
     value: '3 wks',
-    label: 'average time lost tracking jobs in spreadsheets',
+    label: (
+      <>
+        average time lost <br />
+        tracking jobs{' '}
+        <span style={{ color: C.accentAlt }}>in spreadsheets</span>
+      </>
+    ),
   },
 ];
 
@@ -52,7 +85,7 @@ function AnimatedCounter({ target }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     let start = 0;
-    const step = Math.ceil(target / 40);
+    const step = Math.ceil(target / 24);
     const timer = setInterval(() => {
       start += step;
       if (start >= target) {
@@ -61,7 +94,7 @@ function AnimatedCounter({ target }) {
       } else {
         setCount(start);
       }
-    }, 30);
+    }, 18);
     return () => clearInterval(timer);
   }, [target]);
   return <>{count}</>;
@@ -83,12 +116,15 @@ export default function Home() {
       {/* Noise texture overlay */}
       <div style={styles.noise} />
 
-      {/* Grid lines background */}
-      <div style={styles.gridBg} />
+      {/* Soft radial background gradient */}
+      <div style={styles.bgGradient} />
 
       {/* NAV */}
       <nav style={styles.nav}>
-        <span style={styles.navLogo}>JobTrek</span>
+        <span style={styles.navLogo}>
+          <span style={{ color: C.accent }}>●</span>
+          <span style={{ marginLeft: '8px' }}>JobTrek</span>
+        </span>
         <div style={styles.navLinks}>
           <a href="#features" style={styles.navLink}>
             Features
@@ -110,29 +146,27 @@ export default function Home() {
         <div
           style={{
             ...styles.heroGlow,
-            transform: `translateY(${scrollY * 0.3}px)`,
+            transform: `translateY(${scrollY * 0.22}px)`,
           }}
         />
         <div style={styles.heroBadge}>
           <span style={styles.heroBadgeDot} />
-          AI-powered · Free to use
+          AI-powered, Private, Free
         </div>
         <h1 style={styles.heroTitle}>
-          Your job hunt,
-          <br />
-          <span style={styles.heroTitleAccent}>finally under control.</span>
+          Take control{' '}
+          <span style={styles.heroTitleAccent}>of your job search.</span>
         </h1>
         <p style={styles.heroSub}>
-          Track every application through a visual pipeline. Let AI parse JDs,
-          rewrite your resume, draft cold emails, and prep you for every round.
-          Stop losing track. Start landing interviews.
+          Organize applications, move cards visually, and empower your hunt with
+          built-in AI for parsing, writing, cold emails & prep.
         </p>
         <div style={styles.heroCtas}>
           <button style={styles.ctaPrimary} onClick={() => navigate('/auth')}>
-            Start tracking free →
+            Start tracking — it’s free
           </button>
           <button style={styles.ctaGhost} onClick={() => navigate('/demo')}>
-            See a live demo
+            Try demo
           </button>
         </div>
 
@@ -140,17 +174,19 @@ export default function Home() {
         <div style={styles.pipelinePreview}>
           {PIPELINE_STAGES.map((stage, i) => (
             <div key={stage.label} style={styles.previewStage}>
-              <div
+              <span
                 style={{
-                  ...styles.previewDot,
-                  background: stage.color,
-                  animationDelay: `${i * 0.15}s`,
+                  ...styles.previewEmoji,
+                  filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.15))',
+                  animationDelay: `${i * 0.09}s`,
                 }}
-              />
-              <span style={styles.previewLabel}>{stage.label}</span>
+              >
+                {stage.icon}
+              </span>
               <span style={{ ...styles.previewCount, color: stage.color }}>
                 <AnimatedCounter target={stage.count} />
               </span>
+              <span style={styles.previewLabel}>{stage.label}</span>
             </div>
           ))}
         </div>
@@ -170,18 +206,24 @@ export default function Home() {
       <section id="pipeline" style={styles.section}>
         <div style={styles.sectionTag}>Pipeline</div>
         <h2 style={styles.sectionTitle}>
-          Every application.
-          <br />
-          One board.
+          One view.
+          <span style={{ color: C.accent, marginLeft: 8 }}>
+            All your job apps.
+          </span>
         </h2>
         <p style={styles.sectionSub}>
-          Move cards across stages with a click. Never lose track of where you
-          stand with any company.
+          Drag and drop cards to update progress. Never miss emails, deadlines,
+          or decision points again.
         </p>
-
         <div style={styles.kanban}>
           {PIPELINE_STAGES.map((stage) => (
-            <div key={stage.label} style={styles.kanbanCol}>
+            <div
+              key={stage.label}
+              style={{
+                ...styles.kanbanCol,
+                borderTop: `4px solid ${stage.color}`,
+              }}
+            >
               <div style={styles.kanbanHeader}>
                 <span
                   style={{
@@ -193,7 +235,7 @@ export default function Home() {
                 <span
                   style={{
                     ...styles.kanbanBadge,
-                    background: stage.color + '22',
+                    background: stage.color + '1A',
                     color: stage.color,
                   }}
                 >
@@ -201,7 +243,13 @@ export default function Home() {
                 </span>
               </div>
               {Array.from({ length: Math.min(stage.count, 2) }).map((_, j) => (
-                <div key={j} style={styles.kanbanCard}>
+                <div
+                  key={j}
+                  style={{
+                    ...styles.kanbanCard,
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
+                  }}
+                >
                   <div style={styles.kanbanCardCompany}>Company {j + 1}</div>
                   <div style={styles.kanbanCardRole}>
                     Software Engineer · Full Time
@@ -213,6 +261,9 @@ export default function Home() {
                         ...styles.kanbanCardTag,
                         borderColor: stage.color + '66',
                         color: stage.color,
+                        background: stage.color + '0D',
+                        fontWeight: 600,
+                        fontSize: '10px',
                       }}
                     >
                       {stage.label}
@@ -226,16 +277,15 @@ export default function Home() {
       </section>
 
       {/* AI FEATURES */}
-      <section id="features" style={styles.section}>
-        <div style={styles.sectionTag}>AI Tools</div>
+      <section id="features" style={styles.sectionAlt}>
+        <div style={styles.sectionTag}>Built-in AI Tools</div>
         <h2 style={styles.sectionTitle}>
-          Built-in AI that actually
-          <br />
-          does the work.
+          Get the unfair advantage—
+          <span style={{ color: C.secondary }}>at every stage</span>
         </h2>
         <p style={styles.sectionSub}>
-          Not generic ChatGPT prompts. Purpose-built tools for each stage of
-          your job hunt, right inside your dashboard.
+          More than prompts — actionable tools designed for real job hunters,
+          not resume spammers.
         </p>
 
         <div style={styles.featuresGrid}>
@@ -252,44 +302,50 @@ export default function Home() {
       {/* CTA SECTION */}
       <section style={styles.ctaSection}>
         <div style={styles.ctaGlow} />
-        <h2 style={styles.ctaTitle}>Ready to stop guessing?</h2>
+        <h2 style={styles.ctaTitle}>Start your job search with confidence.</h2>
         <p style={styles.ctaSub}>
-          Set up your board in 2 minutes. Add your first application today.
+          Setup is instant. Your progress is private.{' '}
+          <b>You’ll never lose an opportunity again.</b>
         </p>
         <button style={styles.ctaPrimary} onClick={() => navigate('/auth')}>
-          Create free account →
+          Create my free board
         </button>
       </section>
 
       {/* FOOTER */}
       <footer style={styles.footer}>
-        <span style={styles.footerLogo}>JobTrek</span>
+        <span style={styles.footerLogo}>
+          <span style={{ color: C.accent }}>●</span> JobTrek
+        </span>
         <span style={styles.footerNote}>
-          Built for job seekers. Not recruiters.
+          No tracking. No recruiters.{' '}
+          <span style={{ color: C.accentAlt }}>Job seekers only.</span>
         </span>
       </footer>
-
+      {/* Responsive styles and shadow/glass */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(24px); }
+          from { opacity: 0; transform: translateY(28px); }
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50%       { opacity: 0.4; }
         }
-        @keyframes dotPop {
-          from { transform: scale(0); opacity: 0; }
+        @keyframes emojiPop {
+          from { transform: scale(0.6); opacity: 0; }
           to   { transform: scale(1); opacity: 1; }
         }
-
         .fade-up {
           opacity: 0;
-          animation: fadeUp 0.7s ease forwards;
+          animation: fadeUp 0.8s ease forwards;
+        }
+        @media (max-width: 900px) {
+          .kanban-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+          .stats-strip { grid-template-columns: 1fr !important; }
+          .features-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
@@ -298,20 +354,9 @@ export default function Home() {
 
 /* ─── STYLES ─────────────────────────────────────────────────────────────── */
 
-const C = {
-  bg: '#0A0A0A',
-  surface: '#111111',
-  border: '#1F1F1F',
-  borderHover: '#2E2E2E',
-  text: '#F0EDE8',
-  muted: '#6B6B6B',
-  accent: '#E8FF47', // electric lime — the one memorable colour
-  accentDim: '#E8FF4722',
-};
-
 const styles = {
   root: {
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
     background: C.bg,
     color: C.text,
     minHeight: '100vh',
@@ -322,18 +367,16 @@ const styles = {
     position: 'fixed',
     inset: 0,
     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
-    opacity: 0.025,
+    opacity: 0.035,
     pointerEvents: 'none',
     zIndex: 0,
   },
-  gridBg: {
+  bgGradient: {
     position: 'fixed',
     inset: 0,
-    backgroundImage: `linear-gradient(${C.border} 1px, transparent 1px), linear-gradient(90deg, ${C.border} 1px, transparent 1px)`,
-    backgroundSize: '60px 60px',
-    opacity: 0.4,
-    pointerEvents: 'none',
+    background: `radial-gradient(ellipse 100% 50% at 80% 5%, ${C.secondary}1A 0%, transparent 70%), radial-gradient(ellipse 80% 55% at 20% 100%, ${C.accentAlt}12 0%, transparent 80%)`,
     zIndex: 0,
+    pointerEvents: 'none',
   },
 
   /* NAV */
@@ -346,91 +389,110 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '0 2.5rem',
-    height: '60px',
+    padding: '0 2.7rem',
+    height: '65px',
     borderBottom: `1px solid ${C.border}`,
-    backdropFilter: 'blur(12px)',
-    background: 'rgba(10,10,10,0.85)',
+    backdropFilter: 'blur(18px)',
+    background: 'rgba(26,26,28,0.92)',
+    boxShadow: '0 2px 14px rgba(34,36,48,0.13)',
   },
   navLogo: {
     fontFamily: "'Syne', sans-serif",
-    fontSize: '18px',
+    fontSize: '21px',
     fontWeight: 800,
     letterSpacing: '-0.02em',
     color: C.text,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
   },
   navLinks: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: '10px',
   },
   navLink: {
     color: C.muted,
     textDecoration: 'none',
-    fontSize: '13px',
-    padding: '6px 12px',
-    transition: 'color 0.2s',
+    fontSize: '15px',
+    padding: '7px 20px',
+    borderRadius: '7px',
+    transition: 'background 0.14s, color 0.14s',
+    fontWeight: 500,
+    border: 'none',
+    outline: 'none',
+    background: 'transparent',
+    cursor: 'pointer',
   },
   navCta: {
     background: 'transparent',
     border: `1px solid ${C.border}`,
-    color: C.text,
-    borderRadius: '6px',
-    padding: '7px 16px',
-    fontSize: '13px',
+    color: C.accent,
+    borderRadius: '7px',
+    padding: '8px 18px',
+    fontSize: '14px',
     cursor: 'pointer',
+    fontWeight: 500,
+    transition: 'border 0.16s, color 0.13s',
   },
   navCtaSolid: {
     background: C.accent,
     border: 'none',
-    color: '#0A0A0A',
-    borderRadius: '6px',
-    padding: '7px 16px',
-    fontSize: '13px',
-    fontWeight: 600,
+    color: '#111',
+    borderRadius: '7px',
+    padding: '8px 19px',
+    fontSize: '14px',
+    fontWeight: 700,
+    boxShadow: `0 2px 24px ${C.accent}22`,
     cursor: 'pointer',
+    transition: 'background 0.16s',
   },
 
   /* HERO */
   hero: {
     position: 'relative',
     zIndex: 1,
-    paddingTop: '160px',
-    paddingBottom: '80px',
+    paddingTop: '140px',
+    paddingBottom: '94px',
     paddingLeft: '2.5rem',
     paddingRight: '2.5rem',
-    maxWidth: '860px',
+    maxWidth: '930px',
     margin: '0 auto',
     textAlign: 'left',
   },
   heroGlow: {
     position: 'absolute',
-    top: '80px',
-    left: '-10%',
-    width: '60vw',
+    top: '-30px',
+    left: '-18%',
+    width: '70vw',
     height: '60vw',
-    maxWidth: '600px',
-    maxHeight: '600px',
-    background: `radial-gradient(circle, ${C.accent}18 0%, transparent 70%)`,
+    maxWidth: '680px',
+    maxHeight: '620px',
+    background: `radial-gradient(circle, ${C.accent}38 0%, transparent 74%)`,
     pointerEvents: 'none',
     zIndex: -1,
+    opacity: 0.93,
+    filter: 'blur(12px)',
   },
   heroBadge: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '8px',
-    fontSize: '12px',
-    color: C.muted,
+    gap: '7px',
+    fontSize: '13px',
+    color: C.accent,
     border: `1px solid ${C.border}`,
     borderRadius: '999px',
-    padding: '5px 14px',
-    marginBottom: '2rem',
+    background: `${C.surface}CC`,
+    padding: '7px 18px',
+    marginBottom: '1.7rem',
     fontFamily: "'DM Sans', sans-serif",
-    letterSpacing: '0.04em',
+    letterSpacing: '0.05em',
+    boxShadow: '0 0.5px 7px rgba(160,255,150,0.044)',
+    backdropFilter: 'blur(4px)',
   },
   heroBadgeDot: {
-    width: '6px',
-    height: '6px',
+    width: '7px',
+    height: '7px',
     borderRadius: '50%',
     background: C.accent,
     animation: 'pulse 2s infinite',
@@ -438,89 +500,107 @@ const styles = {
   },
   heroTitle: {
     fontFamily: "'Syne', sans-serif",
-    fontSize: 'clamp(42px, 7vw, 72px)',
+    fontSize: 'clamp(45px, 8vw, 78px)',
     fontWeight: 800,
-    lineHeight: 1.05,
-    letterSpacing: '-0.03em',
+    lineHeight: 1.07,
+    letterSpacing: '-0.035em',
     color: C.text,
-    marginBottom: '1.5rem',
-    animation: 'fadeUp 0.8s ease forwards',
+    marginBottom: '1.15rem',
+    animation: 'fadeUp 0.9s ease forwards',
+    textShadow: '0 2px 18px #00000024',
+    wordSpacing: '-0.03em',
   },
   heroTitleAccent: {
     color: C.accent,
+    letterSpacing: '-0.023em',
+    marginLeft: '3px',
   },
   heroSub: {
-    fontSize: '16px',
-    lineHeight: 1.75,
+    fontSize: '18px',
+    lineHeight: 1.9,
     color: C.muted,
-    maxWidth: '520px',
-    marginBottom: '2.5rem',
-    fontWeight: 300,
+    maxWidth: '620px',
+    marginBottom: '2.7rem',
+    fontWeight: 400,
     animation: 'fadeUp 0.8s 0.15s ease both',
+    textShadow: '0 1px 6px #00000014',
   },
   heroCtas: {
     display: 'flex',
-    gap: '12px',
+    gap: '16px',
     flexWrap: 'wrap',
-    animation: 'fadeUp 0.8s 0.3s ease both',
+    marginBottom: '7px',
+    animation: 'fadeUp 0.8s 0.2s ease both',
   },
   ctaPrimary: {
-    background: C.accent,
-    color: '#0A0A0A',
+    background: `linear-gradient(100deg, ${C.accent} 12%, #CEF5D4 100%)`,
+    color: '#131A13',
     border: 'none',
-    borderRadius: '8px',
-    padding: '12px 24px',
-    fontSize: '14px',
-    fontWeight: 600,
+    borderRadius: '9px',
+    padding: '16px 32px',
+    fontSize: '17px',
+    fontWeight: 700,
     cursor: 'pointer',
     fontFamily: "'DM Sans', sans-serif",
+    boxShadow: '0 1px 16px #AAF68333',
+    letterSpacing: '-0.01em',
+    transition: 'background 0.1s',
   },
   ctaGhost: {
     background: 'transparent',
-    color: C.text,
-    border: `1px solid ${C.border}`,
-    borderRadius: '8px',
-    padding: '12px 24px',
-    fontSize: '14px',
+    color: C.secondary,
+    border: `1.5px solid ${C.secondary}`,
+    borderRadius: '9px',
+    padding: '16px 32px',
+    fontSize: '17px',
     cursor: 'pointer',
+    fontWeight: 600,
     fontFamily: "'DM Sans', sans-serif",
+    transition: 'border 0.12s, color 0.11s',
   },
 
   /* PIPELINE PREVIEW */
   pipelinePreview: {
     display: 'flex',
     gap: '0',
-    marginTop: '4rem',
+    marginTop: '3.6rem',
     border: `1px solid ${C.border}`,
-    borderRadius: '12px',
+    borderRadius: '17px',
     overflow: 'hidden',
     background: C.surface,
-    animation: 'fadeUp 0.8s 0.45s ease both',
+    animation: 'fadeUp 0.8s 0.26s ease both',
+    boxShadow: '0 2px 24px #24243d15',
   },
   previewStage: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '20px 8px',
+    padding: '22px 5px',
     borderRight: `1px solid ${C.border}`,
     gap: '8px',
+    background: 'rgba(36,36,61,0.03)',
+    minWidth: '86px',
+    textAlign: 'center',
+    position: 'relative',
   },
-  previewDot: {
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    animation: 'dotPop 0.5s ease both',
+  previewEmoji: {
+    fontSize: '28px',
+    marginBottom: '3px',
+    animation: 'emojiPop 0.5s ease both',
   },
   previewLabel: {
-    fontSize: '11px',
+    fontSize: '11.5px',
     color: C.muted,
-    letterSpacing: '0.04em',
+    letterSpacing: '0.048em',
+    marginTop: '2px',
   },
   previewCount: {
-    fontSize: '20px',
+    fontSize: '24px',
     fontFamily: "'Syne', sans-serif",
     fontWeight: 700,
+    marginTop: '2px',
+    marginBottom: '0px',
   },
 
   /* STATS STRIP */
@@ -529,122 +609,154 @@ const styles = {
     zIndex: 1,
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    borderTop: `1px solid ${C.border}`,
-    borderBottom: `1px solid ${C.border}`,
+    borderTop: `2px solid ${C.border}`,
+    borderBottom: `2px solid ${C.border}`,
+    background: `${C.elevated}C0`,
+    boxShadow: '0 2px 32px #22243022',
+    margin: '36px 0 0 0',
   },
   statItem: {
-    padding: '2.5rem',
+    padding: '2.8rem 1rem',
     borderRight: `1px solid ${C.border}`,
     textAlign: `center`,
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '7px',
+    fontFamily: "'Syne', sans-serif",
   },
   statValue: {
     fontFamily: "'Syne', sans-serif",
-    fontSize: '36px',
+    fontSize: '40px',
     fontWeight: 800,
     color: C.accent,
-    letterSpacing: '-0.03em',
+    letterSpacing: '-0.035em',
+    marginBottom: '3px',
   },
   statLabel: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    fontSize: '13px',
-    color: C.muted,
-    lineHeight: 1.5,
-    fontWeight: 300,
-    maxWidth: '200px',
+    fontSize: '13.5px',
+    color: C.text,
+    lineHeight: 1.7,
+    fontWeight: 500,
+    maxWidth: '228px',
+    textShadow: `0 1.5px 5px #0003`,
   },
 
   /* SECTIONS */
   section: {
     position: 'relative',
     zIndex: 1,
-    padding: '6rem 2.5rem',
-    maxWidth: '1100px',
+    padding: '6.5rem 2.5rem 5.5rem 2.5rem',
+    maxWidth: '1160px',
     margin: '0 auto',
   },
+  sectionAlt: {
+    position: 'relative',
+    zIndex: 1,
+    padding: '6.2rem 2.5rem 4.6rem 2.5rem',
+    maxWidth: '1160px',
+    margin: '0 auto',
+    background: `${C.surface}99`,
+    borderRadius: '18px',
+    boxShadow: '0 2px 36px #22243018',
+    marginTop: '42px',
+  },
   sectionTag: {
-    fontSize: '11px',
-    letterSpacing: '0.1em',
-    color: C.accent,
+    fontSize: '12px',
+    letterSpacing: '0.09em',
+    color: C.accentAlt,
     textTransform: 'uppercase',
-    marginBottom: '1rem',
-    fontWeight: 600,
+    marginBottom: '0.9rem',
+    fontWeight: 700,
+    background: `${C.elevated}88`,
+    borderRadius: '4px',
+    display: 'inline-block',
+    padding: '5px 13px',
+    boxShadow: '0 1px 9px rgba(252, 190, 118, 0.04)',
   },
   sectionTitle: {
     fontFamily: "'Syne', sans-serif",
-    fontSize: 'clamp(28px, 4vw, 44px)',
+    fontSize: 'clamp(30px, 5vw, 48px)',
     fontWeight: 800,
-    lineHeight: 1.1,
-    letterSpacing: '-0.03em',
+    lineHeight: 1.07,
+    letterSpacing: '-0.032em',
     marginBottom: '1rem',
   },
   sectionSub: {
-    fontSize: '15px',
+    fontSize: '17px',
     color: C.muted,
-    maxWidth: '480px',
-    lineHeight: 1.75,
-    fontWeight: 300,
-    marginBottom: '3rem',
+    maxWidth: '540px',
+    lineHeight: 1.78,
+    fontWeight: 400,
+    marginBottom: '3.4rem',
   },
 
   /* KANBAN */
   kanban: {
     display: 'grid',
     gridTemplateColumns: 'repeat(6, 1fr)',
-    gap: '10px',
+    gap: '20px',
+    marginTop: '14px',
+    marginBottom: '10px',
   },
   kanbanCol: {
     background: C.surface,
-    border: `1px solid ${C.border}`,
-    borderRadius: '10px',
-    padding: '12px 10px',
+    border: `1.5px solid ${C.border}`,
+    borderRadius: '13px',
+    padding: '13px 11px',
+    minWidth: '0',
+    boxShadow: '0 1px 12px #11111222',
+    transition: 'box-shadow 0.18s, border 0.14s',
   },
   kanbanHeader: {
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
-    marginBottom: '10px',
+    gap: '7px',
+    marginBottom: '11px',
   },
   kanbanDot: {
-    width: '7px',
-    height: '7px',
+    width: '8px',
+    height: '8px',
     borderRadius: '50%',
     flexShrink: 0,
   },
   kanbanLabel: {
-    fontSize: '11px',
-    fontWeight: 600,
+    fontSize: '13px',
+    fontWeight: 700,
     color: C.text,
     flex: 1,
-    letterSpacing: '0.02em',
+    letterSpacing: '0.03em',
   },
   kanbanBadge: {
-    fontSize: '10px',
-    padding: '1px 6px',
+    fontSize: '12px',
+    padding: '2px 8px',
     borderRadius: '999px',
-    fontWeight: 600,
+    fontWeight: 700,
   },
   kanbanCard: {
     background: C.bg,
-    border: `1px solid ${C.border}`,
-    borderRadius: '7px',
-    padding: '10px',
-    marginBottom: '6px',
+    border: `1.5px solid ${C.border}`,
+    borderRadius: '9px',
+    padding: '12px',
+    marginBottom: '10px',
+    minWidth: '0',
+    transition: 'box-shadow 0.14s, border 0.13s',
+    boxShadow: '0 2px 16px #2C2E4315',
   },
   kanbanCardCompany: {
-    fontSize: '11px',
-    fontWeight: 600,
+    fontSize: '13px',
+    fontWeight: 700,
     color: C.text,
-    marginBottom: '2px',
+    marginBottom: '3px',
+    letterSpacing: '-0.01em',
   },
   kanbanCardRole: {
-    fontSize: '10px',
+    fontSize: '11.7px',
     color: C.muted,
-    marginBottom: '8px',
-    lineHeight: 1.4,
+    marginBottom: '10px',
+    lineHeight: 1.45,
+    fontWeight: 500,
   },
   kanbanCardFooter: {
     display: 'flex',
@@ -652,51 +764,59 @@ const styles = {
     justifyContent: 'space-between',
   },
   kanbanCardDate: {
-    fontSize: '10px',
+    fontSize: '11px',
     color: C.muted,
   },
   kanbanCardTag: {
-    fontSize: '9px',
-    padding: '2px 6px',
-    borderRadius: '4px',
+    fontSize: '10px',
+    padding: '3px 9px',
+    borderRadius: '6px',
     border: '1px solid',
-    fontWeight: 600,
+    fontWeight: 700,
+    background: C.elevated,
   },
 
   /* AI FEATURES */
   featuresGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '1px',
-    border: `1px solid ${C.border}`,
-    borderRadius: '12px',
+    gap: '0.5px',
+    border: `1.5px solid ${C.border}`,
+    borderRadius: '14px',
     overflow: 'hidden',
     background: C.border,
+    boxShadow: '0 1px 18px #11111213',
   },
   featureCard: {
     background: C.surface,
-    padding: '2rem',
+    padding: '2.45rem 2rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   featureIcon: {
-    fontSize: '24px',
+    fontSize: '33px',
     color: C.accent,
-    marginBottom: '1rem',
+    marginBottom: '1.1rem',
     display: 'block',
     lineHeight: 1,
+    filter: 'drop-shadow(0 4px 16px #AAF68333)',
   },
   featureTitle: {
     fontFamily: "'Syne', sans-serif",
-    fontSize: '18px',
+    fontSize: '21px',
     fontWeight: 700,
-    marginBottom: '0.5rem',
+    marginBottom: '0.4rem',
     color: C.text,
     letterSpacing: '-0.02em',
+    lineHeight: 1.14,
   },
   featureDesc: {
-    fontSize: '14px',
+    fontSize: '15px',
     color: C.muted,
-    lineHeight: 1.7,
-    fontWeight: 300,
+    lineHeight: 1.68,
+    fontWeight: 400,
+    maxWidth: '350px',
   },
 
   /* CTA SECTION */
@@ -704,18 +824,23 @@ const styles = {
     position: 'relative',
     zIndex: 1,
     textAlign: 'center',
-    padding: '6rem 2.5rem',
-    borderTop: `1px solid ${C.border}`,
+    padding: '5.2rem 2.5rem 2.7rem 2.5rem',
+    borderTop: `2px solid ${C.border}`,
     overflow: 'hidden',
+    background: `${C.elevated}EA`,
+    borderRadius: '18px',
+    margin: '44px auto 0 auto',
+    boxShadow: '0 1px 22px #1f1f2d19',
+    maxWidth: '860px',
   },
   ctaGlow: {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '600px',
-    height: '300px',
-    background: `radial-gradient(ellipse, ${C.accent}14 0%, transparent 70%)`,
+    transform: 'translate(-50%, -48%)',
+    width: '650px',
+    height: '320px',
+    background: `radial-gradient(ellipse, ${C.secondary}11 0%, transparent 80%)`,
     pointerEvents: 'none',
   },
   ctaTitle: {
@@ -723,33 +848,45 @@ const styles = {
     fontSize: 'clamp(32px, 5vw, 52px)',
     fontWeight: 800,
     letterSpacing: '-0.03em',
-    marginBottom: '1rem',
+    marginBottom: '1.2rem',
+    color: C.accent,
+    textShadow: '0 1px 16px #AAF68330',
   },
   ctaSub: {
-    fontSize: '15px',
-    color: C.muted,
-    marginBottom: '2.5rem',
-    fontWeight: 300,
+    fontSize: '17px',
+    color: C.text,
+    marginBottom: '2.6rem',
+    fontWeight: 400,
+    textShadow: '0 1.5px 5px #00000011',
   },
 
   /* FOOTER */
   footer: {
     position: 'relative',
     zIndex: 1,
-    borderTop: `1px solid ${C.border}`,
-    padding: '1.5rem 2.5rem',
+    borderTop: `1.5px solid ${C.border}`,
+    padding: '1.7rem 2.7rem 1.7rem 2.7rem',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    fontSize: '15.5px',
+    background: `${C.surface}99`,
+    boxShadow: '0 2px 32px #22243016',
   },
   footerLogo: {
     fontFamily: "'Syne', sans-serif",
-    fontSize: '15px',
+    fontSize: '15.5px',
     fontWeight: 800,
     letterSpacing: '-0.02em',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
   },
   footerNote: {
-    fontSize: '12px',
+    fontSize: '13px',
     color: C.muted,
+    fontWeight: 400,
+    display: 'flex',
+    alignItems: 'center',
   },
 };
