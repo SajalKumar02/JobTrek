@@ -38,7 +38,7 @@ app.get('/health', (req, res) => res.sendStatus(200));
 connectDb()
   .then(() => {
     app.listen(port, () => {
-      if (NODE_ENV !== 'production') {
+      if (NODE_ENV === 'development') {
         console.log(`✅ Server running on port ${port}`);
       }
       console.log(`🔗 Frontend URL: ${FRONTEND_URL}`);
