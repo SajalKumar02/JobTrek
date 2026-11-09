@@ -33,6 +33,8 @@ app.use(
 
 app.use('/api/v1', IndexRouter);
 
+app.get('/health', (req, res) => res.sendStatus(200));
+
 connectDb()
   .then(() => {
     app.listen(port, () => {
